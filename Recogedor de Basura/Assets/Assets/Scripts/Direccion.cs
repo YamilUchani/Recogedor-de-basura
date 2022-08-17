@@ -17,10 +17,27 @@ public class Direccion : MonoBehaviour
     public float aceleracion=500f;
     public float fuerzaruptura=300f;
     public float angulo=15f;
-
+    public Vector3 inicio;
     private float aceleracionactual=0f;
     private float fuerzaactual=0f;
     private float anguloactual=0f;
+    private void Start() {
+        inicio=transform.position;
+    }
+    private void Update() {
+        if(transform.localEulerAngles.z>260 && transform.localEulerAngles.z<328)
+        {
+            transform.localRotation = Quaternion.Euler(0, 0, 0);
+            transform.position = inicio;
+            
+        }
+        else if(transform.localEulerAngles.z>32 && transform.localEulerAngles.z<100)
+        {
+            transform.localRotation = Quaternion.Euler(0, 0, 0);
+            transform.position = inicio;
+            
+        }
+    }
     private void FixedUpdate() {
         aceleracionactual=aceleracion*Input.GetAxis("Vertical");
 
@@ -53,5 +70,6 @@ public class Direccion : MonoBehaviour
         trans.position=posicion;
         trans.rotation=rotacion;
     }
+
  }
 

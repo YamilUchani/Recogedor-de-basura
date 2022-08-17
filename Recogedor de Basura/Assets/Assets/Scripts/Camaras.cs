@@ -6,6 +6,7 @@ public class Camaras : MonoBehaviour
 {
     public Camera Espectador;
     public Camera Recogedor;
+    public Camera Delado;
     private Camera[] Cams;
     private Camera currentCamera;
     private int currentCameraIndex=0;
@@ -13,7 +14,7 @@ public class Camaras : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Cams=new Camera[]{Espectador,Recogedor};
+        Cams=new Camera[]{Espectador,Recogedor,Delado};
         currentCamera=Espectador;
         Cambio();
     }
@@ -24,7 +25,7 @@ public class Camaras : MonoBehaviour
         if (Input.GetKeyDown("v"))
         {
             currentCameraIndex++;
-            if(currentCameraIndex>1)
+            if(currentCameraIndex>2)
             {
                 currentCameraIndex=0;
             }
