@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 2129106491774350236}
   - component: {fileID: 4208873727517050710}
   - component: {fileID: -4880044654979766559}
-  - component: {fileID: 4363529730746172066}
   - component: {fileID: 1789145504688204105}
+  - component: {fileID: 5000777505597579831}
   m_Layer: 0
   m_Name: papel_2
   m_TagString: Papel
@@ -28,13 +28,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2407191778765530755}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+  m_LocalRotation: {x: -0.01258749, y: 0.7069947, z: 0.7069947, w: 0.01258749}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 19.020039, y: 29.735521, z: 19.020039}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 87.96, z: 90}
 --- !u!33 &2129106491774350236
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -100,19 +100,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!65 &4363529730746172066
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2407191778765530755}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.020009963, y: 0.020012584, z: 0.007249602}
-  m_Center: {x: 0.000001131557, y: -0.00000087916834, z: -0.00025773767}
 --- !u!114 &1789145504688204105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,3 +112,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6806be7eeace2e141b8e15a1dc278805, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!64 &5000777505597579831
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2407191778765530755}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -4936142755755012687, guid: f71cf20c985fe0442850e1c2badd6c23, type: 3}
