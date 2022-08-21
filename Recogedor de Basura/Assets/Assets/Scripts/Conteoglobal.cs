@@ -8,4 +8,6 @@ public static class Conteoglobal
     public static int conteometal;
     public static int conteopapel;
     public static int conteototal;
+    public static int elementos;
+    public static int basura_total=500;
 }

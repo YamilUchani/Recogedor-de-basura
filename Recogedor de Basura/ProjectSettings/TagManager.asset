@@ -8,6 +8,7 @@ TagManager:
   - Barredora
   - Vidrio
   - Papel
+  - Recogedor
   layers:
   - Default
   - TransparentFX
