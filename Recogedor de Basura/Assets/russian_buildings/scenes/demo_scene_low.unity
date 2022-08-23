@@ -8881,8 +8881,10 @@ MonoBehaviour:
   atrasizquierdamo: {fileID: 1368090961}
   aceleracion: 5
   fuerzaruptura: 5
-  angulo: 15
+  angulo: 45
   inicio: {x: 0, y: 0, z: 0}
+  aceleracionactual: 0
+  fuerzaactual: 0
 --- !u!4 &922770710
 Transform:
   m_ObjectHideFlags: 0
