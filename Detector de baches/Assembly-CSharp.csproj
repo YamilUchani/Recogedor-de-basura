@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{12ab600a-2f33-3c80-3dff-29f0d0b50e54}</ProjectGuid>
+    <ProjectGuid>{2f39bb9e-3c7c-135b-3729-73a35582a552}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -36,10 +36,12 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\Assets\Scripts\MeshGenerator.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ShaderPropAnimator.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SkewTextExample.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
+     <Compile Include="Assets\Assets\Scripts\MeshSimplifier.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
      <Compile Include="Assets\Assets\Scripts\Camaras.cs" />
      <Compile Include="Assets\Assets\Scripts\Recoger.cs" />
@@ -60,8 +62,11 @@
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshProFloatingText.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
+     <Compile Include="Assets\Assets\Scripts\ConvexHull.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
+     <Compile Include="Assets\Assets\Scripts\MeshCollisionGenerator.cs" />
+     <Compile Include="Assets\Assets\Scripts\MovementInterface.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
@@ -79,6 +84,7 @@
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
      <Compile Include="Assets\Assets\Scripts\Giro.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
+     <None Include="Assets\Assets\shader\CutOffShader.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
@@ -673,63 +679,63 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Cinemachine.csproj">
-      <Project>{1faacc76-e1ac-d087-cecf-97c3029f78ea}</Project>
+      <Project>{4681a865-29b1-bf84-ed7b-372972f2e02b}</Project>
       <Name>Cinemachine</Name>
     </ProjectReference>
     <ProjectReference Include="com.unity.cinemachine.editor.csproj">
-      <Project>{28c1190d-4150-35dd-2219-c2b04474937d}</Project>
+      <Project>{0de75f05-6699-e589-e35f-547aa8cede09}</Project>
       <Name>com.unity.cinemachine.editor</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.VSCode.Editor.csproj">
-      <Project>{64d0ce6d-9154-b424-bc13-f2f1daf7a5de}</Project>
+      <Project>{f7523c7b-e74c-3538-1ec8-1f98b666c6bb}</Project>
       <Name>Unity.VSCode.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.TextMeshPro.Editor.csproj">
-      <Project>{e07d10af-4d24-9375-3675-d1755437fcc8}</Project>
+      <Project>{3ee6f8bd-ec43-3449-41a6-22e45ff2a309}</Project>
       <Name>Unity.TextMeshPro.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.VisualStudio.Editor.csproj">
-      <Project>{978d3af4-7420-75d4-bfbf-1b24df6f98e7}</Project>
+      <Project>{472caaec-6302-12b7-f607-c8a372750700}</Project>
       <Name>Unity.VisualStudio.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Sysroot.Linux_x86_64.csproj">
-      <Project>{127d780c-9c9a-ab6d-9a9f-7762f137478f}</Project>
+      <Project>{05985540-e8e0-c0b2-af07-df4888748496}</Project>
       <Name>Unity.Sysroot.Linux_x86_64</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Toolchain.Win-x86_64-Linux-x86_64.csproj">
-      <Project>{ed3b019d-6172-45e9-8ff2-16f7504d10e4}</Project>
+      <Project>{3dcf0da9-9287-2fca-e8da-ea7c0209a5ef}</Project>
       <Name>Unity.Toolchain.Win-x86_64-Linux-x86_64</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Timeline.Editor.csproj">
-      <Project>{39e27367-bbc1-0ed9-defa-12bd1ae21b9e}</Project>
+      <Project>{2b2cb6be-64cf-05eb-cf74-08aede9ca828}</Project>
       <Name>Unity.Timeline.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Timeline.csproj">
-      <Project>{ba6e55b8-7687-f59d-0cb5-284e66d74f87}</Project>
+      <Project>{56695884-2052-1278-8b75-facf806edb6a}</Project>
       <Name>Unity.Timeline</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.TextMeshPro.csproj">
-      <Project>{aed25add-e363-1a4f-2678-7577f550178b}</Project>
+      <Project>{6b7297bd-c7c2-4b22-6f3b-9b5bcb637d88}</Project>
       <Name>Unity.TextMeshPro</Name>
     </ProjectReference>
     <ProjectReference Include="UnityEditor.UI.csproj">
-      <Project>{9abf26d5-961f-1d68-ea69-a74c4a4bbbed}</Project>
+      <Project>{c41bdc44-8440-a6fd-1468-a7fe4f09db26}</Project>
       <Name>UnityEditor.UI</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.PlasticSCM.Editor.csproj">
-      <Project>{2bcb1dd8-6af4-9287-f7dd-ac1e45f67d8f}</Project>
+      <Project>{9f07cd13-7e12-bb26-d762-47ef5c955403}</Project>
       <Name>Unity.PlasticSCM.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Rider.Editor.csproj">
-      <Project>{1bbd8902-0d07-b82a-587c-1a84c261c90e}</Project>
+      <Project>{a7bce2cc-0178-cb37-7230-deca4d7c9bfd}</Project>
       <Name>Unity.Rider.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="UnityEngine.UI.csproj">
-      <Project>{54e41755-434b-ec20-bae3-880b2a9b5850}</Project>
+      <Project>{891834b2-c966-a829-006c-5355968fe164}</Project>
       <Name>UnityEngine.UI</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.SysrootPackage.Editor.csproj">
-      <Project>{3bc9cb69-658a-110e-7cdf-1a0fb5f5a454}</Project>
+      <Project>{6da6a95d-39a3-6a24-b730-9cbb5ebc706f}</Project>
       <Name>Unity.SysrootPackage.Editor</Name>
     </ProjectReference>
   </ItemGroup>

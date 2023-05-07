@@ -9,6 +9,7 @@ TagManager:
   - Vidrio
   - Papel
   - Recogedor
+  - calle
   layers:
   - Default
   - TransparentFX
