@@ -46,7 +46,9 @@ public class MeshGenerator : MonoBehaviour {
     public int polygonCount = 2;
     public float size = 1.0f;
     public int scale = 1;
-    public int edgeSkip = 0;
+    public int randomvalue;
+    public int RangeEdgeSkip;
+    public int RangeEdgeInitial;
     Vector3 objectPosition;
     void Start () {
         objetosGenerados.Add(this.gameObject);
@@ -216,6 +218,8 @@ void CreateBaches()
         {
             for (int y = 0; y < imagen.height; y++)
             {
+
+                int edgeSkip = Random.Range(RangeEdgeInitial, RangeEdgeSkip + 1);
                 // Obtenemos el color del pixel
                 Color pixel = newimagen.GetPixel(x, y);
                 Debug.Log(pixel);
@@ -245,20 +249,24 @@ void CreateBaches()
                     float minHeight = float.MaxValue;
 
                     // Generar los vértices del mesh
-                    for (int z = 0, i = 0; z < length; z++)
+                    int maxLength = Mathf.Max(length, width);
+                    for (int d = 0; d < maxLength * 2 - 1; d++)
                     {
-                        for (int v = 0; v < width; v++, i++)
+                        int z = Mathf.Min(d, length - 1);
+                        int v = Mathf.Max(0, d - length + 1);
+                        
+                        while (z >= 0 && v < width)
                         {
                             float w = 0;
                             if (v < edgeSkipactual || v >= width - edgeSkipactual || z < edgeSkipactual || z >= length - edgeSkipactual)
                             {
-                                vertices[i] = new Vector3((float)v / (width - 1) * size, 0.0f, (float)z / (length - 1) * size);
+                                vertices[z * width + v] = new Vector3((float)v / (width - 1) * size, 0.0f, (float)z / (length - 1) * size);
                             }
                             else
                             {
                                 float noise = Mathf.PerlinNoise((float)v / (width - 1) * scale + transform.position.x, (float)z / (length - 1) * scale + transform.position.z);
                                 w = -noise * heightScale;
-                                vertices[i] = new Vector3((float)v / (width - 1) * size, w, (float)z / (length - 1) * size);
+                                vertices[z * width + v] = new Vector3((float)v / (width - 1) * size, w, (float)z / (length - 1) * size);
                             }
 
                             if (w > maxHeight)
@@ -269,13 +277,25 @@ void CreateBaches()
                             {
                                 minHeight = w;
                             }
+                            int range = Random.Range(1, randomvalue);
+                            if (range % 4 == 0)
+                            {
+                                int randomNumber = Random.Range(1, edgeSkip + 1);
+                                edgeSkipactual = randomNumber;
+                            }
 
-                            int randomNumber = Random.Range(1, edgeSkip + 1);
-                            edgeSkipactual = randomNumber;
+                            z--;
+                            v++;
                         }
                     }
 
+
+
+                    
                     mesh.vertices = vertices;
+
+                    // Generar los normales del mesh
+                    mesh.RecalculateNormals();
 
                     // Crear los triángulos del mesh
                     int[] triangles = new int[(width - 1) * (length - 1) * 6];
@@ -293,8 +313,7 @@ void CreateBaches()
                     }
 
                     mesh.triangles = triangles;
-
-
+                    mesh.RecalculateNormals();
                     // Asignar el mesh a los componentes MeshCollider y MeshCollisionGenerator
                     meshColliderbache.sharedMesh = mf.sharedMesh;
                     bache.AddComponent<MeshCollisionGenerator>();
@@ -319,13 +338,13 @@ void CreateBaches()
                             uv[i] = new Vector2((float)v / (width - 1), (float)z / (length - 1));
                         }
                     }
-
+                    
                     mesh.uv = uv;
 
                     mr.material = materialbache;
-                    
-
-                            
+                    Debug.Log("Longitud de meshbache.normals: " + meshbache.normals.Length);
+                    Debug.Log("Longitud de meshbache.vertices: " + meshbache.vertices.Length);
+    
                 }
             }
         }
