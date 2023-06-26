@@ -230,7 +230,7 @@ void CreateBaches()
                     // Creamos un objeto hijo para el bache
                     GameObject bache = new GameObject("Bache_" + (bachesTotales.transform.childCount + 1));
                     objetosGenerados.Add(bache);
-                    bache.tag = "calle";
+                    bache.tag = "bache";
                     bache.transform.parent = bachesTotales.transform;
                     bache.transform.position = new Vector3((x - imagen.width / 2) * tamañoPixel, 0, (y - imagen.height / 2) * tamañoPixel);
 

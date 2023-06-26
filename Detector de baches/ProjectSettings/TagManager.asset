@@ -10,6 +10,7 @@ TagManager:
   - Papel
   - Recogedor
   - calle
+  - bache
   layers:
   - Default
   - TransparentFX
