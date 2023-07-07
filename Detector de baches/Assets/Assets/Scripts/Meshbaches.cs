@@ -62,10 +62,18 @@ void Start()
     meshCollider.sharedMesh = meshFilter.sharedMesh;
     GenerarBaches();
     gameObject.AddComponent<MeshCollisionGenerator>();
-    
+    Invoke("ClearDebug", 0.3f);
 
 }
-
+void ClearDebug()
+{
+    Debug.Log("Yamil");
+    var logEntries = System.Type.GetType("UnityEditor.LogEntries, UnityEditor.dll");
+ 
+    var clearMethod = logEntries.GetMethod("Clear", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+ 
+    clearMethod.Invoke(null, null);
+}
 
 
 void GenerateMeshFromimagen() {
@@ -146,8 +154,6 @@ void GenerarBaches()
         return;
     }
 
-    int bachesGenerados = 0;
-
     for (int i = 0; i < cantidadBaches; i++)
     {
         // Obtener el bache de la lista utilizando el operador módulo para repetir los elementos
@@ -156,9 +162,10 @@ void GenerarBaches()
         // Obtener el tamaño del plano
         Bounds planoBounds = meshRenderer.bounds;
 
-        // Generar una posición aleatoria divisible por 0.25f dentro del plano
-        float x = Mathf.Round((Random.Range(planoBounds.min.x, planoBounds.max.x) - planoBounds.min.x) / 0.25f) * 0.25f;
-        float z = Mathf.Round((Random.Range(planoBounds.min.z, planoBounds.max.z) - planoBounds.min.z) / 0.25f) * 0.25f;
+        float distanciaMinimaBorde = 0.5f; // Distancia mínima deseada desde el borde del plano
+
+        float x = Mathf.Round((Random.Range(planoBounds.min.x + distanciaMinimaBorde, planoBounds.max.x - distanciaMinimaBorde) - planoBounds.min.x) / 0.25f) * 0.25f;
+        float z = Mathf.Round((Random.Range(planoBounds.min.z + distanciaMinimaBorde, planoBounds.max.z - distanciaMinimaBorde) - planoBounds.min.z) / 0.25f) * 0.25f;
 
         Vector3 posicionAleatoria = new Vector3(
             planoBounds.min.x + x,
@@ -166,41 +173,21 @@ void GenerarBaches()
             planoBounds.min.z + z
         );
 
+
         // Instanciar el bache en la posición generada
         GameObject bache = Instantiate(bachePrefab, posicionAleatoria, Quaternion.identity);
-
+        BoxCollider boxCollider = bache.AddComponent<BoxCollider>();
+        boxCollider.center = new Vector3(0, 0, 0);
+        boxCollider.size = new Vector3(0.02f, 0.003f, 0.02f);
+        Rigidbody rigidbody = bache.AddComponent<Rigidbody>();
+        rigidbody.useGravity = true;
+        rigidbody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation; // Congelar la posición en los ejes X y Z y la rotación
+        rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
         // Establecer el objeto padre como padre del bache
         bache.transform.SetParent(objetoPadre.transform);
-
-        // Obtener la mitad de la altura del bache
-
-        // Instanciar el cubo justo encima del bache
-        GameObject cubo = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cubo.transform.position = posicionAleatoria + new Vector3(0f, transform.position.y, 0f);
-        cubo.transform.rotation = Quaternion.identity; // Establecer la rotación del cubo a cero grados
-
-        // Ajustar la escala del cubo
-        cubo.transform.localScale = bachePrefab.transform.localScale * (1f / 50f);
-
-        // Agregar los componentes necesarios al cubo
-        Rigidbody cuboRigidbody = cubo.AddComponent<Rigidbody>();
-        cuboRigidbody.useGravity = true;
-        cuboRigidbody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation; // Congelar la posición en los ejes X y Z y la rotación
-        BoxCollider cuboCollider = cubo.AddComponent<BoxCollider>();
-
-        // Asignar el tag "bache" al cubo
-        cubo.tag = "bache";
-
-        // Establecer la duración antes de eliminar el cubo
-        float duracionCubo = 0.01f;
-        Destroy(cubo, duracionCubo);
-
-        bachesGenerados++;
-    }
-
-    if (bachesGenerados < cantidadBaches)
-    {
-        Debug.Log("No hay suficiente espacio para generar más baches.");
+        
     }
 }
+
+
 }

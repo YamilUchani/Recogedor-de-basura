@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EliminarTriangulos : MonoBehaviour
 {
-    void OnCollisionEnter(Collision collision)
+    void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.CompareTag("bache"))
         {

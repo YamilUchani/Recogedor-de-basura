@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5648353287508817090}
   - component: {fileID: 3680613132617273823}
   - component: {fileID: 3291186042210981704}
+  - component: {fileID: 1157062046633886128}
   m_Layer: 0
   m_Name: bache_5
   m_TagString: bache
@@ -92,7 +93,7 @@ MeshCollider:
   m_GameObject: {fileID: 6152487822171362583}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
@@ -112,3 +113,15 @@ MonoBehaviour:
   numColliders: 1
   complexity: 0.6
   height: 2
+--- !u!114 &1157062046633886128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6152487822171362583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aca4bc293ce363c4598da1071e25fd8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
