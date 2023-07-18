@@ -48,7 +48,7 @@ MonoBehaviour:
   m_MinSize: {x: 679, y: 492}
   m_MaxSize: {x: 14002, y: 14042}
   vertical: 0
-  controlID: 115
+  controlID: 70
 --- !u!114 &3
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -68,8 +68,8 @@ MonoBehaviour:
     y: 0
     width: 636
     height: 939
-  m_MinSize: {x: 276, y: 71}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 13}
   m_Panes:
   - {fileID: 13}
@@ -226,7 +226,7 @@ MonoBehaviour:
   m_MinSize: {x: 403, y: 492}
   m_MaxSize: {x: 10001, y: 14042}
   vertical: 1
-  controlID: 40
+  controlID: 71
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -251,7 +251,7 @@ MonoBehaviour:
   m_MinSize: {x: 403, y: 221}
   m_MaxSize: {x: 8003, y: 4021}
   vertical: 0
-  controlID: 41
+  controlID: 72
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -317,22 +317,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Assets
+    - Assets/Assets/Scripts/shader/New Folder
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Assets
+  - Assets/Assets/Scripts/shader/New Folder
   m_LastFoldersGridSize: -1
   m_LastProjectPath: E:\Repositorios\Recogedor-de-basura\Detector de baches
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 79}
-    m_SelectedIDs: 32630000
-    m_LastClickedID: 25394
-    m_ExpandedIDs: 0000000030630000326300003463000036630000386300005263000000ca9a3b
+    scrollPos: {x: 0, y: 60}
+    m_SelectedIDs: 9e620000
+    m_LastClickedID: 25246
+    m_ExpandedIDs: 00000000826200008462000086620000886200008a6200009a620000a0620000c469000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -360,7 +360,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000003063000032630000346300003663000038630000
+    m_ExpandedIDs: 00000000826200008462000086620000886200008a620000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -404,7 +404,7 @@ MonoBehaviour:
       m_IsRenaming: 0
       m_OriginalEventType: 11
       m_IsRenamingFilename: 1
-      m_ClientGUIView: {fileID: 11}
+      m_ClientGUIView: {fileID: 5}
     m_CreateAssetUtility:
       m_EndAction: {fileID: 0}
       m_InstanceID: 0
@@ -448,7 +448,7 @@ MonoBehaviour:
     m_ControlHash: -371814159
     m_PrefName: Preview_InspectorPreview
   m_LastInspectedObjectInstanceID: -1
-  m_LastVerticalScrollValue: 0
+  m_LastVerticalScrollValue: 203
   m_GlobalObjectId: 
   m_LockTracker:
     m_IsLocked: 0
@@ -480,10 +480,10 @@ MonoBehaviour:
   m_ViewDataDictionary: {fileID: 0}
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
-      m_LastClickedID: 0
-      m_ExpandedIDs: 460b8cffc00b8cff1c46eeff0e34f6ff7a97fbff28f6ffff6cfbffffbc470000104a0000b6510000
+      scrollPos: {x: 0, y: 5680}
+      m_SelectedIDs: 84d1ffff
+      m_LastClickedID: -11900
+      m_ExpandedIDs: 2ec1ffffcecbffff92d1ffff70fbffff9a3f000022400000784000002044000072470000004900002e4e0000be4f0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -543,9 +543,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 3.2225933, y: 2.6865497, z: -117.38321}
+    m_Target: {x: -1.7377362, y: -10.225961, z: -110.495735}
     speed: 2
-    m_Value: {x: 3.2225933, y: 2.6865497, z: -117.38321}
+    m_Value: {x: -1.7377363, y: -10.225961, z: -110.495735}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -592,20 +592,20 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.07029624, y: 0.63387895, z: -0.048263762, w: 0.7709053}
+    m_Target: {x: -0.312396, y: 0.5854442, z: -0.28351536, w: -0.69503206}
     speed: 2
-    m_Value: {x: 0.072943926, y: 0.6586671, z: -0.054542564, w: 0.7469015}
+    m_Value: {x: -0.3122303, y: 0.5832976, z: -0.28251204, w: -0.6945955}
   m_Size:
-    m_Target: 0.017047158
+    m_Target: 9.667994
     speed: 2
-    m_Value: 0.017047158
+    m_Value: 9.251669
   m_Ortho:
     m_Target: 0
     speed: 2
     m_Value: 0
   m_CameraSettings:
-    m_Speed: 0.4008
-    m_SpeedNormalized: 0.19999999
+    m_Speed: 1.3003497
+    m_SpeedNormalized: 0.64999986
     m_SpeedMin: 0.001
     m_SpeedMax: 2
     m_EasingEnabled: 1

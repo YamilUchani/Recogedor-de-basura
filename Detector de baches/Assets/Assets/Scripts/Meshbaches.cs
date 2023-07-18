@@ -10,6 +10,7 @@ public class Meshbaches : MonoBehaviour {
 public Texture2D imagen;
 // El material para la malla
 public Material material;
+public Material watermaterial;
 
 // El tamaño de cada píxel en unidades de mundo
 public float tamañoPixel = 0.1f;
@@ -176,6 +177,7 @@ void GenerarBaches()
 
         // Instanciar el bache en la posición generada
         GameObject bache = Instantiate(bachePrefab, posicionAleatoria, Quaternion.identity);
+        GenerarPlanoComoHijo(bache);
         BoxCollider boxCollider = bache.AddComponent<BoxCollider>();
         boxCollider.center = new Vector3(0, 0, 0);
         boxCollider.size = new Vector3(0.02f, 0.003f, 0.02f);
@@ -188,6 +190,27 @@ void GenerarBaches()
         
     }
 }
+void GenerarPlanoComoHijo(GameObject bache)
+{
+    // Crear el plano como hijo del bache
+    GameObject plano = GameObject.CreatePrimitive(PrimitiveType.Plane);
+    Renderer planoRenderer = plano.GetComponent<Renderer>();
+    planoRenderer.material = watermaterial;
+    plano.transform.SetParent(bache.transform);
+    plano.transform.localPosition = Vector3.zero;
+    plano.transform.localRotation = Quaternion.identity;
 
+    // Establecer la escala del plano
+    plano.transform.localScale = new Vector3(0.002f, 1f, 0.002f);
+
+    // Generar una posición aleatoria en el eje Y dentro del rango especificado
+    float randomPosY = Random.Range(-0.002f, -0.06f);
+
+    // Establecer la posición del plano teniendo en cuenta la posición del bache y la posición aleatoria en Y
+    plano.transform.position = new Vector3(bache.transform.position.x, bache.transform.position.y + randomPosY, bache.transform.position.z);
+
+    // Asignar el material al plano
+    
+}
 
 }
