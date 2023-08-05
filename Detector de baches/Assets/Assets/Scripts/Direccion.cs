@@ -25,7 +25,9 @@ public class Direccion : MonoBehaviour
     public float aceleracionactual=0f;
     public float fuerzaactual=0f;
     //Se declara la variable del angulo actual hasta llegar al angulo 
-    private float anguloactual=0f;
+    public float anguloactual=0f;
+    Rigidbody rb;
+    float rotationY;
     private void Start() {
         //Se almacena la ubicacion inicial del recogedor de basura
         inicio=transform.position;
@@ -46,6 +48,16 @@ public class Direccion : MonoBehaviour
             transform.position = inicio;
             
         }
+        float horizontalInput = Input.GetAxis("Horizontal");
+        bool canRotate = horizontalInput != 0;
+        if (!canRotate)
+        {
+            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, rotationY, transform.rotation.eulerAngles.z);
+        }
+        else
+        {
+            rotationY=  transform.rotation.eulerAngles.y;
+        }
     }
     private void FixedUpdate() {
         //La variable almacena un valor que cambia segun el boton arriba/abajo o w/s considerados Vertical
@@ -65,6 +77,7 @@ public class Direccion : MonoBehaviour
         atrasizquierda.brakeTorque=fuerzaactual;
         //Se cambia la variable segun se mantenga presionado los botones izquierda/derecha o a/d 
         anguloactual=angulo*Input.GetAxis("Horizontal");
+        print(anguloactual);
         //Se ajusta las variables del angulo de cada rueda
         delanteizquierda.steerAngle=anguloactual;
         delantederecha.steerAngle=anguloactual;

@@ -39,7 +39,7 @@ public List<GameObject> baches;
 public GameObject objetoPadre;
 
 public int cantidadBaches = 30;
-void Start()
+void OnEnable()
 {
     
     objetosGenerados.Add(this.gameObject);
@@ -170,7 +170,7 @@ void GenerarBaches()
 
         Vector3 posicionAleatoria = new Vector3(
             planoBounds.min.x + x,
-            meshRenderer.transform.position.y, // Mantener la posición Y del plano
+            meshRenderer.transform.position.y+0.01f, // Mantener la posición Y del plano
             planoBounds.min.z + z
         );
 
@@ -204,7 +204,7 @@ void GenerarPlanoComoHijo(GameObject bache)
     plano.transform.localScale = new Vector3(0.002f, 1f, 0.002f);
 
     // Generar una posición aleatoria en el eje Y dentro del rango especificado
-    float randomPosY = Random.Range(-0.002f, -0.06f);
+    float randomPosY = Random.Range(-0.02f, -0.06f);
 
     // Establecer la posición del plano teniendo en cuenta la posición del bache y la posición aleatoria en Y
     plano.transform.position = new Vector3(bache.transform.position.x, bache.transform.position.y + randomPosY, bache.transform.position.z);

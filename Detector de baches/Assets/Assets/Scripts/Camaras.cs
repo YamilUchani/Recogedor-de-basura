@@ -13,7 +13,7 @@ public class Camaras : MonoBehaviour
     //Esta variable se encarga de almacenar a la camara seleccionada  
     private Camera currentCamera;
     //En esta variable se almacena el orden actual de la camara
-    private int currentCameraIndex=0;
+    public int currentCameraIndex=2;
     //Se realizar estas operaciones al iniciar el programa
     void Start()
     {
