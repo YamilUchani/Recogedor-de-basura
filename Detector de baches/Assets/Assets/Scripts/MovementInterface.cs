@@ -2,6 +2,7 @@ using UnityEngine;
 using System.IO;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 public class MovementInterface : MonoBehaviour
 {
     public Rigidbody velocidad;
@@ -9,7 +10,7 @@ public class MovementInterface : MonoBehaviour
     private float speed;
     private float angle;
     public Direccion direction;
-    public Camera captureCamera;
+    public List<Camera> captureCameras = new List<Camera>();
     public string outputFolder = "CapturedImages";
     public float captureInterval = 2f;
     public TMP_Text buttonText;
@@ -19,6 +20,7 @@ public class MovementInterface : MonoBehaviour
     public bool angulo_mando;
     private bool container = false;
     private float timer = 0f;
+    private int count;
 
     string timestamp;
     string folderPath;
@@ -33,6 +35,7 @@ public class MovementInterface : MonoBehaviour
             {
                 Capture();
                 timer = 0f;
+                count++;
             }
         }
 
@@ -58,9 +61,9 @@ public class MovementInterface : MonoBehaviour
         angleText.text = "Angle = " + angle.ToString("F2") + " degrees";
     }
 
-    private void Capture()
+private void Capture()
 {
-    if (captureCamera == null)
+    if (captureCameras == null)
     {
         Debug.LogError("No capture camera assigned!");
         return;
@@ -80,28 +83,46 @@ public class MovementInterface : MonoBehaviour
         Directory.CreateDirectory(folderPath);
         container = false;
     }   
+    for (int i = 0; i < captureCameras.Count; i++)
+    {
+        string filename = "Image" + count.ToString() + captureCameras[i].name + ".png";
+        string outputPath = Path.Combine(folderPath, filename);
 
-    string filename = "Image_velocity_" + speed.ToString("F2") + "_angle_" + angle.ToString("F2") + ".png";
-    string outputPath = Path.Combine(folderPath, filename);
+        bool convertToGrayscale = captureCameras[i].name.Contains("L") || captureCameras[i].name.Contains("R");
 
-    RenderTexture renderTexture = new RenderTexture(Screen.width, Screen.height, 24);
-    captureCamera.targetTexture = renderTexture;
-    Texture2D screenshot = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
-    captureCamera.Render();
-    RenderTexture.active = renderTexture;
-    screenshot.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
-    screenshot.Apply();
+        RenderTexture renderTexture = new RenderTexture(1270, 950, 24);
+        captureCameras[i].targetTexture = renderTexture;
+        Texture2D screenshot = new Texture2D(1270, 950, TextureFormat.RGB24, false); // Always create RGB texture
+        captureCameras[i].Render();
+        RenderTexture.active = renderTexture;
+        screenshot.ReadPixels(new Rect(0, 0, 1270, 950), 0, 0);
+        screenshot.Apply();
 
-    byte[] bytes = screenshot.EncodeToPNG();
-    File.WriteAllBytes(outputPath, bytes);
+        if (convertToGrayscale)
+        {
+            // Convert the screenshot to grayscale
+            Color[] pixels = screenshot.GetPixels();
+            for (int j = 0; j < pixels.Length; j++)
+            {
+                float grayscaleValue = pixels[j].grayscale;
+                pixels[j] = new Color(grayscaleValue, grayscaleValue, grayscaleValue);
+            }
+            screenshot.SetPixels(pixels);
+            screenshot.Apply();
+        }
 
-    captureCamera.targetTexture = null;
-    RenderTexture.active = null;
-    Destroy(renderTexture);
-    Destroy(screenshot);
+        byte[] bytes = screenshot.EncodeToPNG();
+        File.WriteAllBytes(outputPath, bytes);
 
-    Debug.Log("Captured image saved to: " + outputPath);
+        captureCameras[i].targetTexture = null;
+        RenderTexture.active = null;
+        Destroy(renderTexture);
+        Destroy(screenshot);
+
+        Debug.Log("Captured image saved to: " + outputPath);
+    }
 }
+
 
     public void AcDc()
     {
@@ -109,13 +130,13 @@ public class MovementInterface : MonoBehaviour
         {
             isCapturing = false;
             container = false;
-            buttonText.text = "Activate";
+            buttonText.text = "Record";
         }
         else
         {
             isCapturing = true;
             container = true;
-            buttonText.text = "Desactivate";
+            buttonText.text = "Stop";
         }
     }
     public void restarted()

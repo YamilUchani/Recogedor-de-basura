@@ -44,9 +44,11 @@
      <Compile Include="Assets\Assets\Scripts\MeshSimplifier.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
      <Compile Include="Assets\Assets\Scripts\Camaras.cs" />
+     <Compile Include="Assets\russian_buildings\scenes\desac.cs" />
      <Compile Include="Assets\Assets\Scripts\Recoger.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
      <Compile Include="Assets\Assets\Scripts\Direccion.cs" />
+     <Compile Include="Assets\Assets\Scripts\imageload.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
      <Compile Include="Assets\Assets\Scripts\Meshbaches.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
@@ -73,7 +75,9 @@
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
      <Compile Include="Assets\Assets\Scripts\CuboDesaparecer.cs" />
+     <Compile Include="Assets\Assets\Scripts\loadscence.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
+     <Compile Include="Assets\Assets\Scripts\LoadingScreenController.cs" />
      <Compile Include="Assets\Assets\Scripts\EliminarTriangulos.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
      <Compile Include="Assets\Assets\Scripts\Destruccion.cs" />
@@ -89,10 +93,7 @@
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
      <Compile Include="Assets\Assets\Scripts\Giro.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
-     <Compile Include="Assets\Assets\Scripts\loadscence.cs" />
-     <Compile Include="Assets\Assets\Scripts\imageload.cs" />
-     <Compile Include="Assets\Assets\Scripts\LoadingScreenController.cs" />
-     <Compile Include="Assets\russian_buildings\scenes\desac.cs" />
+     <Compile Include="Assets\Assets\Scripts\CameraUI.cs" />
      <None Include="Assets\Assets\Scripts\shader\CutOffShader.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
