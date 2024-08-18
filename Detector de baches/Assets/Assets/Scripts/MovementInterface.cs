@@ -39,7 +39,7 @@ public class MovementInterface : MonoBehaviour
             }
         }
 
-        speed = velocidad.velocity.magnitude;
+        speed = velocidad.linearVelocity.magnitude;
         if(!angulo_mando)
         {
             angle = angulo.transform.localEulerAngles.y;
