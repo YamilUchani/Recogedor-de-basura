@@ -6,8 +6,8 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638596072350000000
-    m_Hash: 1780845506
+      ticks: 638596816400000000
+    m_Hash: 3673967642
   m_LockFileStatus:
     m_FilePath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
       de baches/Packages/packages-lock.json
@@ -15,8 +15,8 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638596073330000000
-    m_Hash: 944383268
+      ticks: 638596816400000000
+    m_Hash: 610466196
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_LocalPackages:
@@ -470,10 +470,10 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 9fe9d34b5e265703867fd4b6e7ef78001c1fa370
-- packageId: com.unity.ide.rider@3.0.28
+- packageId: com.unity.ide.rider@3.0.31
   testable: 0
   isDirectDependency: 1
-  version: 3.0.28
+  version: 3.0.31
   source: 1
   resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
     de baches/Library/PackageCache/com.unity.ide.rider
@@ -559,13 +559,13 @@ m_ResolvedPackages:
   entitlements:
     licensingModel: 1
   isAssetStorePackage: 0
-  datePublishedTicks: 638447139880000000
+  datePublishedTicks: 638548308080000000
   documentationUrl: https://docs.unity3d.com/Packages/com.unity.ide.rider@3.0/manual/index.html
   hasRepository: 1
   repository:
     type: git
     url: https://github.cds.internal.unity3d.com/unity/com.unity.ide.rider.git
-    revision: f4880c72477e9bbd7321c0dbda4428fa10d916df
+    revision: ccd778a2275ff09f1a83bc924cfb2fb4d5b63566
     path: 
   unityLifecycle:
     version: 3.0.28
@@ -578,12 +578,13 @@ m_ResolvedPackages:
   git:
     hash: 
     revision: 
-  upmReserved: '{"changelog":"- fix RIDER-103933 \"PlayerSettings.suppressCommonWarnings\"
-    is not supported in Unity 2019.4.40f\n- fix https://github.com/JetBrains/resharper-unity/issues/2431
-    and [RIDER-104221](https://youtrack.jetbrains.com/issue/RIDER-104221)"}'
+  upmReserved: '{"changelog":"fix RIDER-104519 Rider is reporting errors in scripts
+    that work fine in Unity when utilizing DOTS - when Player project, by generating
+    projects for all assemblies in \"com.unity.entities\", \"com.unity.collections\"\nfix
+    RIDER-111622 Unity Rider package is not compatible with Rider Dev builds"}'
   assetStore:
     productId: 
-  fingerprint: 7605a3979f4b0ed9100a7fcc2d6140ebc24fc251
+  fingerprint: 7921be93db40ec070fcb01ed82d1c3df1bbdddcd
 - packageId: com.unity.ide.visualstudio@2.0.22
   testable: 0
   isDirectDependency: 1
@@ -687,96 +688,6 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 8140e851d83e922ca2021b04a89519de94ebe38c
-- packageId: com.unity.ide.vscode@1.2.4
-  testable: 0
-  isDirectDependency: 1
-  version: 1.2.4
-  source: 1
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.ide.vscode
-  assetPath: Packages/com.unity.ide.vscode
-  name: com.unity.ide.vscode
-  displayName: Visual Studio Code Editor
-  author:
-    name: 
-    email: 
-    url: 
-  category: 
-  type: asset
-  description: Code editor integration for supporting Visual Studio Code as code
-    editor for unity. Adds support for generating csproj files for intellisense purposes,
-    auto discovery of installations, etc.
-  errors: []
-  versions:
-    all:
-    - 1.0.2
-    - 1.0.3
-    - 1.0.7
-    - 1.1.0
-    - 1.1.2
-    - 1.1.3
-    - 1.1.4
-    - 1.2.0
-    - 1.2.1
-    - 1.2.2
-    - 1.2.3
-    - 1.2.4
-    - 1.2.5
-    compatible:
-    - 1.0.2
-    - 1.0.3
-    - 1.0.7
-    - 1.1.0
-    - 1.1.2
-    - 1.1.3
-    - 1.1.4
-    - 1.2.0
-    - 1.2.1
-    - 1.2.2
-    - 1.2.3
-    - 1.2.4
-    - 1.2.5
-    recommended: 
-    deprecated: []
-  dependencies: []
-  resolvedDependencies: []
-  keywords: []
-  registry:
-    id: main
-    name: 
-    url: https://packages.unity.com
-    scopes: []
-    isDefault: 1
-    capabilities: 7
-    configSource: 0
-  hideInEditor: 1
-  entitlements:
-    licensingModel: 1
-  isAssetStorePackage: 0
-  datePublishedTicks: 637660806170000000
-  documentationUrl: 
-  hasRepository: 1
-  repository:
-    type: git
-    url: git+https://github.com/Unity-Technologies/com.unity.ide.vscode.git
-    revision: 1f4f605d5c988cb610c372b5c5216c46cc8f5d30
-    path: 
-  unityLifecycle:
-    version: 
-    nextVersion: 
-    recommendedVersion: 
-    isDeprecated: 1
-    deprecationMessage: Visual Studio Code package is not supported anymore. You
-      can continue to use it, but we won't provide any update anymore.
-  isDeprecated: 0
-  deprecationMessage: 
-  git:
-    hash: 
-    revision: 
-  upmReserved: 
-  assetStore:
-    productId: 
-  fingerprint: eb5de66d4c77580302e328d62de70e3074f61721
 - packageId: com.unity.postprocessing@3.4.0
   testable: 0
   isDirectDependency: 1

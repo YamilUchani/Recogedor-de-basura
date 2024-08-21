@@ -39,8 +39,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Postprocessing.Editor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.TextMeshPro", "Unity.TextMeshPro.csproj", "{BD97726B-C2C7-224B-6F3B-9B5BCB637D88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.VSCode.Editor", "Unity.VSCode.Editor.csproj", "{7B3C52F7-4CE7-3835-1EC8-1F98B666C6BB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Sysroot.Linux_x86_64", "Unity.Sysroot.Linux_x86_64.csproj", "{40559805-E0E8-B2C0-AF07-DF4888748496}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.AI.Navigation.Updater", "Unity.AI.Navigation.Updater.csproj", "{4D41BCD9-FD18-F46D-F816-873460DD2D75}"
@@ -133,10 +131,6 @@ Global
 		{BD97726B-C2C7-224B-6F3B-9B5BCB637D88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD97726B-C2C7-224B-6F3B-9B5BCB637D88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD97726B-C2C7-224B-6F3B-9B5BCB637D88}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7B3C52F7-4CE7-3835-1EC8-1F98B666C6BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B3C52F7-4CE7-3835-1EC8-1F98B666C6BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B3C52F7-4CE7-3835-1EC8-1F98B666C6BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B3C52F7-4CE7-3835-1EC8-1F98B666C6BB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{40559805-E0E8-B2C0-AF07-DF4888748496}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{40559805-E0E8-B2C0-AF07-DF4888748496}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40559805-E0E8-B2C0-AF07-DF4888748496}.Release|Any CPU.ActiveCfg = Release|Any CPU

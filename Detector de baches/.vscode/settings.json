@@ -52,5 +52,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Detector de baches.sln"
+    "dotnet.defaultSolution": "Detector de baches.sln",
+    "dotnetAcquisitionExtension.existingDotnetPath": []
 }

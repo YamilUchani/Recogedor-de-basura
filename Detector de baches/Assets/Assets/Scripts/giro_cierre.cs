@@ -43,5 +43,6 @@ public class giro_cierre : MonoBehaviour
                 arriba=false;
             }
         }
+
     }
 }

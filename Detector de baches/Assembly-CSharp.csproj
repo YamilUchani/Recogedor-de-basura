@@ -59,6 +59,7 @@
     <UnityVersion>6000.0.0b11</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Analyzer Include="/home/yamil-uchani/.vscode/extensions/visualstudiotoolsforunity.vstuc-1.0.3/Analyzers/Microsoft.Unity.Analyzers.dll" />
     <Analyzer Include="/home/yamil-uchani/Unity/Hub/Editor/6000.0.0b11/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll" />
     <Analyzer Include="/home/yamil-uchani/Unity/Hub/Editor/6000.0.0b11/Editor/Data/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll" />
     <Analyzer Include="/home/yamil-uchani/Unity/Hub/Editor/6000.0.0b11/Editor/Data/Tools/Unity.SourceGenerators/Unity.UIToolkit.SourceGenerator.dll" />
@@ -1107,7 +1108,6 @@
     <ProjectReference Include="com.unity.cinemachine.editor.csproj" />
     <ProjectReference Include="UnityEngine.UI.csproj" />
     <ProjectReference Include="Unity.Toolchain.Win-x86_64-Linux-x86_64.csproj" />
-    <ProjectReference Include="Unity.VSCode.Editor.csproj" />
     <ProjectReference Include="UnityEditor.UI.csproj" />
     <ProjectReference Include="Unity.Postprocessing.Runtime.csproj" />
     <ProjectReference Include="Unity.Rider.Editor.csproj" />
