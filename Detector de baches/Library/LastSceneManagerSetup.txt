@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/russian_buildings/scenes/load_scene.unity
+- path: Assets/russian_buildings/scenes/Menu_scene.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0

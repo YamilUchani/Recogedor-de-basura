@@ -3,15 +3,16 @@ using UnityEngine;
 public class CameraUI : MonoBehaviour
 {
     public Camera[] cameras;
+    public Camera singleCamera; // Cámara adicional para el modo individual
+    private bool singleCameraMode = false;
 
     void Start()
     {
-        // Asegurémonos de que las cámaras de la lista estén en una capa superior
         foreach (Camera camera in cameras)
         {
-            camera.depth += 10; // Puedes ajustar este valor según sea necesario
+            camera.depth += 10;
         }
-
+        singleCamera.depth += 20; // Asegurar que la cámara individual tenga mayor prioridad
         UpdateCameraLayout();
     }
 
@@ -22,12 +23,25 @@ public class CameraUI : MonoBehaviour
 
     void UpdateCameraLayout()
     {
-        int numCameras = cameras.Length;
-
-        for (int i = 0; i < numCameras; i++)
+        if (singleCameraMode)
         {
-            Rect cameraRect = CalculateCameraRect(i, numCameras);
-            cameras[i].rect = cameraRect;
+            foreach (Camera camera in cameras)
+            {
+                camera.enabled = false;
+            }
+            singleCamera.enabled = true;
+            singleCamera.rect = new Rect(0, 0, 1, 1); // Pantalla completa
+        }
+        else
+        {
+            singleCamera.enabled = false;
+            int numCameras = cameras.Length;
+            for (int i = 0; i < numCameras; i++)
+            {
+                cameras[i].enabled = true;
+                Rect cameraRect = CalculateCameraRect(i, numCameras);
+                cameras[i].rect = cameraRect;
+            }
         }
     }
 
@@ -39,5 +53,11 @@ public class CameraUI : MonoBehaviour
         float y = cameraIndex < 2 ? 0.5f : 0.0f;
 
         return new Rect(x, y, width, height);
+    }
+
+    public void ToggleSingleCameraMode()
+    {
+        singleCameraMode = !singleCameraMode;
+        UpdateCameraLayout();
     }
 }

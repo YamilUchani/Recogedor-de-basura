@@ -6,18 +6,26 @@ using UnityEngine.UI;
 
 public class LoadingScreenController : MonoBehaviour
 {
+
+    public static int sceneIndex;
     public Image barraProgreso; // Referencia a la barra de progreso en la interfaz de usuario
     public List<GameObject> rootGameObjects;
+    public List<string> excludedObjectNames; // Lista de nombres de objetos excluidos
     public float activationTimePerObject = 2f; // Tiempo en segundos por cada activación de objeto
 
     private float totalObjects;
-    private float activeObjects =1;
+    private float activeObjects = 1;
     private bool activationInProgress; // Variable para controlar si hay una activación en progreso
-     AsyncOperation asyncLoad;
+    private string sceneToLoad;
+    AsyncOperation asyncLoad;
+
     void Start()
     {
-        // Cargar la segunda escena aditivamente
-        asyncLoad = SceneManager.LoadSceneAsync("Demo_scene_low", LoadSceneMode.Additive);
+        // Determinar qué escena cargar según la variable global
+        sceneToLoad = sceneIndex == 0 ? "Demo_scene_low" : "Model_scene_low";
+        Debug.Log(sceneIndex);
+        // Cargar la escena especificada aditivamente
+        asyncLoad = SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
 
         // Registrar el evento completed para obtener la referencia a la escena cargada
         asyncLoad.completed += OnSceneLoaded;
@@ -26,8 +34,8 @@ public class LoadingScreenController : MonoBehaviour
     private void OnSceneLoaded(AsyncOperation operation)
     {
         // Se llama cuando la escena ha terminado de cargarse aditivamente
-        Scene sceneCargada = SceneManager.GetSceneByName("Demo_scene_low");
-        rootGameObjects = sceneCargada.GetRootGameObjects().ToList();
+        Scene sceneCargada = SceneManager.GetSceneByName(sceneToLoad);
+        rootGameObjects = sceneCargada.GetRootGameObjects().Where(obj => !excludedObjectNames.Contains(obj.name)).ToList();
         totalObjects = CountParentObjects(rootGameObjects);
         activeObjects = 1;
         activationInProgress = true;
@@ -62,10 +70,9 @@ public class LoadingScreenController : MonoBehaviour
 
     private void ActivateObjectAndChildren(GameObject parent)
     {
-        if (parent != null && !parent.activeSelf)
+        if (parent != null && !parent.activeSelf && !excludedObjectNames.Contains(parent.name))
         {
             parent.SetActive(true);
-            
 
             // Activar los hijos recursivamente
             int childCount = parent.transform.childCount;
@@ -79,7 +86,9 @@ public class LoadingScreenController : MonoBehaviour
 
     private int CountParentObjects(List<GameObject> objects)
     {
-        int count = objects.Count;
-        return count;
+        return objects.Count;
     }
 }
+
+// Clase global para manejar la selección de escena
+    

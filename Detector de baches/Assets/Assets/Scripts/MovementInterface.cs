@@ -3,6 +3,7 @@ using System.IO;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+
 public class MovementInterface : MonoBehaviour
 {
     public Rigidbody velocidad;
@@ -14,8 +15,8 @@ public class MovementInterface : MonoBehaviour
     public string outputFolder = "CapturedImages";
     public float captureInterval = 2f;
     public TMP_Text buttonText;
-    public TMP_Text velocityText;
-    public TMP_Text angleText;
+    public List<TMP_Text> velocityTexts; // Lista de textos para la velocidad
+    public List<TMP_Text> angleTexts; // Lista de textos para el ángulo
     private bool isCapturing = false;
     public bool angulo_mando;
     private bool container = false;
@@ -40,7 +41,7 @@ public class MovementInterface : MonoBehaviour
         }
 
         speed = velocidad.linearVelocity.magnitude;
-        if(!angulo_mando)
+        if (!angulo_mando)
         {
             angle = angulo.transform.localEulerAngles.y;
         }
@@ -57,72 +58,82 @@ public class MovementInterface : MonoBehaviour
         {
             angle -= 360;
         }
-        velocityText.text = "Velocity: " + speed.ToString("F2") + "Km/H";
-        angleText.text = "Angle = " + angle.ToString("F2") + " degrees";
-    }
 
-private void Capture()
-{
-    if (captureCameras == null)
-    {
-        Debug.LogError("No capture camera assigned!");
-        return;
-    }
+        string velocityTextValue = "Velocity: " + speed.ToString("F2") + " Km/H";
+        string angleTextValue = "Angle = " + angle.ToString("F2") + " degrees";
 
-    if (speed <= 0.05f && angle <= 1f)
-    {
-        Debug.Log("Velocity and angle below thresholds. Image capture skipped.");
-        return;
-    }
-
-    if (container)
-    {   
-        timestamp = System.DateTime.Now.ToString("yyyyMMdd_HHmmss");
-        string imageNameFolder = "Imagenes_de_baches";
-        folderPath = Path.Combine(Application.persistentDataPath, "Imagenes", imageNameFolder, timestamp);
-        Directory.CreateDirectory(folderPath);
-        container = false;
-    }   
-    for (int i = 0; i < captureCameras.Count; i++)
-    {
-        string filename = "Image" + count.ToString() + captureCameras[i].name + ".png";
-        string outputPath = Path.Combine(folderPath, filename);
-
-        bool convertToGrayscale = captureCameras[i].name.Contains("L") || captureCameras[i].name.Contains("R");
-
-        RenderTexture renderTexture = new RenderTexture(1270, 950, 24);
-        captureCameras[i].targetTexture = renderTexture;
-        Texture2D screenshot = new Texture2D(1270, 950, TextureFormat.RGB24, false); // Always create RGB texture
-        captureCameras[i].Render();
-        RenderTexture.active = renderTexture;
-        screenshot.ReadPixels(new Rect(0, 0, 1270, 950), 0, 0);
-        screenshot.Apply();
-
-        if (convertToGrayscale)
+        foreach (TMP_Text velocityText in velocityTexts)
         {
-            // Convert the screenshot to grayscale
-            Color[] pixels = screenshot.GetPixels();
-            for (int j = 0; j < pixels.Length; j++)
-            {
-                float grayscaleValue = pixels[j].grayscale;
-                pixels[j] = new Color(grayscaleValue, grayscaleValue, grayscaleValue);
-            }
-            screenshot.SetPixels(pixels);
-            screenshot.Apply();
+            velocityText.text = velocityTextValue;
         }
 
-        byte[] bytes = screenshot.EncodeToPNG();
-        File.WriteAllBytes(outputPath, bytes);
-
-        captureCameras[i].targetTexture = null;
-        RenderTexture.active = null;
-        Destroy(renderTexture);
-        Destroy(screenshot);
-
-        Debug.Log("Captured image saved to: " + outputPath);
+        foreach (TMP_Text angleText in angleTexts)
+        {
+            angleText.text = angleTextValue;
+        }
     }
-}
 
+    private void Capture()
+    {
+        if (captureCameras == null)
+        {
+            Debug.LogError("No capture camera assigned!");
+            return;
+        }
+
+        if (speed <= 0.05f && angle <= 1f)
+        {
+            Debug.Log("Velocity and angle below thresholds. Image capture skipped.");
+            return;
+        }
+
+        if (container)
+        {
+            timestamp = System.DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            string imageNameFolder = "Imagenes_de_baches";
+            folderPath = Path.Combine(Application.persistentDataPath, "Imagenes", imageNameFolder, timestamp);
+            Directory.CreateDirectory(folderPath);
+            container = false;
+        }
+
+        for (int i = 0; i < captureCameras.Count; i++)
+        {
+            string filename = "Image" + count.ToString() + captureCameras[i].name + ".png";
+            string outputPath = Path.Combine(folderPath, filename);
+
+            bool convertToGrayscale = captureCameras[i].name.Contains("L") || captureCameras[i].name.Contains("R");
+
+            RenderTexture renderTexture = new RenderTexture(1270, 950, 24);
+            captureCameras[i].targetTexture = renderTexture;
+            Texture2D screenshot = new Texture2D(1270, 950, TextureFormat.RGB24, false);
+            captureCameras[i].Render();
+            RenderTexture.active = renderTexture;
+            screenshot.ReadPixels(new Rect(0, 0, 1270, 950), 0, 0);
+            screenshot.Apply();
+
+            if (convertToGrayscale)
+            {
+                Color[] pixels = screenshot.GetPixels();
+                for (int j = 0; j < pixels.Length; j++)
+                {
+                    float grayscaleValue = pixels[j].grayscale;
+                    pixels[j] = new Color(grayscaleValue, grayscaleValue, grayscaleValue);
+                }
+                screenshot.SetPixels(pixels);
+                screenshot.Apply();
+            }
+
+            byte[] bytes = screenshot.EncodeToPNG();
+            File.WriteAllBytes(outputPath, bytes);
+
+            captureCameras[i].targetTexture = null;
+            RenderTexture.active = null;
+            Destroy(renderTexture);
+            Destroy(screenshot);
+
+            Debug.Log("Captured image saved to: " + outputPath);
+        }
+    }
 
     public void AcDc()
     {
@@ -139,11 +150,9 @@ private void Capture()
             buttonText.text = "Stop";
         }
     }
+
     public void restarted()
     {
         SceneManager.LoadScene("load_scene");
     }
-
-
 }
-

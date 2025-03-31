@@ -1,37 +1,33 @@
 m_ProjectFiles:
   m_ManifestFileStatus:
-    m_FilePath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-      de baches/Packages/manifest.json
+    m_FilePath: G:/Github/Recogedor-de-basura/Detector de baches/Packages/manifest.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638596816400000000
-    m_Hash: 3673967642
+      ticks: 638787941066736941
+    m_Hash: 1531693027
   m_LockFileStatus:
-    m_FilePath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-      de baches/Packages/packages-lock.json
+    m_FilePath: G:/Github/Recogedor-de-basura/Detector de baches/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638596816400000000
-    m_Hash: 610466196
+      ticks: 638787941558544489
+    m_Hash: 1987943604
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_LocalPackages:
   m_LocalFileStatus: []
-m_ProjectPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-  de baches/Packages
-m_EditorVersion: 6000.0.0b11 (a707ca4efec4)
+m_ProjectPath: G:/Github/Recogedor-de-basura/Detector de baches/Packages
+m_EditorVersion: 6000.0.36f1 (9fe3b5f71dbb)
 m_ResolvedPackages:
-- packageId: com.unity.ai.navigation@2.0.0
+- packageId: com.unity.ai.navigation@2.0.5
   testable: 0
   isDirectDependency: 1
-  version: 2.0.0
+  version: 2.0.5
   source: 1
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.ai.navigation
+  resolvedPath: G:\Github\Recogedor-de-basura\Detector de baches\Library\PackageCache\com.unity.ai.navigation@9f76b145f0a8
   assetPath: Packages/com.unity.ai.navigation
   name: com.unity.ai.navigation
   displayName: AI Navigation
@@ -40,13 +36,15 @@ m_ResolvedPackages:
     email: 
     url: 
   category: 
-  type: assets
-  description: High-level NavMesh components for building and using NavMeshes at
-    runtime and at edit time.
+  type: 
+  description: The AI Navigation package contains high-level components that allow
+    you to use navmeshes to incorporate navigation and pathfinding in your game.
+    With this package installed you can build and use navmeshes at runtime and at
+    edit time, create dynamic obstacles, and use links to allow specific actions
+    (like jumping) as your characters navigate between navmeshes.
   errors: []
   versions:
     all:
-    - 1.0.0-exp.1
     - 1.0.0-exp.2
     - 1.0.0-exp.3
     - 1.0.0-exp.4
@@ -60,10 +58,13 @@ m_ResolvedPackages:
     - 2.0.0-pre.4
     - 2.0.0
     - 2.0.3
+    - 2.0.4
+    - 2.0.5
+    - 2.0.6
     compatible:
-    - 2.0.0
-    - 2.0.3
-    recommended: 2.0.3
+    - 2.0.5
+    - 2.0.6
+    recommended: 2.0.6
     deprecated: []
   dependencies:
   - name: com.unity.modules.ai
@@ -71,7 +72,25 @@ m_ResolvedPackages:
   resolvedDependencies:
   - name: com.unity.modules.ai
     version: 1.0.0
-  keywords: []
+  keywords:
+  - carving
+  - mesh
+  - navigation
+  - navmesh
+  - NavMesh
+  - navmesh agent
+  - navmesh link
+  - navmeshlink
+  - navmesh modifier
+  - navmeshmodifier
+  - navmesh modifier volume
+  - navmeshmodifiervolume
+  - navmesh obstacle
+  - navmesh surface
+  - navmeshsurface
+  - offmesh link
+  - off-mesh link
+  - pathfinding
   registry:
     id: main
     name: 
@@ -84,16 +103,16 @@ m_ResolvedPackages:
   entitlements:
     licensingModel: 1
   isAssetStorePackage: 0
-  datePublishedTicks: 638333060450000000
+  datePublishedTicks: 638675282916940000
   documentationUrl: https://docs.unity3d.com/Packages/com.unity.ai.navigation@2.0/manual/index.html
   hasRepository: 1
   repository:
     type: git
     url: https://github.cds.internal.unity3d.com/unity/com.unity.ai.navigation.git
-    revision: 365db7071a1efdbf9fc337dd1c0de02f909cd685
+    revision: 110941630e19b3574f9f81fd6fe3c28e867a9321
     path: 
   unityLifecycle:
-    version: 2.0.0
+    version: 2.0.5
     nextVersion: 
     recommendedVersion: 
     isDeprecated: 0
@@ -103,19 +122,22 @@ m_ResolvedPackages:
   git:
     hash: 
     revision: 
-  upmReserved: '{"changelog":"### Fixed\n* When the \"Auto Update Position\" option
-    of NavMeshLink is enabled, the link now correctly updates the connection in the
-    next frame after any of the link''s ends change their world position."}'
+  upmReserved: '{"changelog":"### Fixed\n* NavMesh Link would not update when switching
+    from the **Not Walkable** area type to any other area type in the inspector.
+    (NAVB-87)\n* A few documentation paragraphs and links were not accurate."}'
   assetStore:
     productId: 
-  fingerprint: f6367599281e08d75acc8229ad70ac03cfe57ac1
-- packageId: com.unity.cinemachine@2.10.0
+  fingerprint: 9f76b145f0a8dd734ff2a4877f7f7edb83b7f62c
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 2.0.5
+    minimumUnityVersion: 2023.2.0a18
+- packageId: com.unity.cinemachine@2.10.3
   testable: 0
   isDirectDependency: 1
-  version: 2.10.0
+  version: 2.10.3
   source: 1
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.cinemachine
+  resolvedPath: G:\Github\Recogedor-de-basura\Detector de baches\Library\PackageCache\com.unity.cinemachine@dcc61ebd6655
   assetPath: Packages/com.unity.cinemachine
   name: com.unity.cinemachine
   displayName: Cinemachine
@@ -124,7 +146,7 @@ m_ResolvedPackages:
     email: 
     url: 
   category: cinematography
-  type: assets
+  type: 
   description: "Smart camera tools for passionate creators. \n\nNew starting from
     2.7.1: Are you looking for the Cinemachine menu? It has moved to the GameObject
     menu.\n\nIMPORTANT NOTE: If you are upgrading from the legacy Asset Store version
@@ -200,6 +222,8 @@ m_ResolvedPackages:
     - 2.9.7
     - 2.10.0
     - 2.10.1
+    - 2.10.2
+    - 2.10.3
     - 3.0.0-pre.3
     - 3.0.0-pre.4
     - 3.0.0-pre.5
@@ -210,9 +234,10 @@ m_ResolvedPackages:
     - 3.0.1
     - 3.1.0
     - 3.1.1
+    - 3.1.2
+    - 3.1.3
     compatible:
-    - 2.10.0
-    - 2.10.1
+    - 2.10.3
     - 3.0.0-pre.3
     - 3.0.0-pre.4
     - 3.0.0-pre.5
@@ -223,14 +248,16 @@ m_ResolvedPackages:
     - 3.0.1
     - 3.1.0
     - 3.1.1
-    recommended: 2.10.1
+    - 3.1.2
+    - 3.1.3
+    recommended: 3.1.3
     deprecated: []
   dependencies:
   - name: com.unity.test-framework
     version: 1.1.31
   resolvedDependencies:
   - name: com.unity.test-framework
-    version: 1.4.3
+    version: 1.4.5
   - name: com.unity.ext.nunit
     version: 2.0.5
   - name: com.unity.modules.imgui
@@ -272,18 +299,18 @@ m_ResolvedPackages:
   entitlements:
     licensingModel: 1
   isAssetStorePackage: 0
-  datePublishedTicks: 638451680320000000
+  datePublishedTicks: 638666077203430000
   documentationUrl: https://docs.unity3d.com/Packages/com.unity.cinemachine@2.10/manual/index.html
   hasRepository: 1
   repository:
     type: git
     url: https://github.com/Unity-Technologies/com.unity.cinemachine.git
-    revision: 3b55bae0f41b1048cc2080391ac3d4eb1c22b7ef
+    revision: fa616229e5cf36a8c640e862aff6eb686dbef444
     path: 
   unityLifecycle:
-    version: 2.10.0
-    nextVersion: 3.0.0-pre.3
-    recommendedVersion: 
+    version: 2.10.3
+    nextVersion: 
+    recommendedVersion: 3.1.0
     isDeprecated: 0
     deprecationMessage: 
   isDeprecated: 0
@@ -291,20 +318,21 @@ m_ResolvedPackages:
   git:
     hash: 
     revision: 
-  upmReserved: '{"changelog":"- Bugfix: CinemachineFreeLook.ForceCameraPosition()
-    sometimes did not take full effect immediately.\n- Bugfix: 3rdPersonFollow sometimes
-    generated invalid camera position when the target when DampingWhenOccluded is
-    nonzero."}'
+  upmReserved: '{"changelog":"- Regression fix: Small changes to camera position
+    and rotation were being filtered out."}'
   assetStore:
     productId: 
-  fingerprint: 6f06b54a94ce5abd9e780534a6b389ad75950ee0
-- packageId: com.unity.collab-proxy@2.3.1
+  fingerprint: dcc61ebd6655e32f2b7f8ebca32ca02be455e2d9
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 2.10.3
+    minimumUnityVersion: 2019.4.0a1
+- packageId: com.unity.collab-proxy@2.6.0
   testable: 0
   isDirectDependency: 1
-  version: 2.3.1
+  version: 2.6.0
   source: 1
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.collab-proxy
+  resolvedPath: G:\Github\Recogedor-de-basura\Detector de baches\Library\PackageCache\com.unity.collab-proxy@001b54a8988a
   assetPath: Packages/com.unity.collab-proxy
   name: com.unity.collab-proxy
   displayName: Version Control
@@ -313,7 +341,7 @@ m_ResolvedPackages:
     email: 
     url: 
   category: Editor
-  type: assets
+  type: 
   description: The package gives you the ability to use Unity Version Control in
     the Unity editor. To use Unity Version Control, a subscription is required. Learn
     more about how you can get started for free by visiting https://unity.com/solutions/version-control
@@ -393,11 +421,14 @@ m_ResolvedPackages:
     - 2.3.1
     - 2.4.3
     - 2.4.4
+    - 2.5.1
+    - 2.5.2
+    - 2.6.0
+    - 2.7.1
     compatible:
-    - 2.3.1
-    - 2.4.3
-    - 2.4.4
-    recommended: 2.3.1
+    - 2.6.0
+    - 2.7.1
+    recommended: 2.6.0
     deprecated: []
   dependencies: []
   resolvedDependencies: []
@@ -416,6 +447,7 @@ m_ResolvedPackages:
   - teams
   - version
   - vcs
+  - uvcs
   registry:
     id: main
     name: 
@@ -428,16 +460,16 @@ m_ResolvedPackages:
   entitlements:
     licensingModel: 1
   isAssetStorePackage: 0
-  datePublishedTicks: 638448201880000000
-  documentationUrl: https://docs.unity3d.com/Packages/com.unity.collab-proxy@2.3/manual/index.html
+  datePublishedTicks: 638684801569990000
+  documentationUrl: https://docs.unity3d.com/Packages/com.unity.collab-proxy@2.6/manual/index.html
   hasRepository: 1
   repository:
     type: git
     url: https://github.cds.internal.unity3d.com/unity/com.unity.cloud.collaborate.git
-    revision: 613362ccb4468f55ee42e0a35809fb9a61f3f8f1
+    revision: b7effc6b40a40af218ae30084906471699330ac9
     path: 
   unityLifecycle:
-    version: 2.3.1
+    version: 2.6.0
     nextVersion: 
     recommendedVersion: 
     isDeprecated: 0
@@ -447,36 +479,50 @@ m_ResolvedPackages:
   git:
     hash: 
     revision: 
-  upmReserved: '{"changelog":"Unity Version Control is now available as part of the
-    Version Control Package! You can enable Unity Version Control via Window > Unity
-    Version Control to get started!\nIf you have previously used the Unity Asset
-    Store Plastic SCM plug-in, you can now simply use this package. Make sure you
-    delete the plug-in from your project.\nRemoving a previously added Plastic SCM
-    Asset Store Plug-In:\n\n- Select the PlasticSCM folder in the Assets\\Plugins
-    folder on the Project tab, then click Edit > Delete\n- Close the Unity Editor
-    and open your project again. You will find the Plastic SCM menu item in the Window
-    menu.\n\n### Added\n\n- New view to list and manage locks.\n\n### Fixed\n\n-
-    Fixed DropdownField not working properly on a ModalUtility window on MacOS.\n-
-    Fixed issue with existing checkout operations locking the workspace.\n- Retained
-    locks prevented to checkout assets.\n- Reviewed initialization and application
-    lifecycle.\n- Fixed layout error when switching checkout status in the inspector.\n-
-    Fixed Diff option unavailable for .prefab.\n- Fixed UI error when opening and
-    closing multiple closable tabs.\n- Ensured branch creations start from the latest
-    changeset.\n- Unable to expand added item list after collapsing.\n- Pending Changes
-    context menu had the view file history greyed out for asset+meta.\n- Preconfigured
-    date format was not recognized as a valid DateTime.\n- Fixed finding changes
-    operation being firing constantly.\n- Removed obsolete content in package documentation.\n-
-    Fixed typo in locks tooltip."}'
+  upmReserved: "{\"changelog\":\"### Added\\n\\n- Added the ability to merge a branch
+    or a changeset, using a new context menu actions\\n- Added file conflict & dir
+    conflict context menu actions to the merge view\\n- Added diff and merge settings
+    in Project Settings -> Version Control -> Unity Version Control Settings\\n-
+    Added merge options dialog to the merge view\\n- Added copy path & history context
+    menu actions in all menus where they apply\\n- Added an menu entry to 'Open in
+    Unity Cloud' showing the repository in the Unity Dashboard\\n\\n### Changed\\n\\n-
+    Updated the minimum supported version to Unity 2021.3.0f1\\n- Removed support
+    for migrating old Collaborate workspaces to Unity Version Control\\n- Hide from
+    the public documentation all internal APIs that were previously visible by mistake\\n-
+    Optimized switching operations to only triggers the Package Manager to reinstall
+    packages when needed\\n- Optimized incoming changes to only reload the Package
+    Manager when needed (Gluon/partial workspace only for now)\\n- Automatically
+    add UnityDirMonSyncFile rule for existing ignore.conf to avoid triggering unnecessary
+    finding changes operation\\n- Improved the \u201Csearch\u201D edit box so it
+    can resize when there is not enough space in the toolbar\\n- Replaced the \\\"D\\\"
+    DevOps icon by the branching icon used in the Hub\\n- Replaced the logo of Unity
+    in the Sign in to Unity VCS window\\n\\n### Fixed\\n\\n- Fixed files getting
+    checked out even though they are in hidden_changes.conf\\n- Fixed manual login
+    to Cloud that didn't work with an Enterprise installation\\n- Fixed resolve conflicts
+    not informing about lack of UVCS installation\\n- Fixed the Invite users to cloud
+    organization when using an Enterprise installation\\n- Fixed new child branch
+    not created from HEAD after update\\n- Fixed the learn more (here) link that
+    showed the hex color value in Unity 6\\n- Fixed link to invite members in Unity
+    Cloud.\\n- Fixed a crash in the create workspace window when unable to resolve
+    a @unity organization\\n- Fixed incoming changes view that was not kept as selected
+    after resolving some conflicts\\n- Fixed workspace name that was not refreshed
+    after repository manual creation or selection\\n- Added a warning message to
+    inform users about mismatching cloud project.\\n- Removed from the Create Workspace
+    window the Local server that was present with no installation of UVCS\\n- Replaced
+    hardcoded urls pointing to plasticscm.com\"}"
   assetStore:
     productId: 
-  fingerprint: 9fe9d34b5e265703867fd4b6e7ef78001c1fa370
+  fingerprint: 001b54a8988a14785c8e209d6c788bb15f9e58cf
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 2.6.0
+    minimumUnityVersion: 2021.3.0f1
 - packageId: com.unity.ide.rider@3.0.31
   testable: 0
   isDirectDependency: 1
   version: 3.0.31
   source: 1
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.ide.rider
+  resolvedPath: G:\Github\Recogedor-de-basura\Detector de baches\Library\PackageCache\com.unity.ide.rider@7921be93db40
   assetPath: Packages/com.unity.ide.rider
   name: com.unity.ide.rider
   displayName: JetBrains Rider Editor
@@ -535,10 +581,11 @@ m_ResolvedPackages:
     - 3.0.27
     - 3.0.28
     - 3.0.31
+    - 3.0.34
     compatible:
-    - 3.0.28
     - 3.0.31
-    recommended: 3.0.31
+    - 3.0.34
+    recommended: 3.0.34
     deprecated: []
   dependencies:
   - name: com.unity.ext.nunit
@@ -568,7 +615,7 @@ m_ResolvedPackages:
     revision: ccd778a2275ff09f1a83bc924cfb2fb4d5b63566
     path: 
   unityLifecycle:
-    version: 3.0.28
+    version: 3.0.31
     nextVersion: 
     recommendedVersion: 
     isDeprecated: 0
@@ -585,13 +632,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 7921be93db40ec070fcb01ed82d1c3df1bbdddcd
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 3.0.31
+    minimumUnityVersion: 2019.2.6f1
 - packageId: com.unity.ide.visualstudio@2.0.22
   testable: 0
   isDirectDependency: 1
   version: 2.0.22
   source: 1
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.ide.visualstudio
+  resolvedPath: G:\Github\Recogedor-de-basura\Detector de baches\Library\PackageCache\com.unity.ide.visualstudio@8140e851d83e
   assetPath: Packages/com.unity.ide.visualstudio
   name: com.unity.ide.visualstudio
   displayName: Visual Studio Editor
@@ -640,7 +690,7 @@ m_ResolvedPackages:
     version: 1.1.9
   resolvedDependencies:
   - name: com.unity.test-framework
-    version: 1.4.3
+    version: 1.4.5
   - name: com.unity.ext.nunit
     version: 2.0.5
   - name: com.unity.modules.imgui
@@ -688,13 +738,106 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 8140e851d83e922ca2021b04a89519de94ebe38c
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 2.0.22
+    minimumUnityVersion: 2019.4.25f1
+- packageId: com.unity.multiplayer.center@1.0.0
+  testable: 0
+  isDirectDependency: 1
+  version: 1.0.0
+  source: 2
+  resolvedPath: G:\Github\Recogedor-de-basura\Detector de baches\Library\PackageCache\com.unity.multiplayer.center@f502d8ac613f
+  assetPath: Packages/com.unity.multiplayer.center
+  name: com.unity.multiplayer.center
+  displayName: Multiplayer Center
+  author:
+    name: 
+    email: 
+    url: 
+  category: 
+  type: 
+  description: The multiplayer center provides a starting point to create multiplayer
+    games. It will recommend specific packages and enable you to easily access integrations,
+    samples and documentation.
+  errors: []
+  versions:
+    all:
+    - 0.2.1
+    - 0.3.0
+    - 0.4.0
+    - 1.0.0-pre.1
+    - 1.0.0-pre.2
+    - 1.0.0-pre.3
+    - 1.0.0
+    compatible:
+    - 1.0.0
+    recommended: 1.0.0
+    deprecated: []
+  dependencies:
+  - name: com.unity.modules.uielements
+    version: 1.0.0
+  resolvedDependencies:
+  - name: com.unity.modules.uielements
+    version: 1.0.0
+  - name: com.unity.modules.ui
+    version: 1.0.0
+  - name: com.unity.modules.imgui
+    version: 1.0.0
+  - name: com.unity.modules.jsonserialize
+    version: 1.0.0
+  - name: com.unity.modules.hierarchycore
+    version: 1.0.0
+  keywords:
+  - Multiplayer
+  - Netcode
+  - Services
+  - Tools
+  registry:
+    id: main
+    name: 
+    url: https://packages.unity.com
+    scopes: []
+    isDefault: 1
+    capabilities: 7
+    configSource: 0
+  hideInEditor: 1
+  entitlements:
+    licensingModel: 0
+  isAssetStorePackage: 0
+  datePublishedTicks: 0
+  documentationUrl: 
+  hasRepository: 0
+  repository:
+    type: 
+    url: 
+    revision: 
+    path: 
+  unityLifecycle:
+    version: 1.0.0
+    nextVersion: 
+    recommendedVersion: 
+    isDeprecated: 0
+    deprecationMessage: 
+  isDeprecated: 0
+  deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
+  fingerprint: f502d8ac613fa076192423e73892fbd89eb4049b
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 6000.0.0a1
 - packageId: com.unity.postprocessing@3.4.0
   testable: 0
   isDirectDependency: 1
   version: 3.4.0
   source: 1
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.postprocessing
+  resolvedPath: G:\Github\Recogedor-de-basura\Detector de baches\Library\PackageCache\com.unity.postprocessing@026b2a0827a4
   assetPath: Packages/com.unity.postprocessing
   name: com.unity.postprocessing
   displayName: Post Processing
@@ -799,13 +942,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 026b2a0827a438e3079df62a60ca03d54961393d
-- packageId: com.unity.test-framework@1.4.3
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 3.4.0
+    minimumUnityVersion: 2019.4.19f1
+- packageId: com.unity.test-framework@1.4.5
   testable: 0
   isDirectDependency: 1
-  version: 1.4.3
+  version: 1.4.5
   source: 1
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.test-framework
+  resolvedPath: G:\Github\Recogedor-de-basura\Detector de baches\Library\PackageCache\com.unity.test-framework@0a21eb82d95c
   assetPath: Packages/com.unity.test-framework
   name: com.unity.test-framework
   displayName: Test Framework
@@ -868,19 +1014,19 @@ m_ResolvedPackages:
     - 1.4.3
     - 1.4.4
     - 1.4.5
+    - 1.4.6
     - 2.0.1-exp.1
     - 2.0.1-exp.2
     - 2.0.1-pre.12
     - 2.0.1-pre.18
     compatible:
-    - 1.4.3
-    - 1.4.4
     - 1.4.5
+    - 1.4.6
     - 2.0.1-exp.1
     - 2.0.1-exp.2
     - 2.0.1-pre.12
     - 2.0.1-pre.18
-    recommended: 1.4.5
+    recommended: 1.4.6
     deprecated: []
   dependencies:
   - name: com.unity.ext.nunit
@@ -911,16 +1057,16 @@ m_ResolvedPackages:
   entitlements:
     licensingModel: 1
   isAssetStorePackage: 0
-  datePublishedTicks: 638410935880000000
+  datePublishedTicks: 638575054880000000
   documentationUrl: https://docs.unity3d.com/Packages/com.unity.test-framework@1.4/manual/index.html
   hasRepository: 1
   repository:
     type: git
     url: https://github.com/Unity-Technologies/com.unity.test-framework.git
-    revision: b2b8bb3a69967e76a874a55ff39aa35e52ea2095
+    revision: e50747c90fb18ab9f4f350b60d0fcdcae19bdebc
     path: 
   unityLifecycle:
-    version: 1.4.3
+    version: 1.4.5
     nextVersion: 
     recommendedVersion: 
     isDeprecated: 0
@@ -930,24 +1076,47 @@ m_ResolvedPackages:
   git:
     hash: 
     revision: 
-  upmReserved: '{"changelog":"- Fixed a performance issue in relation to the new
-    ui, where running a large selection of tests did not perform well. (DSTR-983)\n-
-    The test tree no longer is fully expanded when the window is first opened, fixing
-    test tree explosion. (DSTR-985)\n- Fixed an issue in Solution 13 of Samples where
-    the path was pointing to a wrong location. (DSTR-1005)\n- Updated documentation
-    of Solution 13 of Samples to reflect more accurate solution for the example.
-    (DSTR-1005)\n- Added ability to build all or selected tests from test runner
-    UI. (UTF-553)"}'
+  upmReserved: '{"changelog":"- Fixed an issue where batchmode test runs would never
+    finish if a test yielded WaitForEndOfFrame (DSTR-1009).\n- Fixed an issue where
+    the location prompt was required when using the Install all tests in ''build''
+    folder option during test builds.\n- Canceling a PlayMode test run now correctly
+    restores the scene setup, instead of leaving the editor in the test scene.\n-
+    Fixed an issue where UnitySetUp did not fail when nested coroutines threw an
+    exception (DSTR-1007).\n- When selecting multiple tests and running them, the
+    test runner now correctly updates the details of the first selected test (UTF-602).\n-
+    The interaction mode and application idle time settings is now being changes
+    when running tests, resulting in faster test runs if not already in use (applies
+    to 2020.3 and later) (DSTR-690).\n- Fixed an issue where some NUnit attributes
+    caused errors and stopped async test runs (DSTR-1040).\n- Added support for the
+    MaxTime attribute on async and UnityTest methods (DSTR-1040).\n- Fixed a memory
+    leak issue where a large number of domain reloads within the same test could
+    crash the editor (DSTR-1023).\n- Changed to use a progress bar inside the test
+    runner window when running tests. This ensures that the progress bar is not fighting
+    to display when e.g. compiling scripts and also makes it easier to cancel a run.
+    This progress bar is displayed for all types of runs (EditMode, PlayMode and
+    Player). (UTF-596).\n- Fixed an issue where ignored tests with an attributes
+    did not display the ignore reason in the test runner UI.\n- Having multiple tests
+    with the same unique id no longer gives a error with ''An item with the same
+    key has already been added'', but instead logs an warning about the duplicate
+    id.\n- The result icons for test suites should no longer flicker when running
+    tests.\n- Ensured that test results ignored in the editor but run on a player
+    are not overwritten with ignore status when shown in the UI (DSTR-1042).\n- Fixed
+    an issue where the RunStarted event was not invoked correctly during a test run
+    (DSTR-1046).\n- Fixed an issue where TestStarted and TestFinished events were
+    repeated for ignored test fixtures after a domain reload (DSTR-986)."}'
   assetStore:
     productId: 
-  fingerprint: 95d6b5d0cb7ec79b743d67718a706e5f344fb7f4
-- packageId: com.unity.timeline@1.8.6
+  fingerprint: 0a21eb82d95cd331643a1e0ce4e8e9a5f18954c8
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.4.5
+    minimumUnityVersion: 2019.4.0a10
+- packageId: com.unity.timeline@1.8.7
   testable: 0
   isDirectDependency: 1
-  version: 1.8.6
+  version: 1.8.7
   source: 1
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.timeline
+  resolvedPath: G:\Github\Recogedor-de-basura\Detector de baches\Library\PackageCache\com.unity.timeline@c58b4ee65782
   assetPath: Packages/com.unity.timeline
   name: com.unity.timeline
   displayName: Timeline
@@ -1048,24 +1217,25 @@ m_ResolvedPackages:
     - 1.8.5
     - 1.8.6
     - 1.8.7
+    - 1.8.8
     compatible:
-    - 1.8.6
     - 1.8.7
-    recommended: 1.8.7
+    - 1.8.8
+    recommended: 1.8.8
     deprecated: []
   dependencies:
+  - name: com.unity.modules.audio
+    version: 1.0.0
   - name: com.unity.modules.director
     version: 1.0.0
   - name: com.unity.modules.animation
     version: 1.0.0
-  - name: com.unity.modules.audio
-    version: 1.0.0
   - name: com.unity.modules.particlesystem
     version: 1.0.0
   resolvedDependencies:
-  - name: com.unity.modules.director
-    version: 1.0.0
   - name: com.unity.modules.audio
+    version: 1.0.0
+  - name: com.unity.modules.director
     version: 1.0.0
   - name: com.unity.modules.animation
     version: 1.0.0
@@ -1089,16 +1259,16 @@ m_ResolvedPackages:
   entitlements:
     licensingModel: 1
   isAssetStorePackage: 0
-  datePublishedTicks: 638326112870000000
+  datePublishedTicks: 638524833900000000
   documentationUrl: https://docs.unity3d.com/Packages/com.unity.timeline@1.8/manual/index.html
   hasRepository: 1
   repository:
     type: git
     url: https://github.cds.internal.unity3d.com/unity/com.unity.timeline.git
-    revision: 9b8cc7590b7d733181284f1a846a02406b5524d8
+    revision: d6432ca638481c3d0e4c01f87f9cdbe3c4b1d529
     path: 
   unityLifecycle:
-    version: 1.8.6
+    version: 1.8.7
     nextVersion: 
     recommendedVersion: 
     isDeprecated: 0
@@ -1108,24 +1278,30 @@ m_ResolvedPackages:
   git:
     hash: 
     revision: 
-  upmReserved: '{"changelog":"### Changed\n\n- In the `Create Asset` menu, the `Signal`
-    and `Timeline` items have been moved to the `Timeline` submenu.\n\n### Fixed\n\n-
-    Fixed issue where changing the name of a group track was not undoable ([TB-218](https://issuetracker.unity3d.com/issues/timeline-track-group-renaming-doesnt-go-into-the-undo-history)).\n-
-    Fixed issue where a warning would be logged in the console for `TrackAsset` ([TB-229](https://issuetracker.unity3d.com/product/unity/issues/guid/TB-229)).\n-
-    Fixed performance regression when rebuilding the playable graph.\n- Fixed a `MissingReferenceException`
-    when editing a Timeline that is an instance of a prefab and a bound `Animator`
-    is destroyed ([TB-222](https://issuetracker.unity3d.com/issues/timeline-missingreferenceexceptions-when-undoing-add-animator-from-timeline))\n-
-    Removed warnings due to obsolete analytics API."}'
+  upmReserved: '{"changelog":"### Added\n\n- Released ronl-workflow-custom-marker.md
+    Added a new workflow to the Timeline Workflows documentation:\n- Released ronl-workflow-custom-marker.md
+    The `Create a custom Notes marker` workflow demonstrates how to create a custom
+    marker for adding notes to Timeline instances. This workflow also demonstrates
+    how to change the default appearance of a custom marker with scripting and a
+    Unity Style Sheet (USS).\n\n### Fixed\n\n- Fixed bug where using , and . (<>)
+    to step frames in the Animation Window while the Timeline Window was linked would
+    sometimes not work. [IN-56667](https://unity3d.atlassian.net/servicedesk/customer/portal/2/IN-56667)\n-
+    When the Timeline and Animation windows are linked and the Timeline Window is
+    active, moving the playhead in the Timeline Window will cause the animation window
+    to repaint immediately."}'
   assetStore:
     productId: 
-  fingerprint: 9ac0df085fa85d0d1f0b83dd933674497fd2774e
-- packageId: com.unity.toolchain.win-x86_64-linux-x86_64@2.0.4
+  fingerprint: c58b4ee65782ad38338e29f7ee67787cb6998f04
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.8.7
+    minimumUnityVersion: 2019.3.0a1
+- packageId: com.unity.toolchain.win-x86_64-linux-x86_64@2.0.10
   testable: 0
   isDirectDependency: 1
-  version: 2.0.4
+  version: 2.0.10
   source: 1
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.toolchain.win-x86_64-linux-x86_64
+  resolvedPath: G:\Github\Recogedor-de-basura\Detector de baches\Library\PackageCache\com.unity.toolchain.win-x86_64-linux-x86_64@426618737602
   assetPath: Packages/com.unity.toolchain.win-x86_64-linux-x86_64
   name: com.unity.toolchain.win-x86_64-linux-x86_64
   displayName: Toolchain Win Linux x64
@@ -1134,7 +1310,7 @@ m_ResolvedPackages:
     email: 
     url: 
   category: 
-  type: asset
+  type: 
   description: Cross-compilation toolchain to build player target Linux x86_64 on
     host Windows x86_64
   errors: []
@@ -1166,23 +1342,21 @@ m_ResolvedPackages:
     - 2.0.5
     - 2.0.6
     - 2.0.9
+    - 2.0.10
     compatible:
-    - 2.0.4
-    - 2.0.5
-    - 2.0.6
-    - 2.0.9
-    recommended: 2.0.9
+    - 2.0.10
+    recommended: 2.0.10
     deprecated: []
   dependencies:
   - name: com.unity.sysroot
-    version: 2.0.5
+    version: 2.0.10
   - name: com.unity.sysroot.linux-x86_64
-    version: 2.0.4
+    version: 2.0.9
   resolvedDependencies:
   - name: com.unity.sysroot
-    version: 2.0.5
+    version: 2.0.10
   - name: com.unity.sysroot.linux-x86_64
-    version: 2.0.4
+    version: 2.0.9
   keywords:
   - toolchain
   - windows
@@ -1200,16 +1374,16 @@ m_ResolvedPackages:
   entitlements:
     licensingModel: 1
   isAssetStorePackage: 0
-  datePublishedTicks: 638067882890000000
+  datePublishedTicks: 638651066000810000
   documentationUrl: https://docs.unity3d.com/Packages/com.unity.toolchain.win-x86_64-linux-x86_64@2.0/manual/index.html
   hasRepository: 1
   repository:
     type: git
     url: https://github.com/Unity-Technologies/com.unity.sysroot.git
-    revision: 06af5d019fed618daef07b5db278be147aed574b
+    revision: c5a32c15f32b7de0b0aa81c256ea52b322478b15
     path: 
   unityLifecycle:
-    version: 2.0.4
+    version: 2.0.10
     nextVersion: 
     recommendedVersion: 
     isDeprecated: 0
@@ -1219,17 +1393,20 @@ m_ResolvedPackages:
   git:
     hash: 
     revision: 
-  upmReserved: 
+  upmReserved: '{"changelog":"Optimized and reduced package size"}'
   assetStore:
     productId: 
-  fingerprint: 3e2bb89d333716e768ae6c6cb861407679a6e73e
+  fingerprint: 426618737602d0ff76e85db678b73b56aa2e891a
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 2.0.10
+    minimumUnityVersion: 2019.4.0a1
 - packageId: com.unity.ugui@2.0.0
   testable: 0
   isDirectDependency: 1
   version: 2.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.ugui
+  resolvedPath: G:\Github\Recogedor-de-basura\Detector de baches\Library\PackageCache\com.unity.ugui@24b10291b18f
   assetPath: Packages/com.unity.ugui
   name: com.unity.ugui
   displayName: Unity UI
@@ -1311,14 +1488,17 @@ m_ResolvedPackages:
   upmReserved: 
   assetStore:
     productId: 
-  fingerprint: e2173d3ada43848f0ee34e69b038b49623f5683a
+  fingerprint: 24b10291b18f65e937b22d041c48712033f29449
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 2.0.0
+    minimumUnityVersion: 2019.2.0a1
 - packageId: com.unity.modules.accessibility@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.accessibility
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.accessibility
   assetPath: Packages/com.unity.modules.accessibility
   name: com.unity.modules.accessibility
   displayName: Accessibility
@@ -1376,13 +1556,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.ai@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.ai
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.ai
   assetPath: Packages/com.unity.modules.ai
   name: com.unity.modules.ai
   displayName: AI
@@ -1440,13 +1623,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.androidjni@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.androidjni
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.androidjni
   assetPath: Packages/com.unity.modules.androidjni
   name: com.unity.modules.androidjni
   displayName: Android JNI
@@ -1503,13 +1689,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.animation@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.animation
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.animation
   assetPath: Packages/com.unity.modules.animation
   name: com.unity.modules.animation
   displayName: Animation
@@ -1567,13 +1756,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.assetbundle@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.assetbundle
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.assetbundle
   assetPath: Packages/com.unity.modules.assetbundle
   name: com.unity.modules.assetbundle
   displayName: Asset Bundle
@@ -1631,13 +1823,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.audio@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.audio
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.audio
   assetPath: Packages/com.unity.modules.audio
   name: com.unity.modules.audio
   displayName: Audio
@@ -1695,13 +1890,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.cloth@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.cloth
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.cloth
   assetPath: Packages/com.unity.modules.cloth
   name: com.unity.modules.cloth
   displayName: Cloth
@@ -1763,13 +1961,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.director@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.director
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.director
   assetPath: Packages/com.unity.modules.director
   name: com.unity.modules.director
   displayName: Director
@@ -1835,13 +2036,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.imageconversion@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.imageconversion
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.imageconversion
   assetPath: Packages/com.unity.modules.imageconversion
   name: com.unity.modules.imageconversion
   displayName: Image Conversion
@@ -1899,13 +2103,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.imgui@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.imgui
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.imgui
   assetPath: Packages/com.unity.modules.imgui
   name: com.unity.modules.imgui
   displayName: IMGUI
@@ -1963,13 +2170,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.jsonserialize@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.jsonserialize
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.jsonserialize
   assetPath: Packages/com.unity.modules.jsonserialize
   name: com.unity.modules.jsonserialize
   displayName: JSONSerialize
@@ -2027,13 +2237,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.particlesystem@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.particlesystem
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.particlesystem
   assetPath: Packages/com.unity.modules.particlesystem
   name: com.unity.modules.particlesystem
   displayName: Particle System
@@ -2091,13 +2304,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.physics@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.physics
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.physics
   assetPath: Packages/com.unity.modules.physics
   name: com.unity.modules.physics
   displayName: Physics
@@ -2155,13 +2371,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.physics2d@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.physics2d
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.physics2d
   assetPath: Packages/com.unity.modules.physics2d
   name: com.unity.modules.physics2d
   displayName: Physics 2D
@@ -2219,13 +2438,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.screencapture@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.screencapture
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.screencapture
   assetPath: Packages/com.unity.modules.screencapture
   name: com.unity.modules.screencapture
   displayName: Screen Capture
@@ -2287,13 +2509,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.terrain@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.terrain
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.terrain
   assetPath: Packages/com.unity.modules.terrain
   name: com.unity.modules.terrain
   displayName: Terrain
@@ -2351,13 +2576,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.terrainphysics@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.terrainphysics
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.terrainphysics
   assetPath: Packages/com.unity.modules.terrainphysics
   name: com.unity.modules.terrainphysics
   displayName: Terrain Physics
@@ -2423,13 +2651,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.tilemap@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.tilemap
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.tilemap
   assetPath: Packages/com.unity.modules.tilemap
   name: com.unity.modules.tilemap
   displayName: Tilemap
@@ -2490,13 +2721,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.ui@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.ui
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.ui
   assetPath: Packages/com.unity.modules.ui
   name: com.unity.modules.ui
   displayName: UI
@@ -2554,13 +2788,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.uielements@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.uielements
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.uielements
   assetPath: Packages/com.unity.modules.uielements
   name: com.unity.modules.uielements
   displayName: UIElements
@@ -2634,13 +2871,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.umbra@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.umbra
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.umbra
   assetPath: Packages/com.unity.modules.umbra
   name: com.unity.modules.umbra
   displayName: Umbra
@@ -2698,13 +2938,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.unityanalytics@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.unityanalytics
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unityanalytics
   assetPath: Packages/com.unity.modules.unityanalytics
   name: com.unity.modules.unityanalytics
   displayName: Unity Analytics
@@ -2714,8 +2957,7 @@ m_ResolvedPackages:
     url: 
   category: 
   type: module
-  description: 'The UnityAnalytics module implements APIs required to use Unity Analytics.
-    Scripting API: https://docs.unity3d.com/ScriptReference/UnityEngine.UnityAnalyticsModule.html'
+  description: 
   errors: []
   versions:
     all:
@@ -2770,13 +3012,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.unitywebrequest@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.unitywebrequest
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequest
   assetPath: Packages/com.unity.modules.unitywebrequest
   name: com.unity.modules.unitywebrequest
   displayName: Unity Web Request
@@ -2834,13 +3079,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.unitywebrequestassetbundle@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.unitywebrequestassetbundle
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequestassetbundle
   assetPath: Packages/com.unity.modules.unitywebrequestassetbundle
   name: com.unity.modules.unitywebrequestassetbundle
   displayName: Unity Web Request Asset Bundle
@@ -2906,13 +3154,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.unitywebrequestaudio@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.unitywebrequestaudio
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequestaudio
   assetPath: Packages/com.unity.modules.unitywebrequestaudio
   name: com.unity.modules.unitywebrequestaudio
   displayName: Unity Web Request Audio
@@ -2978,13 +3229,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.unitywebrequesttexture@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.unitywebrequesttexture
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequesttexture
   assetPath: Packages/com.unity.modules.unitywebrequesttexture
   name: com.unity.modules.unitywebrequesttexture
   displayName: Unity Web Request Texture
@@ -3050,13 +3304,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.unitywebrequestwww@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.unitywebrequestwww
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequestwww
   assetPath: Packages/com.unity.modules.unitywebrequestwww
   name: com.unity.modules.unitywebrequestwww
   displayName: Unity Web Request WWW
@@ -3138,13 +3395,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.vehicles@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.vehicles
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.vehicles
   assetPath: Packages/com.unity.modules.vehicles
   name: com.unity.modules.vehicles
   displayName: Vehicles
@@ -3206,13 +3466,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.video@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.video
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.video
   assetPath: Packages/com.unity.modules.video
   name: com.unity.modules.video
   displayName: Video
@@ -3282,13 +3545,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.vr@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.vr
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.vr
   assetPath: Packages/com.unity.modules.vr
   name: com.unity.modules.vr
   displayName: VR
@@ -3360,13 +3626,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.wind@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.wind
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.wind
   assetPath: Packages/com.unity.modules.wind
   name: com.unity.modules.wind
   displayName: Wind
@@ -3424,13 +3693,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.xr@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.xr
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.xr
   assetPath: Packages/com.unity.modules.xr
   name: com.unity.modules.xr
   displayName: XR
@@ -3500,13 +3772,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.subsystems@1.0.0
   testable: 0
   isDirectDependency: 0
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.subsystems
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.subsystems
   assetPath: Packages/com.unity.modules.subsystems
   name: com.unity.modules.subsystems
   displayName: Subsystems
@@ -3568,13 +3843,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.hierarchycore@1.0.0
   testable: 0
   isDirectDependency: 0
   version: 1.0.0
   source: 2
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.modules.hierarchycore
+  resolvedPath: G:\unity\6000.0.36f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.hierarchycore
   assetPath: Packages/com.unity.modules.hierarchycore
   name: com.unity.modules.hierarchycore
   displayName: Hierarchy Core
@@ -3632,13 +3910,16 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 
-- packageId: com.unity.sysroot@2.0.5
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
+- packageId: com.unity.sysroot@2.0.10
   testable: 0
   isDirectDependency: 0
-  version: 2.0.5
+  version: 2.0.10
   source: 1
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.sysroot
+  resolvedPath: G:\Github\Recogedor-de-basura\Detector de baches\Library\PackageCache\com.unity.sysroot@7bbbb9339c14
   assetPath: Packages/com.unity.sysroot
   name: com.unity.sysroot
   displayName: Sysroot Base
@@ -3647,7 +3928,7 @@ m_ResolvedPackages:
     email: 
     url: 
   category: 
-  type: asset
+  type: assets
   description: This is the base sysroot package required by all sysroot and toolchain
     packages
   errors: []
@@ -3675,9 +3956,6 @@ m_ResolvedPackages:
     - 2.0.7
     - 2.0.10
     compatible:
-    - 2.0.5
-    - 2.0.6
-    - 2.0.7
     - 2.0.10
     recommended: 2.0.10
     deprecated: []
@@ -3699,16 +3977,16 @@ m_ResolvedPackages:
   entitlements:
     licensingModel: 1
   isAssetStorePackage: 0
-  datePublishedTicks: 638067882470000000
+  datePublishedTicks: 638500638510000000
   documentationUrl: https://docs.unity3d.com/Packages/com.unity.sysroot@2.0/manual/index.html
   hasRepository: 1
   repository:
     type: git
     url: https://github.com/Unity-Technologies/com.unity.sysroot.git
-    revision: 06af5d019fed618daef07b5db278be147aed574b
+    revision: 48e503c8f30007e813fbcec90dc84795285406b4
     path: 
   unityLifecycle:
-    version: 2.0.5
+    version: 2.0.10
     nextVersion: 
     recommendedVersion: 
     isDeprecated: 0
@@ -3718,17 +3996,20 @@ m_ResolvedPackages:
   git:
     hash: 
     revision: 
-  upmReserved: 
+  upmReserved: '{"changelog":"bump version number to publish"}'
   assetStore:
     productId: 
-  fingerprint: 1064d6163ef6ad45c709d650d1d78c9548c10e51
-- packageId: com.unity.sysroot.linux-x86_64@2.0.4
+  fingerprint: 7bbbb9339c143f6fbccaeb0a52c77b9217b35a71
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 2.0.10
+    minimumUnityVersion: 2019.4.0a1
+- packageId: com.unity.sysroot.linux-x86_64@2.0.9
   testable: 0
   isDirectDependency: 0
-  version: 2.0.4
+  version: 2.0.9
   source: 1
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.sysroot.linux-x86_64
+  resolvedPath: G:\Github\Recogedor-de-basura\Detector de baches\Library\PackageCache\com.unity.sysroot.linux-x86_64@1998d1c7730e
   assetPath: Packages/com.unity.sysroot.linux-x86_64
   name: com.unity.sysroot.linux-x86_64
   displayName: Sysroot Linux x64
@@ -3737,7 +4018,7 @@ m_ResolvedPackages:
     email: 
     url: 
   category: 
-  type: asset
+  type: assets
   description: Sysroot used to build unity player for linux x86_64
   errors: []
   versions:
@@ -3762,18 +4043,15 @@ m_ResolvedPackages:
     - 2.0.6
     - 2.0.9
     compatible:
-    - 2.0.4
-    - 2.0.5
-    - 2.0.6
     - 2.0.9
     recommended: 2.0.9
     deprecated: []
   dependencies:
   - name: com.unity.sysroot
-    version: 2.0.5
+    version: 2.0.10
   resolvedDependencies:
   - name: com.unity.sysroot
-    version: 2.0.5
+    version: 2.0.10
   keywords:
   - unity
   - linux
@@ -3790,16 +4068,16 @@ m_ResolvedPackages:
   entitlements:
     licensingModel: 1
   isAssetStorePackage: 0
-  datePublishedTicks: 638067882520000000
+  datePublishedTicks: 638500638600000000
   documentationUrl: https://docs.unity3d.com/Packages/com.unity.sysroot.linux-x86_64@2.0/manual/index.html
   hasRepository: 1
   repository:
     type: git
     url: https://github.com/Unity-Technologies/com.unity.sysroot.git
-    revision: 06af5d019fed618daef07b5db278be147aed574b
+    revision: bf7a008256a1175e0f8a0d7d26d6826cbfbe1bb2
     path: 
   unityLifecycle:
-    version: 2.0.4
+    version: 2.0.9
     nextVersion: 
     recommendedVersion: 
     isDeprecated: 0
@@ -3809,17 +4087,20 @@ m_ResolvedPackages:
   git:
     hash: 
     revision: 
-  upmReserved: 
+  upmReserved: '{"changelog":"bump version number to publish"}'
   assetStore:
     productId: 
-  fingerprint: 9b90fe620603985006195f484b59cdb9048f27af
+  fingerprint: 1998d1c7730e48fa49f28d983fececfc9cbd970b
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 2.0.9
+    minimumUnityVersion: 2019.4.0a1
 - packageId: com.unity.ext.nunit@2.0.5
   testable: 0
   isDirectDependency: 0
   version: 2.0.5
   source: 1
-  resolvedPath: /home/yamil-uchani/Documentos/GitHub/Recogedor-de-basura/Detector
-    de baches/Library/PackageCache/com.unity.ext.nunit
+  resolvedPath: G:\Github\Recogedor-de-basura\Detector de baches\Library\PackageCache\com.unity.ext.nunit@60ef35ffd3cd
   assetPath: Packages/com.unity.ext.nunit
   name: com.unity.ext.nunit
   displayName: Custom NUnit
@@ -3889,3 +4170,8 @@ m_ResolvedPackages:
   assetStore:
     productId: 
   fingerprint: 60ef35ffd3cd5e2f5c8887a4a4ca6148854cd092
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 2.0.5
+    minimumUnityVersion: 2019.4.0a1
+m_BuiltInPackagesHash: b1ee8e5f96976b65a884948b33d89498cbe5ef4b
