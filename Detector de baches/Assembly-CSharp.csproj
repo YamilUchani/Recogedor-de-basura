@@ -59,7 +59,7 @@
     <UnityVersion>6000.0.36f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Users\Yamil\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.1.1\Analyzers\Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="C:\Users\Yamil\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.1.2\Analyzers\Microsoft.Unity.Analyzers.dll" />
     <Analyzer Include="G:\unity\6000.0.36f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.SourceGenerators.dll" />
     <Analyzer Include="G:\unity\6000.0.36f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
     <Analyzer Include="G:\unity\6000.0.36f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
@@ -79,6 +79,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexColorCycler.cs" />
     <Compile Include="Assets\Assets\Scripts\MeshSimplifier.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
+    <Compile Include="Assets\Assets\Scripts\DroneController.cs" />
     <Compile Include="Assets\Assets\Scripts\Destruccion.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
     <Compile Include="Assets\Assets\Scripts\Giro.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Assets\Assets\Scripts\MeshGenerator.cs" />
     <Compile Include="Assets\Assets\Scripts\ChangeSceneIndex.cs" />
     <Compile Include="Assets\Assets\Scripts\LoadingScreenController.cs" />
+    <Compile Include="Assets\Assets\Scripts\NewMonoBehaviourScript.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
     <Compile Include="Assets\Assets\Scripts\ConvexHull.cs" />
@@ -106,11 +108,13 @@
     <Compile Include="Assets\Assets\Scripts\EliminarTriangulos.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\Assets\Scripts\loadscence.cs" />
+    <Compile Include="Assets\Assets\Scripts\OptimizedMeshGenerator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
     <Compile Include="Assets\Assets\Scripts\CanvasElementPositionToggle.cs" />
     <Compile Include="Assets\Assets\Scripts\Conteoglobal.cs" />
     <Compile Include="Assets\russian_buildings\scenes\desac.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
+    <Compile Include="Assets\Assets\Scripts\MotorRotation.cs" />
     <Compile Include="Assets\Assets\Scripts\Generador.cs" />
     <Compile Include="Assets\Assets\Scripts\lightpreset.cs" />
     <Compile Include="Assets\Assets\Scripts\Camaras.cs" />
@@ -125,6 +129,7 @@
     <Compile Include="Assets\Assets\Scripts\CameraUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
     <Compile Include="Assets\Assets\Scripts\Recoger.cs" />
+    <Compile Include="Assets\Assets\Scripts\ToggleActiveExclusive.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
   </ItemGroup>
   <ItemGroup>

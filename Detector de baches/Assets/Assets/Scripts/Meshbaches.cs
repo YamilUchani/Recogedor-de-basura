@@ -41,16 +41,24 @@ public GameObject objetoPadre;
 public int cantidadBaches = 30;
 void OnEnable()
 {
-    
+#if UNITY_EDITOR
+    if (UnityEditor.EditorApplication.isPaused)
+        return;
+#endif
+
     objetosGenerados.Add(this.gameObject);
+
     // Obtener los componentes
     meshFilter = GetComponent<MeshFilter>();
     meshFilter.mesh = mesh;
     meshRenderer = GetComponent<MeshRenderer>();
     objectPosition = transform.position;
+
     // Asignar el material
     meshRenderer.material = material;
+
     MeshCollider meshCollider = gameObject.AddComponent<MeshCollider>();
+
     // Crear el objeto Mesh
     mesh = new Mesh();
 
@@ -58,14 +66,17 @@ void OnEnable()
     vertices = new List<Vector3>();
     uvs = new List<Vector2>();
     triangles = new List<int>();
+
     GenerateMeshFromimagen();
     meshFilter.mesh = mesh;
     meshCollider.sharedMesh = meshFilter.sharedMesh;
+
     GenerarBaches();
     gameObject.AddComponent<MeshCollisionGenerator>();
-    Invoke("ClearDebug", 0.3f);
 
+    Invoke("ClearDebug", 0.3f);
 }
+
 void ClearDebug()
 {
     Debug.Log("Yamil");

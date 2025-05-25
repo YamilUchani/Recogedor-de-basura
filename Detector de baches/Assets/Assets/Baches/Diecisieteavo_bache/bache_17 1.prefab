@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 5784059816202209841}
   - component: {fileID: 8620431231064538875}
   - component: {fileID: -7341179203872656809}
-  - component: {fileID: -8479993374778165613}
   - component: {fileID: 5360309575596018119}
   m_Layer: 0
   m_Name: bache_17 1
@@ -28,12 +27,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7827556285437927214}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -14.028559, y: 0.011562824, z: -103.41673}
   m_LocalScale: {x: 100, y: 100, z: 25}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5784059816202209841
 MeshFilter:
@@ -54,11 +54,15 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -92,27 +96,20 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7827556285437927214}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 4
+  serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -4936142755755012687, guid: 11bb5f4737c5d2142aa86c1c58433a0f, type: 3}
---- !u!114 &-8479993374778165613
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7827556285437927214}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c8ab926553760f489af18412ac9c11b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  numColliders: 1
-  complexity: 0.6
-  height: 2
 --- !u!114 &5360309575596018119
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -3,6 +3,7 @@ using System.IO;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using System;
 
 public class MovementInterface : MonoBehaviour
 {
@@ -15,8 +16,8 @@ public class MovementInterface : MonoBehaviour
     public string outputFolder = "CapturedImages";
     public float captureInterval = 2f;
     public TMP_Text buttonText;
-    public List<TMP_Text> velocityTexts; // Lista de textos para la velocidad
-    public List<TMP_Text> angleTexts; // Lista de textos para el ángulo
+    public List<TMP_Text> velocityTexts;
+    public List<TMP_Text> angleTexts;
     private bool isCapturing = false;
     public bool angulo_mando;
     private bool container = false;
@@ -41,14 +42,27 @@ public class MovementInterface : MonoBehaviour
         }
 
         speed = velocidad.linearVelocity.magnitude;
+
         if (!angulo_mando)
         {
-            angle = angulo.transform.localEulerAngles.y;
+            if (velocidad.linearVelocity.magnitude > 0.05f)
+            {
+                Vector3 flatVelocity = new Vector3(velocidad.linearVelocity.x, 0, velocidad.linearVelocity.z);
+                if (flatVelocity != Vector3.zero)
+                {
+                    angle = Vector3.SignedAngle(Vector3.forward, flatVelocity.normalized, Vector3.up);
+                }
+            }
+            else
+            {
+                angle = 0f;
+            }
         }
         else
         {
             angle = direction.anguloactual;
         }
+
         if (angle >= 134 && angle <= 226)
         {
             angle -= 180;
@@ -73,66 +87,127 @@ public class MovementInterface : MonoBehaviour
         }
     }
 
+    private HashSet<string> detectedPotholes = new HashSet<string>();
+    private string currentPothole = null;
+
     private void Capture()
     {
-        if (captureCameras == null)
+        if (captureCameras == null || captureCameras.Count == 0)
         {
-            Debug.LogError("No capture camera assigned!");
+            Debug.LogError("No capture cameras assigned!");
             return;
         }
 
-        if (speed <= 0.05f && angle <= 1f)
+        if (speed <= 0.05f && Mathf.Abs(angle) <= 1f)
         {
             Debug.Log("Velocity and angle below thresholds. Image capture skipped.");
             return;
         }
 
-        if (container)
+        Vector3 midPoint = Vector3.zero;
+        foreach (Camera cam in captureCameras) midPoint += cam.transform.position;
+        midPoint /= captureCameras.Count;
+
+        Vector3 forwardDir = captureCameras[0].transform.forward;
+        Vector3 rightDir = captureCameras[0].transform.right;
+        Vector3 upDir = captureCameras[0].transform.up;
+
+        float rayLength = 20f;
+        float raySpacing = 0.2f;
+
+        Vector3[] rayOrigins = new Vector3[]
         {
-            timestamp = System.DateTime.Now.ToString("yyyyMMdd_HHmmss");
-            string imageNameFolder = "Imagenes_de_baches";
-            folderPath = Path.Combine(Application.persistentDataPath, "Imagenes", imageNameFolder, timestamp);
-            Directory.CreateDirectory(folderPath);
-            container = false;
+            midPoint,
+            midPoint + (upDir * raySpacing),
+            midPoint - (upDir * raySpacing),
+            midPoint - (rightDir * raySpacing),
+            midPoint + (rightDir * raySpacing)
+        };
+
+        bool hitDetected = false;
+        string potholeID = "";
+        RaycastHit bestHit = new RaycastHit();
+
+        foreach (Vector3 origin in rayOrigins)
+        {
+            Debug.DrawRay(origin, forwardDir * rayLength, Color.red, 2f);
+
+            if (Physics.Raycast(origin, forwardDir, out RaycastHit hit, rayLength))
+            {
+                string hitTag = hit.collider.tag;
+                string hitName = hit.collider.gameObject.name;
+
+                if (hitTag == "bache" && hitName.IndexOf("bache", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    hitDetected = true;
+                    potholeID = hitName;
+                    bestHit = hit;
+                    break;
+                }
+                else
+                {
+                    Debug.Log($"Objeto detectado no válido. Tag: {hitTag}, Nombre: {hitName}");
+                }
+            }
         }
 
-        for (int i = 0; i < captureCameras.Count; i++)
+        if (!hitDetected)
         {
-            string filename = "Image" + count.ToString() + captureCameras[i].name + ".png";
+            Debug.Log("No pothole detected by any ray.");
+            return;
+        }
+
+        if (detectedPotholes.Contains(potholeID))
+        {
+            Debug.Log($"Pothole {potholeID} already captured. Skipping.");
+            return;
+        }
+
+        detectedPotholes.Add(potholeID);
+        currentPothole = potholeID;
+
+        string timestamp = System.DateTime.Now.ToString("yyyyMMdd_HHmmss");
+        string folderPath = Path.Combine(Application.persistentDataPath, "Imagenes", "Imagenes_de_baches", timestamp);
+        Directory.CreateDirectory(folderPath);
+
+        foreach (Camera cam in captureCameras)
+        {
+            string filename = $"Image{count}_{cam.name}.png";
             string outputPath = Path.Combine(folderPath, filename);
 
-            bool convertToGrayscale = captureCameras[i].name.Contains("L") || captureCameras[i].name.Contains("R");
-
+            bool convertToGrayscale = cam.name.Contains("L") || cam.name.Contains("R");
             RenderTexture renderTexture = new RenderTexture(1270, 950, 24);
-            captureCameras[i].targetTexture = renderTexture;
+
+            cam.targetTexture = renderTexture;
             Texture2D screenshot = new Texture2D(1270, 950, TextureFormat.RGB24, false);
-            captureCameras[i].Render();
+            cam.Render();
+
             RenderTexture.active = renderTexture;
             screenshot.ReadPixels(new Rect(0, 0, 1270, 950), 0, 0);
-            screenshot.Apply();
 
             if (convertToGrayscale)
             {
                 Color[] pixels = screenshot.GetPixels();
-                for (int j = 0; j < pixels.Length; j++)
+                for (int i = 0; i < pixels.Length; i++)
                 {
-                    float grayscaleValue = pixels[j].grayscale;
-                    pixels[j] = new Color(grayscaleValue, grayscaleValue, grayscaleValue);
+                    float gray = pixels[i].grayscale;
+                    pixels[i] = new Color(gray, gray, gray);
                 }
                 screenshot.SetPixels(pixels);
-                screenshot.Apply();
             }
 
-            byte[] bytes = screenshot.EncodeToPNG();
-            File.WriteAllBytes(outputPath, bytes);
+            screenshot.Apply();
+            File.WriteAllBytes(outputPath, screenshot.EncodeToPNG());
 
-            captureCameras[i].targetTexture = null;
+            cam.targetTexture = null;
             RenderTexture.active = null;
             Destroy(renderTexture);
             Destroy(screenshot);
 
-            Debug.Log("Captured image saved to: " + outputPath);
+            Debug.Log($"Captured image saved to: {outputPath}");
         }
+
+        count++;
     }
 
     public void AcDc()
