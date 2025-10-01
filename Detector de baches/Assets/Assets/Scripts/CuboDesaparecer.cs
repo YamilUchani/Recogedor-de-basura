@@ -1,46 +1,75 @@
 using UnityEngine;
 
+[DisallowMultipleComponent]
 public class CuboDesaparecer : MonoBehaviour
 {
-    private void OnCollisionEnter(Collision collision)
+    [Tooltip("Capas donde se encuentran los baches (opcional)")]
+    public LayerMask capasObjetivo = ~0;   // Por defecto, todas
+
+    [Tooltip("Porcentaje del tamaño original para el chequeo (0 a 1)")]
+    [Range(0.1f, 1f)]
+    public float porcentajeTamanoChequeo = 0.95f;
+
+    // Datos internos calculados a partir de la(s) malla(s)
+    private Bounds _boundsChequeo;          // Centro y tamaño en WORLD SPACE
+
+    private void Awake() => ActualizarBounds();
+
+#if UNITY_EDITOR
+    private void OnValidate() => ActualizarBounds();
+#endif
+
+    private void ActualizarBounds()
     {
-        if (collision.gameObject.CompareTag("bache"))
+        Renderer[] renders = GetComponentsInChildren<Renderer>(true);
+        if (renders.Length == 0)
         {
-            Destroy(gameObject); // Destruir el cubo al colisionar con un objeto con el tag "calle"
+            _boundsChequeo = new Bounds(transform.position, Vector3.one);
+            return;
         }
-        else if (collision.gameObject.CompareTag("calle"))
-        { 
-            Invoke("StaticCreate", 0.01f);
-            
+
+        _boundsChequeo = renders[0].bounds;
+        for (int i = 1; i < renders.Length; i++)
+            _boundsChequeo.Encapsulate(renders[i].bounds);
+    }
+
+    private void Update()
+    {
+        Vector3 extentsReducidos = _boundsChequeo.extents * porcentajeTamanoChequeo;
+
+        // Usamos OverlapBox para detectar objetos en el área
+        Collider[] objetosDetectados = Physics.OverlapBox(
+            _boundsChequeo.center,
+            extentsReducidos,
+            Quaternion.identity,
+            capasObjetivo);
+
+        foreach (Collider col in objetosDetectados)
+        {
+            if (col.gameObject == gameObject) continue;
+
+            // Si el objeto detectado tiene "bache" en el nombre, destruye este objeto
+            if (col.gameObject.name.ToLower().Contains("bache"))
+            {
+                Debug.Log($"Bache detectado: {col.gameObject.name}, destruyendo {gameObject.name}");
+                Destroy(gameObject);
+                return; // Salimos después de la primera detección
+            }
         }
     }
-    private void StaticCreate()
+
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
     {
-        BoxCollider boxCollider = GetComponent<BoxCollider>();
-        Rigidbody rigidbody = GetComponent<Rigidbody>();
-        
+        if (_boundsChequeo.size == Vector3.zero)
+            ActualizarBounds();
 
-        // Eliminar Box Collider
-        Destroy(boxCollider);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(_boundsChequeo.center, _boundsChequeo.size);
 
-        // Eliminar Rigidbody
-        Destroy(rigidbody);
-
-        // Reposicionar para mantener la posición Y en 0
-        transform.position = new Vector3(transform.position.x, 0, transform.position.z);
-        MeshCollider meshCollider = GetComponent<MeshCollider>();
-        // Reactivar Mesh Collider (si existe)
-        if (meshCollider != null)
-        {
-            meshCollider.enabled = true;
-        }
-        MeshCollider[] meshColliders = GetComponentsInChildren<MeshCollider>();
-
-        // Activar los MeshColliders
-        foreach (MeshCollider collider in meshColliders)
-        {
-            collider.enabled = true;
-        }
+        Gizmos.color = Color.green;
+        Vector3 sizeReducido = _boundsChequeo.size * porcentajeTamanoChequeo;
+        Gizmos.DrawWireCube(_boundsChequeo.center, sizeReducido);
     }
-    
+#endif
 }

@@ -1,0 +1,517 @@
+{ "cat":"", "pid":12345, "tid":0, "ts":0, "ph":"M", "name":"process_name", "args": { "name":"bee_backend" } }
+,{ "pid":12345, "tid":0, "ts":1754502357624513, "dur":73, "ph":"X", "name": "IPC_Client_InitializeAndConnectToParent",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":0, "ts":1754502357624630, "dur":29006, "ph":"X", "name": "DriverInitData",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":0, "ts":1754502357653644, "dur":161, "ph":"X", "name": "RemoveStaleOutputs",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":0, "ts":1754502357653863, "dur":359, "ph":"X", "name": "BuildQueueInit",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":0, "ts":1754502357656623, "dur":115, "ph":"X", "name": "EmitFirstTimeEnqueue",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll" }}
+,{ "pid":12345, "tid":0, "ts":1754502357654248, "dur":3919, "ph":"X", "name": "EnqueueRequestedNodes",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":0, "ts":1754502357658168, "dur":14168857, "ph":"X", "name": "WaitForBuildFinished", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":0, "ts":1754502371827028, "dur":93, "ph":"X", "name": "JoinBuildThread",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":0, "ts":1754502371827121, "dur":119, "ph":"X", "name": "ThreadStateDestroy",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":0, "ts":1754502371827240, "dur":58, "ph":"X", "name": "JoinBuildThread",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":0, "ts":1754502371827439, "dur":1205, "ph":"X", "name": "Tundra",  "args": { "detail":"Write AllBuiltNodes" }}
+,{ "pid":12345, "tid":1, "ts":1754502357654662, "dur":3518, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":1, "ts":1754502357658758, "dur":647, "ph":"X", "name": "CheckGlobSignature",  "args": { "detail":"G:/unity/6000.0.36f1/Editor/Data/il2cpp/build/deploy" }}
+,{ "pid":12345, "tid":1, "ts":1754502357659405, "dur":3679, "ph":"X", "name": "CheckGlobSignature",  "args": { "detail":"G:/unity/6000.0.36f1/Editor/Data/il2cpp/libil2cpp" }}
+,{ "pid":12345, "tid":1, "ts":1754502357663085, "dur":72, "ph":"X", "name": "CheckGlobSignature",  "args": { "detail":"G:/unity/6000.0.36f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport" }}
+,{ "pid":12345, "tid":1, "ts":1754502357663157, "dur":801, "ph":"X", "name": "CheckGlobSignature",  "args": { "detail":"G:/unity/6000.0.36f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/Variations/win64_player_nondevelopment_mono" }}
+,{ "pid":12345, "tid":1, "ts":1754502357663999, "dur":78, "ph":"X", "name": "CheckGlobSignature",  "args": { "detail":"G:/unity/6000.0.36f1/Editor/Data/Tools/BuildPipeline" }}
+,{ "pid":12345, "tid":1, "ts":1754502357664077, "dur":88, "ph":"X", "name": "CheckGlobSignature",  "args": { "detail":"Library/PlayerDataCache/Win642/Data" }}
+,{ "pid":12345, "tid":1, "ts":1754502357658189, "dur":6024, "ph":"X", "name": "CheckDagSignatures",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":1, "ts":1754502357664243, "dur":54, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"WriteResponseFile Library/Bee/artifacts/rsp/2918368321547554297.rsp" }}
+,{ "pid":12345, "tid":1, "ts":1754502357664323, "dur":1355, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"UnityLinker G:/Github/Recogedor-de-basura/Detector de baches/Library/Bee/artifacts/unitylinker_dwek.traceevents" }}
+,{ "pid":12345, "tid":1, "ts":1754502357665679, "dur":1053, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":1, "ts":1754502357667922, "dur":292479, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\Assembly-CSharp.dll" }}
+,{ "pid":12345, "tid":1, "ts":1754502357960424, "dur":260119, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\Cinemachine.dll" }}
+,{ "pid":12345, "tid":1, "ts":1754502358220568, "dur":79003, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\netstandard.dll" }}
+,{ "pid":12345, "tid":1, "ts":1754502358299605, "dur":231734, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\System.ComponentModel.Composition.dll" }}
+,{ "pid":12345, "tid":1, "ts":1754502358531344, "dur":92033, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\System.Configuration.dll" }}
+,{ "pid":12345, "tid":1, "ts":1754502358623387, "dur":156142, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\System.dll" }}
+,{ "pid":12345, "tid":1, "ts":1754502358779551, "dur":22618, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\System.Transactions.dll" }}
+,{ "pid":12345, "tid":1, "ts":1754502358802208, "dur":2553, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.AssetBundleModule.dll" }}
+,{ "pid":12345, "tid":1, "ts":1754502358804794, "dur":34770, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.IMGUIModule.dll" }}
+,{ "pid":12345, "tid":1, "ts":1754502358839645, "dur":135041, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"G:\\Github\\Recogedor-de-basura\\Detector de baches\\Library\\PackageCache\\com.unity.burst@616862665d8c\\.Runtime\\bcl.exe" }}
+,{ "pid":12345, "tid":1, "ts":1754502357667842, "dur":1306846, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"GenerateNativePluginsForAssemblies Library/Bee/artifacts/WinPlayerBuildProgram/AsyncPluginsFromLinker" }}
+,{ "pid":12345, "tid":1, "ts":1754502358975195, "dur":12851668, "ph":"X", "name": "GenerateNativePluginsForAssemblies",  "args": { "detail":"Library/Bee/artifacts/WinPlayerBuildProgram/AsyncPluginsFromLinker" }}
+,{ "pid":12345, "tid":2, "ts":1754502357654781, "dur":3443, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1754502357658233, "dur":463, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1754502357658696, "dur":190, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1754502357658887, "dur":224, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1754502357659111, "dur":498, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1754502357659609, "dur":4796, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1754502357664406, "dur":151, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/MonoBleedingEdge/etc/mono/4.0/machine.config" }}
+,{ "pid":12345, "tid":2, "ts":1754502357664558, "dur":161, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1754502357664742, "dur":65, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1754502357664813, "dur":96, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1754502357664914, "dur":2953, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1754502357667883, "dur":290822, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\System.Drawing.dll" }}
+,{ "pid":12345, "tid":2, "ts":1754502357667868, "dur":290839, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.Drawing.dll" }}
+,{ "pid":12345, "tid":2, "ts":1754502357958733, "dur":15356, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.Drawing.dll" }}
+,{ "pid":12345, "tid":2, "ts":1754502357974195, "dur":58596, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.GridModule.dll" }}
+,{ "pid":12345, "tid":2, "ts":1754502357974093, "dur":58701, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.GridModule.dll" }}
+,{ "pid":12345, "tid":2, "ts":1754502358035280, "dur":2906, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1754502358032828, "dur":5377, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.GridModule.dll" }}
+,{ "pid":12345, "tid":2, "ts":1754502358038243, "dur":181270, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.UnityAnalyticsModule.dll" }}
+,{ "pid":12345, "tid":2, "ts":1754502358038210, "dur":181306, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.UnityAnalyticsModule.dll" }}
+,{ "pid":12345, "tid":2, "ts":1754502358219592, "dur":4942, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.UnityAnalyticsModule.dll" }}
+,{ "pid":12345, "tid":2, "ts":1754502358224574, "dur":144380, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\Unity.Burst.dll" }}
+,{ "pid":12345, "tid":2, "ts":1754502358224538, "dur":144418, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/Unity.Burst.dll" }}
+,{ "pid":12345, "tid":2, "ts":1754502358368990, "dur":1523, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/Unity.Burst.dll" }}
+,{ "pid":12345, "tid":2, "ts":1754502358370540, "dur":63402, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.JSONSerializeModule.dll" }}
+,{ "pid":12345, "tid":2, "ts":1754502358370518, "dur":63427, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.JSONSerializeModule.dll" }}
+,{ "pid":12345, "tid":2, "ts":1754502358433985, "dur":1724, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.JSONSerializeModule.dll" }}
+,{ "pid":12345, "tid":2, "ts":1754502358435771, "dur":49059, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.DSPGraphModule.dll" }}
+,{ "pid":12345, "tid":2, "ts":1754502358435714, "dur":49118, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.DSPGraphModule.dll" }}
+,{ "pid":12345, "tid":2, "ts":1754502358484869, "dur":2006, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.DSPGraphModule.dll" }}
+,{ "pid":12345, "tid":2, "ts":1754502358486903, "dur":88962, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.VFXModule.dll" }}
+,{ "pid":12345, "tid":2, "ts":1754502358486881, "dur":88987, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.VFXModule.dll" }}
+,{ "pid":12345, "tid":2, "ts":1754502358575902, "dur":1675, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.VFXModule.dll" }}
+,{ "pid":12345, "tid":2, "ts":1754502358577606, "dur":117647, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.PhysicsModule.dll" }}
+,{ "pid":12345, "tid":2, "ts":1754502358577582, "dur":117673, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.PhysicsModule.dll" }}
+,{ "pid":12345, "tid":2, "ts":1754502358695289, "dur":1565, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.PhysicsModule.dll" }}
+,{ "pid":12345, "tid":2, "ts":1754502358696876, "dur":105297, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\System.Transactions.dll" }}
+,{ "pid":12345, "tid":2, "ts":1754502358696857, "dur":105317, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.Transactions.dll" }}
+,{ "pid":12345, "tid":2, "ts":1754502358802196, "dur":1297, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.Transactions.dll" }}
+,{ "pid":12345, "tid":2, "ts":1754502358803495, "dur":13023554, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1754502357654834, "dur":3425, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1754502357658271, "dur":289, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1754502357658561, "dur":453, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1754502357659014, "dur":535, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1754502357659550, "dur":4668, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1754502357664292, "dur":93, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1754502357664457, "dur":140, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1754502357664680, "dur":60, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1754502357664747, "dur":67, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1754502357664818, "dur":3012, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1754502357667857, "dur":38993, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.VRModule.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502357667832, "dur":39020, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.VRModule.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502357709003, "dur":3662, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.VRModule.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502357712692, "dur":116816, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.InputForUIModule.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502357712670, "dur":116840, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.InputForUIModule.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502357829535, "dur":1163, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.InputForUIModule.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502357830720, "dur":125929, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\System.ServiceModel.Internals.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502357830702, "dur":125960, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.ServiceModel.Internals.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502357956703, "dur":2267, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.ServiceModel.Internals.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502357958995, "dur":55275, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.NVIDIAModule.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502357958974, "dur":55299, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.NVIDIAModule.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502358014300, "dur":1306, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.NVIDIAModule.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502358015631, "dur":340934, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\System.Xml.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502358015610, "dur":340958, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.Xml.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502358356599, "dur":4964, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.Xml.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502358361656, "dur":47564, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\System.Runtime.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502358361572, "dur":47650, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.Runtime.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502358409249, "dur":1551, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.Runtime.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502358410826, "dur":134542, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\System.Xml.Linq.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502358410805, "dur":134565, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.Xml.Linq.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502358545404, "dur":1455, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.Xml.Linq.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502358546885, "dur":121790, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.AccessibilityModule.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502358546863, "dur":121814, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.AccessibilityModule.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502358668759, "dur":1306, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.AccessibilityModule.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502358670092, "dur":52474, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.UnityWebRequestAssetBundleModule.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502358670070, "dur":52499, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.UnityWebRequestAssetBundleModule.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502358722608, "dur":2447, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.UnityWebRequestAssetBundleModule.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502358725087, "dur":51875, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\Unity.Multiplayer.Center.Common.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502358725061, "dur":51903, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/Unity.Multiplayer.Center.Common.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502358776997, "dur":1522, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/Unity.Multiplayer.Center.Common.dll" }}
+,{ "pid":12345, "tid":3, "ts":1754502358778523, "dur":13048576, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1754502357654706, "dur":3487, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1754502357658207, "dur":523, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1754502357658731, "dur":216, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1754502357658947, "dur":330, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1754502357659277, "dur":4943, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1754502357664225, "dur":57, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/MonoBleedingEdge/etc/mono/mconfig/config.xml" }}
+,{ "pid":12345, "tid":4, "ts":1754502357664283, "dur":161, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1754502357664473, "dur":269, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1754502357664750, "dur":105, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1754502357664863, "dur":2996, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1754502357667882, "dur":213604, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.UI.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502357667861, "dur":213627, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.UI.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502357881526, "dur":3478, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.UI.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502357885033, "dur":1333, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\Unity.Collections.LowLevel.ILSupport.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502357885008, "dur":1360, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/Unity.Collections.LowLevel.ILSupport.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502357886418, "dur":2326, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/Unity.Collections.LowLevel.ILSupport.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502357888770, "dur":123876, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.AudioModule.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502357888748, "dur":123900, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.AudioModule.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358012706, "dur":2211, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.AudioModule.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358015044, "dur":42805, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.WindModule.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358014921, "dur":42931, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.WindModule.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358057887, "dur":1284, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.WindModule.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358059197, "dur":95856, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.GraphicsStateCollectionSerializerModule.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358059175, "dur":95880, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.GraphicsStateCollectionSerializerModule.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358155077, "dur":1314, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.GraphicsStateCollectionSerializerModule.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358156417, "dur":63101, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.MarshallingModule.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358156395, "dur":63124, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.MarshallingModule.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358219587, "dur":1665, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.MarshallingModule.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358221273, "dur":156535, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\Unity.Sentis.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358221256, "dur":156554, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/Unity.Sentis.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358377841, "dur":1568, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/Unity.Sentis.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358379436, "dur":60717, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.UnityWebRequestWWWModule.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358379414, "dur":60741, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.UnityWebRequestWWWModule.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358440197, "dur":1769, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.UnityWebRequestWWWModule.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358441994, "dur":56465, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\Unity.Burst.Unsafe.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358441971, "dur":56490, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/Unity.Burst.Unsafe.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358498474, "dur":5492, "ph":"X", "name": "EmitNodeStart",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1754502358503974, "dur":1186, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/Unity.Burst.Unsafe.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358505185, "dur":137225, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\System.IO.Compression.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358505165, "dur":137247, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.IO.Compression.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358642445, "dur":1335, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.IO.Compression.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358643803, "dur":106604, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.AnimationModule.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358643784, "dur":106632, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.AnimationModule.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358750427, "dur":419, "ph":"X", "name": "EmitNodeStart",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1754502358750855, "dur":1823, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.AnimationModule.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358752759, "dur":48770, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.UnityWebRequestTextureModule.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358752683, "dur":48848, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.UnityWebRequestTextureModule.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358801568, "dur":1847, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.UnityWebRequestTextureModule.dll" }}
+,{ "pid":12345, "tid":4, "ts":1754502358803419, "dur":13023653, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1754502357654764, "dur":3445, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1754502357658219, "dur":351, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1754502357658571, "dur":374, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1754502357658946, "dur":576, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1754502357659522, "dur":4700, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1754502357664258, "dur":89, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1754502357664377, "dur":94, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1754502357664497, "dur":131, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1754502357664640, "dur":68, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1754502357664724, "dur":66, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1754502357664796, "dur":59, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1754502357664861, "dur":2980, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1754502357667884, "dur":61386, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.AMDModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502357667851, "dur":61421, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.AMDModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502357729301, "dur":1120, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.AMDModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502357730469, "dur":81587, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.SpriteShapeModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502357730425, "dur":81633, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.SpriteShapeModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502357812100, "dur":3226, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.SpriteShapeModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502357815348, "dur":116330, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\Unity.Timeline.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502357815330, "dur":116350, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/Unity.Timeline.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502357931703, "dur":1401, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/Unity.Timeline.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502357933129, "dur":49119, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.PerformanceReportingModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502357933108, "dur":49142, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.PerformanceReportingModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502357983585, "dur":58, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1754502357982283, "dur":1401, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.PerformanceReportingModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502357983754, "dur":90275, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.ClothModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502357983695, "dur":90337, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.ClothModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502358074131, "dur":1136, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.ClothModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502358075290, "dur":77401, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.DirectorModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502358075270, "dur":77424, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.DirectorModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502358152729, "dur":1273, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.DirectorModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502358154026, "dur":100677, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.PropertiesModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502358154006, "dur":100699, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.PropertiesModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502358254754, "dur":19615, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.PropertiesModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502358274393, "dur":55270, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.CrashReportingModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502358274373, "dur":55292, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.CrashReportingModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502358329689, "dur":4521, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.CrashReportingModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502358334233, "dur":117271, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.XRModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502358334214, "dur":117292, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.XRModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502358451542, "dur":4077, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.XRModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502358455649, "dur":46322, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.MultiplayerModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502358455625, "dur":46349, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.MultiplayerModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502358502006, "dur":1361, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.MultiplayerModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502358503389, "dur":112147, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\System.Net.Http.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502358503372, "dur":112166, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.Net.Http.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502358615569, "dur":4555, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.Net.Http.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502358620155, "dur":80691, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.VirtualTexturingModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502358620129, "dur":80719, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.VirtualTexturingModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502358700885, "dur":1411, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.VirtualTexturingModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502358702318, "dur":2200, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/Assembly-CSharp.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502358704543, "dur":65445, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.ARModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502358704522, "dur":65470, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.ARModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502358770908, "dur":2560, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.ARModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1754502358773472, "dur":13053646, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1754502357654818, "dur":3425, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1754502357658256, "dur":550, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1754502357658806, "dur":240, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1754502357659046, "dur":548, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1754502357659594, "dur":4646, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1754502357664272, "dur":99, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1754502357664413, "dur":81, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1754502357664517, "dur":75, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1754502357664616, "dur":84, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1754502357664710, "dur":85, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1754502357664803, "dur":81, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1754502357664887, "dur":2966, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1754502357667877, "dur":48940, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.VehiclesModule.dll" }}
+,{ "pid":12345, "tid":6, "ts":1754502357667854, "dur":48966, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.VehiclesModule.dll" }}
+,{ "pid":12345, "tid":6, "ts":1754502357716867, "dur":6004, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.VehiclesModule.dll" }}
+,{ "pid":12345, "tid":6, "ts":1754502357722889, "dur":134448, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\System.Numerics.dll" }}
+,{ "pid":12345, "tid":6, "ts":1754502357722873, "dur":134467, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.Numerics.dll" }}
+,{ "pid":12345, "tid":6, "ts":1754502357864276, "dur":84, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1754502357857373, "dur":7016, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.Numerics.dll" }}
+,{ "pid":12345, "tid":6, "ts":1754502357864458, "dur":246160, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.AndroidJNIModule.dll" }}
+,{ "pid":12345, "tid":6, "ts":1754502357864395, "dur":246225, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.AndroidJNIModule.dll" }}
+,{ "pid":12345, "tid":6, "ts":1754502358112145, "dur":57, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1754502358110656, "dur":1581, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.AndroidJNIModule.dll" }}
+,{ "pid":12345, "tid":6, "ts":1754502358112280, "dur":84929, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\Unity.AI.Navigation.dll" }}
+,{ "pid":12345, "tid":6, "ts":1754502358112241, "dur":84971, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/Unity.AI.Navigation.dll" }}
+,{ "pid":12345, "tid":6, "ts":1754502358197252, "dur":5187, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/Unity.AI.Navigation.dll" }}
+,{ "pid":12345, "tid":6, "ts":1754502358202527, "dur":49887, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.SpriteMaskModule.dll" }}
+,{ "pid":12345, "tid":6, "ts":1754502358202453, "dur":49964, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.SpriteMaskModule.dll" }}
+,{ "pid":12345, "tid":6, "ts":1754502358252452, "dur":5147, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.SpriteMaskModule.dll" }}
+,{ "pid":12345, "tid":6, "ts":1754502358257624, "dur":53985, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.dll" }}
+,{ "pid":12345, "tid":6, "ts":1754502358257603, "dur":54008, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.dll" }}
+,{ "pid":12345, "tid":6, "ts":1754502358311636, "dur":3524, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.dll" }}
+,{ "pid":12345, "tid":6, "ts":1754502358315195, "dur":191253, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\System.Runtime.Serialization.dll" }}
+,{ "pid":12345, "tid":6, "ts":1754502358315163, "dur":191287, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.Runtime.Serialization.dll" }}
+,{ "pid":12345, "tid":6, "ts":1754502358506508, "dur":1949, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.Runtime.Serialization.dll" }}
+,{ "pid":12345, "tid":6, "ts":1754502358508496, "dur":256999, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.UIElementsModule.dll" }}
+,{ "pid":12345, "tid":6, "ts":1754502358508462, "dur":257035, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.UIElementsModule.dll" }}
+,{ "pid":12345, "tid":6, "ts":1754502358765529, "dur":5742, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.UIElementsModule.dll" }}
+,{ "pid":12345, "tid":6, "ts":1754502358771275, "dur":13055741, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1754502357654872, "dur":3403, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1754502357658286, "dur":412, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1754502357658698, "dur":193, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1754502357658892, "dur":278, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1754502357659170, "dur":398, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1754502357659568, "dur":4648, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1754502357664293, "dur":880, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"AddBootConfigGUID Library/Bee/artifacts/WinPlayerBuildProgram/boot.config" }}
+,{ "pid":12345, "tid":7, "ts":1754502357665233, "dur":2602, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1754502357667883, "dur":48154, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.SubstanceModule.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502357667838, "dur":48201, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.SubstanceModule.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502357716080, "dur":6739, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.SubstanceModule.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502357722842, "dur":83551, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.ParticleSystemModule.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502357722822, "dur":83574, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.ParticleSystemModule.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502357808947, "dur":65, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1754502357806435, "dur":2595, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.ParticleSystemModule.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502357809081, "dur":58404, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\System.EnterpriseServices.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502357809035, "dur":58452, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.EnterpriseServices.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502357867499, "dur":60, "ph":"X", "name": "EmitNodeStart",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1754502357867566, "dur":1388, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.EnterpriseServices.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502357868994, "dur":101742, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.AIModule.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502357868958, "dur":101780, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.AIModule.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502357970750, "dur":95, "ph":"X", "name": "EmitNodeStart",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1754502357974060, "dur":53, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1754502357970852, "dur":3271, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.AIModule.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502357974145, "dur":224212, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\System.Security.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502357974126, "dur":224233, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.Security.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502358198385, "dur":1640, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.Security.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502358200063, "dur":110060, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\Unity.Collections.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502358200042, "dur":110083, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/Unity.Collections.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502358310154, "dur":4360, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/Unity.Collections.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502358314522, "dur":217114, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\System.ComponentModel.Composition.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502358314519, "dur":217118, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.ComponentModel.Composition.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502358531649, "dur":103, "ph":"X", "name": "EmitNodeStart",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1754502358535973, "dur":58, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1754502358531759, "dur":4312, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.ComponentModel.Composition.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502358536117, "dur":44486, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.UnityConnectModule.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502358536075, "dur":44530, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.UnityConnectModule.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502358580908, "dur":68, "ph":"X", "name": "EmitNodeStart",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1754502358587060, "dur":69, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1754502358580984, "dur":6186, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.UnityConnectModule.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502358587225, "dur":105617, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.TextRenderingModule.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502358587175, "dur":105669, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.TextRenderingModule.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502358692857, "dur":75, "ph":"X", "name": "EmitNodeStart",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1754502358692940, "dur":2414, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.TextRenderingModule.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502358695381, "dur":40074, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.TLSModule.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502358695358, "dur":40099, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.TLSModule.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502358735755, "dur":1638, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.TLSModule.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502358737422, "dur":102152, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.IMGUIModule.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502358737399, "dur":102180, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.IMGUIModule.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502358839602, "dur":1027, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.IMGUIModule.dll" }}
+,{ "pid":12345, "tid":7, "ts":1754502358840632, "dur":12986395, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1754502357654908, "dur":3387, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1754502357658307, "dur":508, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1754502357658825, "dur":297, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1754502357659122, "dur":466, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1754502357659589, "dur":4646, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1754502357664256, "dur":140, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1754502357664462, "dur":60, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1754502357664574, "dur":52, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1754502357664636, "dur":55, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1754502357664753, "dur":101, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1754502357664858, "dur":2970, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1754502357667855, "dur":39252, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.UnityTestProtocolModule.dll" }}
+,{ "pid":12345, "tid":8, "ts":1754502357667829, "dur":39281, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.UnityTestProtocolModule.dll" }}
+,{ "pid":12345, "tid":8, "ts":1754502357708105, "dur":4865, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.UnityTestProtocolModule.dll" }}
+,{ "pid":12345, "tid":8, "ts":1754502357713005, "dur":40362, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll" }}
+,{ "pid":12345, "tid":8, "ts":1754502357712973, "dur":40396, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll" }}
+,{ "pid":12345, "tid":8, "ts":1754502357753400, "dur":2406, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll" }}
+,{ "pid":12345, "tid":8, "ts":1754502357755830, "dur":366052, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\Mono.Security.dll" }}
+,{ "pid":12345, "tid":8, "ts":1754502357755810, "dur":366075, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/Mono.Security.dll" }}
+,{ "pid":12345, "tid":8, "ts":1754502358121919, "dur":2044, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/Mono.Security.dll" }}
+,{ "pid":12345, "tid":8, "ts":1754502358124002, "dur":100799, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.GameCenterModule.dll" }}
+,{ "pid":12345, "tid":8, "ts":1754502358123967, "dur":100836, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.GameCenterModule.dll" }}
+,{ "pid":12345, "tid":8, "ts":1754502358224823, "dur":28393, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.GameCenterModule.dll" }}
+,{ "pid":12345, "tid":8, "ts":1754502358253245, "dur":191867, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\System.Core.dll" }}
+,{ "pid":12345, "tid":8, "ts":1754502358253221, "dur":191893, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.Core.dll" }}
+,{ "pid":12345, "tid":8, "ts":1754502358445149, "dur":2138, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.Core.dll" }}
+,{ "pid":12345, "tid":8, "ts":1754502358447315, "dur":75336, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.UnityAnalyticsCommonModule.dll" }}
+,{ "pid":12345, "tid":8, "ts":1754502358447292, "dur":75361, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.UnityAnalyticsCommonModule.dll" }}
+,{ "pid":12345, "tid":8, "ts":1754502358522685, "dur":1917, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.UnityAnalyticsCommonModule.dll" }}
+,{ "pid":12345, "tid":8, "ts":1754502358524630, "dur":271728, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\Unity.Postprocessing.Runtime.dll" }}
+,{ "pid":12345, "tid":8, "ts":1754502358524607, "dur":271753, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/Unity.Postprocessing.Runtime.dll" }}
+,{ "pid":12345, "tid":8, "ts":1754502358796434, "dur":1446, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/Unity.Postprocessing.Runtime.dll" }}
+,{ "pid":12345, "tid":8, "ts":1754502358797892, "dur":13029214, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":9, "ts":1754502357654948, "dur":3364, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":9, "ts":1754502357658322, "dur":521, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":9, "ts":1754502357658843, "dur":300, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":9, "ts":1754502357659143, "dur":398, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":9, "ts":1754502357659542, "dur":4855, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":9, "ts":1754502357664399, "dur":140, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/MonoBleedingEdge/etc/mono/4.0/settings.map" }}
+,{ "pid":12345, "tid":9, "ts":1754502357664539, "dur":156, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":9, "ts":1754502357664705, "dur":106, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":9, "ts":1754502357664817, "dur":58, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":9, "ts":1754502357664881, "dur":2965, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":9, "ts":1754502357667889, "dur":103126, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.VideoModule.dll" }}
+,{ "pid":12345, "tid":9, "ts":1754502357667848, "dur":103169, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.VideoModule.dll" }}
+,{ "pid":12345, "tid":9, "ts":1754502357771073, "dur":5196, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.VideoModule.dll" }}
+,{ "pid":12345, "tid":9, "ts":1754502357776290, "dur":52453, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.UmbraModule.dll" }}
+,{ "pid":12345, "tid":9, "ts":1754502357776272, "dur":52473, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.UmbraModule.dll" }}
+,{ "pid":12345, "tid":9, "ts":1754502357828810, "dur":2540, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.UmbraModule.dll" }}
+,{ "pid":12345, "tid":9, "ts":1754502357831389, "dur":64542, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.InputLegacyModule.dll" }}
+,{ "pid":12345, "tid":9, "ts":1754502357831354, "dur":64579, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.InputLegacyModule.dll" }}
+,{ "pid":12345, "tid":9, "ts":1754502357895965, "dur":1647, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.InputLegacyModule.dll" }}
+,{ "pid":12345, "tid":9, "ts":1754502357897638, "dur":87149, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.TilemapModule.dll" }}
+,{ "pid":12345, "tid":9, "ts":1754502357897617, "dur":87171, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.TilemapModule.dll" }}
+,{ "pid":12345, "tid":9, "ts":1754502357984814, "dur":2246, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.TilemapModule.dll" }}
+,{ "pid":12345, "tid":9, "ts":1754502357987084, "dur":158852, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.UnityWebRequestModule.dll" }}
+,{ "pid":12345, "tid":9, "ts":1754502357987064, "dur":158875, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.UnityWebRequestModule.dll" }}
+,{ "pid":12345, "tid":9, "ts":1754502358145974, "dur":1741, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.UnityWebRequestModule.dll" }}
+,{ "pid":12345, "tid":9, "ts":1754502358147743, "dur":124196, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.Physics2DModule.dll" }}
+,{ "pid":12345, "tid":9, "ts":1754502358147719, "dur":124222, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.Physics2DModule.dll" }}
+,{ "pid":12345, "tid":9, "ts":1754502358271972, "dur":2018, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.Physics2DModule.dll" }}
+,{ "pid":12345, "tid":9, "ts":1754502358274018, "dur":65592, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.LocalizationModule.dll" }}
+,{ "pid":12345, "tid":9, "ts":1754502358273995, "dur":65618, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.LocalizationModule.dll" }}
+,{ "pid":12345, "tid":9, "ts":1754502358339647, "dur":3833, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.LocalizationModule.dll" }}
+,{ "pid":12345, "tid":9, "ts":1754502358343675, "dur":435521, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\System.dll" }}
+,{ "pid":12345, "tid":9, "ts":1754502358343485, "dur":435713, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.dll" }}
+,{ "pid":12345, "tid":9, "ts":1754502358779223, "dur":2971, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.dll" }}
+,{ "pid":12345, "tid":9, "ts":1754502358782199, "dur":13044863, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":10, "ts":1754502357654974, "dur":3351, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":10, "ts":1754502357658335, "dur":570, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":10, "ts":1754502357658906, "dur":335, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":10, "ts":1754502357659241, "dur":368, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":10, "ts":1754502357659610, "dur":4618, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":10, "ts":1754502357664263, "dur":139, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":10, "ts":1754502357664444, "dur":80, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":10, "ts":1754502357664613, "dur":77, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":10, "ts":1754502357664697, "dur":69, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":10, "ts":1754502357664772, "dur":60, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":10, "ts":1754502357664836, "dur":2989, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":10, "ts":1754502357667853, "dur":205122, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.TextCoreTextEngineModule.dll" }}
+,{ "pid":12345, "tid":10, "ts":1754502357667826, "dur":205151, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.TextCoreTextEngineModule.dll" }}
+,{ "pid":12345, "tid":10, "ts":1754502357872990, "dur":64, "ph":"X", "name": "EmitNodeStart",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":10, "ts":1754502357873061, "dur":1681, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.TextCoreTextEngineModule.dll" }}
+,{ "pid":12345, "tid":10, "ts":1754502357874865, "dur":54893, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.InputModule.dll" }}
+,{ "pid":12345, "tid":10, "ts":1754502357874774, "dur":54986, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.InputModule.dll" }}
+,{ "pid":12345, "tid":10, "ts":1754502357929781, "dur":1284, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.InputModule.dll" }}
+,{ "pid":12345, "tid":10, "ts":1754502357931094, "dur":87907, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.TextCoreFontEngineModule.dll" }}
+,{ "pid":12345, "tid":10, "ts":1754502357931068, "dur":87934, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.TextCoreFontEngineModule.dll" }}
+,{ "pid":12345, "tid":10, "ts":1754502358019034, "dur":2091, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.TextCoreFontEngineModule.dll" }}
+,{ "pid":12345, "tid":10, "ts":1754502358021149, "dur":225595, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.CoreModule.dll" }}
+,{ "pid":12345, "tid":10, "ts":1754502358021129, "dur":225617, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.CoreModule.dll" }}
+,{ "pid":12345, "tid":10, "ts":1754502358246780, "dur":7406, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.CoreModule.dll" }}
+,{ "pid":12345, "tid":10, "ts":1754502358254193, "dur":52225, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\netstandard.dll" }}
+,{ "pid":12345, "tid":10, "ts":1754502358254191, "dur":52229, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/netstandard.dll" }}
+,{ "pid":12345, "tid":10, "ts":1754502358306456, "dur":2963, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/netstandard.dll" }}
+,{ "pid":12345, "tid":10, "ts":1754502358309522, "dur":40686, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.ScreenCaptureModule.dll" }}
+,{ "pid":12345, "tid":10, "ts":1754502358309423, "dur":40788, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.ScreenCaptureModule.dll" }}
+,{ "pid":12345, "tid":10, "ts":1754502358350249, "dur":1547, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.ScreenCaptureModule.dll" }}
+,{ "pid":12345, "tid":10, "ts":1754502358351899, "dur":262433, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\System.Configuration.dll" }}
+,{ "pid":12345, "tid":10, "ts":1754502358351877, "dur":262457, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.Configuration.dll" }}
+,{ "pid":12345, "tid":10, "ts":1754502358614368, "dur":1296, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.Configuration.dll" }}
+,{ "pid":12345, "tid":10, "ts":1754502358615770, "dur":94402, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.TerrainModule.dll" }}
+,{ "pid":12345, "tid":10, "ts":1754502358615675, "dur":94499, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.TerrainModule.dll" }}
+,{ "pid":12345, "tid":10, "ts":1754502358711479, "dur":53, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":10, "ts":1754502358710229, "dur":1332, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.TerrainModule.dll" }}
+,{ "pid":12345, "tid":10, "ts":1754502358711657, "dur":51630, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.HotReloadModule.dll" }}
+,{ "pid":12345, "tid":10, "ts":1754502358711621, "dur":51668, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.HotReloadModule.dll" }}
+,{ "pid":12345, "tid":10, "ts":1754502358763322, "dur":2704, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.HotReloadModule.dll" }}
+,{ "pid":12345, "tid":10, "ts":1754502358766029, "dur":13060985, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1754502357655010, "dur":3331, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1754502357658350, "dur":423, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1754502357658774, "dur":254, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1754502357659028, "dur":548, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1754502357659576, "dur":4658, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1754502357664285, "dur":100, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1754502357664418, "dur":73, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/MonoBleedingEdge/etc/mono/4.0/Browsers/Compat.browser" }}
+,{ "pid":12345, "tid":11, "ts":1754502357664492, "dur":130, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1754502357664651, "dur":98, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1754502357664758, "dur":75, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1754502357664839, "dur":2988, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1754502357667854, "dur":43000, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.GIModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502357667828, "dur":43028, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.GIModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502357712600, "dur":10207, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.GIModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502357722834, "dur":50443, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.ClusterRendererModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502357722812, "dur":50467, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.ClusterRendererModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502357773305, "dur":916, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.ClusterRendererModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502357774240, "dur":37866, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.TerrainPhysicsModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502357774224, "dur":37884, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.TerrainPhysicsModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502357812124, "dur":1489, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.TerrainPhysicsModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502357813641, "dur":72768, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\System.Data.DataSetExtensions.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502357813617, "dur":72794, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.Data.DataSetExtensions.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502357886427, "dur":4567, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.Data.DataSetExtensions.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502357891090, "dur":36058, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.ShaderVariantAnalyticsModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502357891007, "dur":36144, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.ShaderVariantAnalyticsModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502357927186, "dur":2298, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.ShaderVariantAnalyticsModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502357929525, "dur":110249, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.HierarchyCoreModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502357929489, "dur":110288, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.HierarchyCoreModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502358039804, "dur":1391, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.HierarchyCoreModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502358041218, "dur":54943, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.ImageConversionModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502358041199, "dur":54964, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.ImageConversionModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502358096195, "dur":1297, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.ImageConversionModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502358097520, "dur":66291, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.SharedInternalsModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502358097496, "dur":66317, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.SharedInternalsModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502358163846, "dur":1281, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.SharedInternalsModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502358165151, "dur":110206, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\Unity.Mathematics.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502358165131, "dur":110228, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/Unity.Mathematics.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502358275381, "dur":1586, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/Unity.Mathematics.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502358276998, "dur":52098, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.StreamingModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502358276971, "dur":52129, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.StreamingModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502358329137, "dur":3061, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.StreamingModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502358332314, "dur":73725, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.SubsystemsModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502358332278, "dur":73763, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.SubsystemsModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502358406077, "dur":1524, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.SubsystemsModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502358407622, "dur":272597, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\Unity.TextMeshPro.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502358407605, "dur":272617, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/Unity.TextMeshPro.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502358680259, "dur":4073, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/Unity.TextMeshPro.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502358684364, "dur":64209, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.UnityWebRequestAudioModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502358684338, "dur":64237, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.UnityWebRequestAudioModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502358748587, "dur":8430, "ph":"X", "name": "EmitNodeStart",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1754502358757027, "dur":3608, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.UnityWebRequestAudioModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1754502358760639, "dur":13066382, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1754502357655077, "dur":3278, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1754502357658356, "dur":523, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1754502357658879, "dur":245, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1754502357659125, "dur":423, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1754502357659548, "dur":4688, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1754502357664288, "dur":111, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1754502357664468, "dur":67, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1754502357664604, "dur":98, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1754502357664712, "dur":81, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1754502357664800, "dur":73, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1754502357664878, "dur":2970, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1754502357667871, "dur":43420, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.UnityCurlModule.dll" }}
+,{ "pid":12345, "tid":12, "ts":1754502357667849, "dur":43444, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.UnityCurlModule.dll" }}
+,{ "pid":12345, "tid":12, "ts":1754502357714554, "dur":56, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1754502357712536, "dur":2091, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.UnityCurlModule.dll" }}
+,{ "pid":12345, "tid":12, "ts":1754502357714656, "dur":416812, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\mscorlib.dll" }}
+,{ "pid":12345, "tid":12, "ts":1754502357714631, "dur":416839, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/mscorlib.dll" }}
+,{ "pid":12345, "tid":12, "ts":1754502358131505, "dur":4318, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/mscorlib.dll" }}
+,{ "pid":12345, "tid":12, "ts":1754502358135854, "dur":88028, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\System.IO.Compression.FileSystem.dll" }}
+,{ "pid":12345, "tid":12, "ts":1754502358135828, "dur":88056, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.IO.Compression.FileSystem.dll" }}
+,{ "pid":12345, "tid":12, "ts":1754502358223895, "dur":60, "ph":"X", "name": "EmitNodeStart",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1754502358223962, "dur":25638, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.IO.Compression.FileSystem.dll" }}
+,{ "pid":12345, "tid":12, "ts":1754502358256604, "dur":51, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1754502358249624, "dur":7097, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/Cinemachine.dll" }}
+,{ "pid":12345, "tid":12, "ts":1754502358256749, "dur":238347, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\System.Data.dll" }}
+,{ "pid":12345, "tid":12, "ts":1754502358256725, "dur":238373, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.Data.dll" }}
+,{ "pid":12345, "tid":12, "ts":1754502358495110, "dur":72, "ph":"X", "name": "EmitNodeStart",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1754502358499381, "dur":1286, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1754502358495190, "dur":5497, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/System.Data.dll" }}
+,{ "pid":12345, "tid":12, "ts":1754502358500728, "dur":90427, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.UIModule.dll" }}
+,{ "pid":12345, "tid":12, "ts":1754502358500692, "dur":90465, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.UIModule.dll" }}
+,{ "pid":12345, "tid":12, "ts":1754502358607439, "dur":69, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1754502358591187, "dur":16363, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.UIModule.dll" }}
+,{ "pid":12345, "tid":12, "ts":1754502358607598, "dur":45850, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.ClusterInputModule.dll" }}
+,{ "pid":12345, "tid":12, "ts":1754502358607554, "dur":45896, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.ClusterInputModule.dll" }}
+,{ "pid":12345, "tid":12, "ts":1754502358653462, "dur":79, "ph":"X", "name": "EmitNodeStart",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1754502358653549, "dur":1146, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.ClusterInputModule.dll" }}
+,{ "pid":12345, "tid":12, "ts":1754502358654719, "dur":59640, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.ContentLoadModule.dll" }}
+,{ "pid":12345, "tid":12, "ts":1754502358654699, "dur":59662, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.ContentLoadModule.dll" }}
+,{ "pid":12345, "tid":12, "ts":1754502358719892, "dur":83, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1754502358714395, "dur":5600, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.ContentLoadModule.dll" }}
+,{ "pid":12345, "tid":12, "ts":1754502358720034, "dur":84712, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\ManagedStripped\\UnityEngine.AssetBundleModule.dll" }}
+,{ "pid":12345, "tid":12, "ts":1754502358720000, "dur":84748, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.AssetBundleModule.dll" }}
+,{ "pid":12345, "tid":12, "ts":1754502358804773, "dur":981, "ph":"X", "name": "CopyFiles",  "args": { "detail":"C:/Users/yamil/OneDrive/Escritorio/Recogedor de Basura_Data/Managed/UnityEngine.AssetBundleModule.dll" }}
+,{ "pid":12345, "tid":12, "ts":1754502358805757, "dur":13021277, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":0, "ts":1754502371831624, "dur":1406, "ph":"X", "name": "ProfilerWriteOutput" }
+,

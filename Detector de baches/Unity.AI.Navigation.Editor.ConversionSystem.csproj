@@ -59,29 +59,29 @@
     <UnityVersion>6000.0.36f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Users\Yamil\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.1.2\Analyzers\Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="C:\Users\Yamil\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.1.3\Analyzers\Microsoft.Unity.Analyzers.dll" />
     <Analyzer Include="G:\unity\6000.0.36f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.SourceGenerators.dll" />
     <Analyzer Include="G:\unity\6000.0.36f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
     <Analyzer Include="G:\unity\6000.0.36f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Library\PackageCache\com.unity.ai.navigation@9f76b145f0a8\Editor\ConversionSystem\ConverterItemInfo.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ai.navigation@9f76b145f0a8\Editor\ConversionSystem\SystemConverter.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ai.navigation@9f76b145f0a8\Editor\ConversionSystem\ConverterItemDescriptor.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ai.navigation@9f76b145f0a8\Editor\ConversionSystem\SystemConverterContainer.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ai.navigation@9f76b145f0a8\Editor\ConversionSystem\RunItemContext.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ai.navigation@9f76b145f0a8\Editor\ConversionSystem\InitializeConverterContext.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ai.navigation@9f76b145f0a8\Editor\ConversionSystem\SystemConvertersEditor.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ai.navigation@9f76b145f0a8\Editor\ConversionSystem\EditorStyles.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ai.navigation@9f76b145f0a8\Editor\ConversionSystem\AssemblyInfo.cs" />
+    <Compile Include="Library\PackageCache\com.unity.ai.navigation@eb5635ad590d\Editor\ConversionSystem\ConverterItemInfo.cs" />
+    <Compile Include="Library\PackageCache\com.unity.ai.navigation@eb5635ad590d\Editor\ConversionSystem\SystemConverter.cs" />
+    <Compile Include="Library\PackageCache\com.unity.ai.navigation@eb5635ad590d\Editor\ConversionSystem\ConverterItemDescriptor.cs" />
+    <Compile Include="Library\PackageCache\com.unity.ai.navigation@eb5635ad590d\Editor\ConversionSystem\SystemConverterContainer.cs" />
+    <Compile Include="Library\PackageCache\com.unity.ai.navigation@eb5635ad590d\Editor\ConversionSystem\RunItemContext.cs" />
+    <Compile Include="Library\PackageCache\com.unity.ai.navigation@eb5635ad590d\Editor\ConversionSystem\InitializeConverterContext.cs" />
+    <Compile Include="Library\PackageCache\com.unity.ai.navigation@eb5635ad590d\Editor\ConversionSystem\SystemConvertersEditor.cs" />
+    <Compile Include="Library\PackageCache\com.unity.ai.navigation@eb5635ad590d\Editor\ConversionSystem\EditorStyles.cs" />
+    <Compile Include="Library\PackageCache\com.unity.ai.navigation@eb5635ad590d\Editor\ConversionSystem\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Library\PackageCache\com.unity.ai.navigation@9f76b145f0a8\Editor\ConversionSystem\converter_widget.uss" />
-    <None Include="Library\PackageCache\com.unity.ai.navigation@9f76b145f0a8\Editor\ConversionSystem\Unity.AI.Navigation.Editor.ConversionSystem.asmdef" />
-    <None Include="Library\PackageCache\com.unity.ai.navigation@9f76b145f0a8\Editor\ConversionSystem\converter_widget_item.uxml" />
-    <None Include="Library\PackageCache\com.unity.ai.navigation@9f76b145f0a8\Editor\ConversionSystem\converter_widget.uxml" />
-    <None Include="Library\PackageCache\com.unity.ai.navigation@9f76b145f0a8\Editor\ConversionSystem\converter_editor.uxml" />
-    <None Include="Library\PackageCache\com.unity.ai.navigation@9f76b145f0a8\Editor\ConversionSystem\converter_editor.uss" />
+    <None Include="Library\PackageCache\com.unity.ai.navigation@eb5635ad590d\Editor\ConversionSystem\converter_widget.uss" />
+    <None Include="Library\PackageCache\com.unity.ai.navigation@eb5635ad590d\Editor\ConversionSystem\Unity.AI.Navigation.Editor.ConversionSystem.asmdef" />
+    <None Include="Library\PackageCache\com.unity.ai.navigation@eb5635ad590d\Editor\ConversionSystem\converter_widget_item.uxml" />
+    <None Include="Library\PackageCache\com.unity.ai.navigation@eb5635ad590d\Editor\ConversionSystem\converter_widget.uxml" />
+    <None Include="Library\PackageCache\com.unity.ai.navigation@eb5635ad590d\Editor\ConversionSystem\converter_editor.uxml" />
+    <None Include="Library\PackageCache\com.unity.ai.navigation@eb5635ad590d\Editor\ConversionSystem\converter_editor.uss" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -568,6 +568,10 @@
       <HintPath>G:\unity\6000.0.36f1\Editor\Data\PlaybackEngines\AndroidPlayer\UnityEditor.Android.Extensions.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.Collections.LowLevel.ILSupport">
+      <HintPath>Library\PackageCache\com.unity.collections@56bff8827a7e\Unity.Collections.LowLevel.ILSupport\Unity.Collections.LowLevel.ILSupport.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>Library\PackageCache\com.unity.ext.nunit@60ef35ffd3cd\net40\unity-custom\nunit.framework.dll</HintPath>
       <Private>False</Private>
@@ -586,6 +590,10 @@
     </Reference>
     <Reference Include="log4netPlastic">
       <HintPath>Library\PackageCache\com.unity.collab-proxy@001b54a8988a\Lib\Editor\log4netPlastic.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Mono.Cecil">
+      <HintPath>Library\PackageCache\com.unity.nuget.mono-cecil@d6f9955a5d5f\Mono.Cecil.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Android.Types">

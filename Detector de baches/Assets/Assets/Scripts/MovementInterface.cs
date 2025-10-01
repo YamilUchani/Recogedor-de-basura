@@ -7,6 +7,7 @@ using System;
 
 public class MovementInterface : MonoBehaviour
 {
+    public DroneNavMeshController droneController;
     public Rigidbody velocidad;
     public GameObject angulo;
     private float speed;
@@ -21,11 +22,25 @@ public class MovementInterface : MonoBehaviour
     private bool isCapturing = false;
     public bool angulo_mando;
     private bool container = false;
+    private float baseAngle;
+    private bool baseAngleSet = false;
     private float timer = 0f;
     private int count;
 
     string timestamp;
     string folderPath;
+    private float lastAngle;
+    private const float TOLERANCIA = 0.1f;
+    private bool initialized = false;
+    public float toleranciaVelocidad = 0.1f;
+
+    private HashSet<string> detectedPotholes = new HashSet<string>();
+
+    // Solo lectura en el inspector
+    [SerializeField, TextArea(5, 20)]
+    private string visiblePotholes;
+
+    private string currentPothole = null;
 
     private void Update()
     {
@@ -42,20 +57,45 @@ public class MovementInterface : MonoBehaviour
         }
 
         speed = velocidad.linearVelocity.magnitude;
+        float velocidadActual = velocidad.linearVelocity.magnitude;
+        speed = (velocidadActual < toleranciaVelocidad) ? 0f : velocidadActual;
 
         if (!angulo_mando)
         {
-            if (velocidad.linearVelocity.magnitude > 0.05f)
+            if (angulo == null) return;
+
+            float currentY = angulo.transform.eulerAngles.y;
+
+            if (!initialized)
             {
-                Vector3 flatVelocity = new Vector3(velocidad.linearVelocity.x, 0, velocidad.linearVelocity.z);
-                if (flatVelocity != Vector3.zero)
+                lastAngle = currentY;
+                baseAngle = currentY;
+                baseAngleSet = true;
+                initialized = true;
+                angle = 0f;
+                return;
+            }
+
+            if (Mathf.Abs(Mathf.DeltaAngle(currentY, lastAngle)) < TOLERANCIA)
+            {
+                if (!baseAngleSet)
                 {
-                    angle = Vector3.SignedAngle(Vector3.forward, flatVelocity.normalized, Vector3.up);
+                    baseAngle = currentY;
+                    baseAngleSet = true;
                 }
+                angle = 0f;
             }
             else
             {
-                angle = 0f;
+                baseAngleSet = false;
+                angle = Mathf.DeltaAngle(baseAngle, currentY);
+            }
+
+            lastAngle = currentY;
+
+            if (velocidad.linearVelocity.magnitude > 0.05f)
+            {
+                Vector3 flatVelocity = new Vector3(velocidad.linearVelocity.x, 0, velocidad.linearVelocity.z);
             }
         }
         else
@@ -73,8 +113,8 @@ public class MovementInterface : MonoBehaviour
             angle -= 360;
         }
 
-        string velocityTextValue = "Velocity: " + speed.ToString("F2") + " Km/H";
-        string angleTextValue = "Angle = " + angle.ToString("F2") + " degrees";
+        string velocityTextValue = "Velocity : " + speed.ToString("F2") + " Km/H";
+        string angleTextValue =    "Angle    : " + angle.ToString("F2") + " º";
 
         foreach (TMP_Text velocityText in velocityTexts)
         {
@@ -86,10 +126,8 @@ public class MovementInterface : MonoBehaviour
             angleText.text = angleTextValue;
         }
     }
-
-    private HashSet<string> detectedPotholes = new HashSet<string>();
-    private string currentPothole = null;
-
+[SerializeField] private float offsetDistancia = 0.2f;
+private Vector3 lastMidPoint = Vector3.zero;
     private void Capture()
     {
         if (captureCameras == null || captureCameras.Count == 0)
@@ -101,19 +139,26 @@ public class MovementInterface : MonoBehaviour
         if (speed <= 0.05f && Mathf.Abs(angle) <= 1f)
         {
             Debug.Log("Velocity and angle below thresholds. Image capture skipped.");
-            return;
         }
 
         Vector3 midPoint = Vector3.zero;
         foreach (Camera cam in captureCameras) midPoint += cam.transform.position;
         midPoint /= captureCameras.Count;
 
+         Vector3 direccionMovimiento = (midPoint - lastMidPoint).normalized;
+
+    // Ajustar midPoint en dirección contraria al movimiento
+    midPoint -= direccionMovimiento * offsetDistancia;
+
+    // Guardar el punto medio actual para el siguiente frame
+    lastMidPoint = midPoint;
+
         Vector3 forwardDir = captureCameras[0].transform.forward;
         Vector3 rightDir = captureCameras[0].transform.right;
         Vector3 upDir = captureCameras[0].transform.up;
 
-        float rayLength = 20f;
-        float raySpacing = 0.2f;
+        float rayLength = 1f;
+        float raySpacing = 0.05f;
 
         Vector3[] rayOrigins = new Vector3[]
         {
@@ -165,6 +210,9 @@ public class MovementInterface : MonoBehaviour
 
         detectedPotholes.Add(potholeID);
         currentPothole = potholeID;
+
+        // Actualiza texto visible en Inspector
+        visiblePotholes = string.Join("\n", detectedPotholes);
 
         string timestamp = System.DateTime.Now.ToString("yyyyMMdd_HHmmss");
         string folderPath = Path.Combine(Application.persistentDataPath, "Imagenes", "Imagenes_de_baches", timestamp);

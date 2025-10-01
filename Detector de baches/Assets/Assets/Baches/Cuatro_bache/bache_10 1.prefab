@@ -659,8 +659,8 @@ Transform:
   m_GameObject: {fileID: 4130436930894855977}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 75, y: 25, z: 25}
+  m_LocalPosition: {x: 0, y: -0.0183, z: 0}
+  m_LocalScale: {x: 11.82, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5092222436846306724}
@@ -707,7 +707,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0c1cd24b270d29148b8fb509eb6ef0bb, type: 2}
+  - {fileID: 2100000, guid: 64c7221bcab47ef45b9905f670a3e26f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -763,6 +763,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aca4bc293ce363c4598da1071e25fd8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  capasObjetivo:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  porcentajeTamanoChequeo: 0.95
 --- !u!1 &4564020913478196571
 GameObject:
   m_ObjectHideFlags: 0

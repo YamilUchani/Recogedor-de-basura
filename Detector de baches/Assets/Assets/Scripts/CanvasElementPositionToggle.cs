@@ -1,36 +1,48 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class CanvasElementPositionToggle : MonoBehaviour
 {
+    [Tooltip("Elementos que se muestran en el estado por defecto")]
     public GameObject[] defaultElements;
+
+    [Tooltip("Elementos que se muestran en el estado alternativo")]
     public GameObject[] alternateElements;
+
     private bool isAlternate = false;
 
     void Start()
     {
-        SetElementsActive(defaultElements, true);
-        SetElementsActive(alternateElements, false);
+        // Inicializar los estados al comenzar
+        ApplyState(!isAlternate, defaultElements);
+        ApplyState(isAlternate, alternateElements);
     }
 
     public void ToggleElements()
     {
         isAlternate = !isAlternate;
-        SetElementsActive(defaultElements, !isAlternate);
-        SetElementsActive(alternateElements, isAlternate);
+
+        // Aplicar el nuevo estado
+        ApplyState(!isAlternate, defaultElements);
+        ApplyState(isAlternate, alternateElements);
     }
 
-    private void SetElementsActive(GameObject[] elements, bool state)
+    private void ApplyState(bool shouldBeActive, GameObject[] elements)
     {
-        if (elements != null)
+        if (elements == null) return;
+
+        foreach (GameObject element in elements)
         {
-            foreach (GameObject element in elements)
+            // Solo modificar elementos que no son null
+            if (element != null)
             {
-                if (element != null)
-                {
-                    element.SetActive(state);
-                }
+                element.SetActive(shouldBeActive);
             }
+            // Los elementos null se ignoran (no se activa/desactiva nada para ellos)
         }
+    }
+    public void VerElements()
+    {
+        ApplyState(!isAlternate, defaultElements);
+        ApplyState(isAlternate, alternateElements);
     }
 }

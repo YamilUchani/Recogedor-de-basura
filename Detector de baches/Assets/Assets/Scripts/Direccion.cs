@@ -77,7 +77,6 @@ public class Direccion : MonoBehaviour
         atrasizquierda.brakeTorque=fuerzaactual;
         //Se cambia la variable segun se mantenga presionado los botones izquierda/derecha o a/d 
         anguloactual=angulo*Input.GetAxis("Horizontal");
-        print(anguloactual);
         //Se ajusta las variables del angulo de cada rueda
         delanteizquierda.steerAngle=anguloactual;
         delantederecha.steerAngle=anguloactual;

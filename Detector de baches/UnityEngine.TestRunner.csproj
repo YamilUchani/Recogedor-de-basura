@@ -59,7 +59,7 @@
     <UnityVersion>6000.0.36f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Users\Yamil\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.1.2\Analyzers\Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="C:\Users\Yamil\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.1.3\Analyzers\Microsoft.Unity.Analyzers.dll" />
     <Analyzer Include="G:\unity\6000.0.36f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.SourceGenerators.dll" />
     <Analyzer Include="G:\unity\6000.0.36f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
     <Analyzer Include="G:\unity\6000.0.36f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
@@ -81,18 +81,18 @@
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\NUnitExtensions\Commands\RepeatCommand.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\NUnitExtensions\Filters\FullNameFilter.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\NUnitExtensions\OrderedTestSuiteModifier.cs" />
-    <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\Utils\Vector3ComparerWithEqualsOperator.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\NUnitExtensions\Commands\EnumerableTestMethodCommand.cs" />
+    <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\Utils\Vector3ComparerWithEqualsOperator.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\NUnitExtensions\TestExtensions.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\NUnitExtensions\Commands\BeforeAfterTestCommandBase.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\NUnitExtensions\ITestSuiteModifier.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\NUnitExtensions\Runner\UnityWorkItem.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\NUnitExtensions\TestResultExtensions.cs" />
-    <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\Utils\AttributeHelper.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\NUnitExtensions\Runner\CompositeWorkItem.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\NUnitExtensions\Commands\TaskTestMethodCommand.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\Assertions\LogScope\ILogScope.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\Utils\PrebuildSceneSetupAttribute.cs" />
+    <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\Utils\AttributeHelper.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\NUnitExtensions\Filters\AndFilterExtended.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\TestRunner\RemoteHelpers\IRemoteTestResultDataFactory.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\Utils\Vector2EqualityComparer.cs" />
@@ -120,14 +120,14 @@
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\Assertions\LogScope\LogScope.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\Assertions\LogAssert.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\Utils\FloatEqualityComparer.cs" />
-    <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\TestRunner\Callbacks\TestResultRenderer.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\TestRunner\RemoteHelpers\RemoteTestResultData.cs" />
+    <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\TestRunner\Callbacks\TestResultRenderer.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\NUnitExtensions\Commands\ParametrizedIgnoreCommand.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestMustExpectAllLogsAttribute.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\Utils\AssemblyProvider\IAssemblyWrapper.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\NUnitExtensions\BaseDelegator.cs" />
-    <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\AssemblyInfo.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\NUnitExtensions\Filters\CategoryFilterExtended.cs" />
+    <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\AssemblyInfo.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\Utils\Vector4ComparerWithEqualsOperator.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\TestRunner\ITestRunnerListener.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\NUnitExtensions\Filters\AssemblyNameFilter.cs" />
@@ -145,8 +145,8 @@
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\Utils\AssemblyProvider\IAssemblyLoadProxy.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\TestRunner\TestEnumeratorWrapper.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\Utils\QuaternionEqualityComparer.cs" />
-    <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\NUnitExtensions\Runner\PlaymodeWorkItemFactory.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\NUnitExtensions\Commands\ImmediateEnumerableCommand.cs" />
+    <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\NUnitExtensions\Runner\PlaymodeWorkItemFactory.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\Utils\AssemblyProvider\AssemblyLoadProxy.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\NUnitExtensions\Commands\EnumerableApplyChangesToContextCommand.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0a21eb82d95c\UnityEngine.TestRunner\NUnitExtensions\Attributes\UnityCombinatorialStrategy.cs" />
