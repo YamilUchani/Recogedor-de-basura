@@ -64442,6 +64442,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baches:
   - {fileID: 6124361957036245989, guid: 855c03c700e320a47b33e7ebf2804c31, type: 3}
+  - {fileID: 5385682028773390643, guid: 812b2bfa9d4c64c4fbfdd938d1fc4c60, type: 3}
+  - {fileID: 3524399077725039677, guid: 550d55b8d086ef84a9f3818d51bfd783, type: 3}
+  - {fileID: 2232303773701848374, guid: a7cccd665af34194a849333562d9eaca, type: 3}
+  - {fileID: 6269168479901171749, guid: 8af8470cd3337dc41976f7b6ecf00695, type: 3}
   cantidadBaches: 600
   objetoPadre: {fileID: 1812851382}
   waterMaterial: {fileID: 2100000, guid: a4b98f834b5bdaf45a37a19a9f651c38, type: 2}
@@ -65189,7 +65193,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   energia: 100
-  duracionMinutos: 1
+  duracionMinutos: 30
   energyTexts:
   - {fileID: 859001149}
   - {fileID: 415774374}

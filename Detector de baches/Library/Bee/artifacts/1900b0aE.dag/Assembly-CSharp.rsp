@@ -411,6 +411,8 @@
 "Assets/Assets/Scripts/Calle/GeneradorDeCalle.cs"
 "Assets/Assets/Scripts/Calle/Minimapa.cs"
 "Assets/Assets/Scripts/Calle/MostrarSoloAlPasarMouse.cs"
+"Assets/Assets/Scripts/Calle/TerrainBacheGenerator.cs"
+"Assets/Assets/Scripts/Calle/TerrainCocodriloGenerator.cs"
 "Assets/Assets/Scripts/Camaras.cs"
 "Assets/Assets/Scripts/CameraUI.cs"
 "Assets/Assets/Scripts/CanvasElementPositionToggle.cs"

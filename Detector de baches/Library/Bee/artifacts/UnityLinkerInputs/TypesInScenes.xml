@@ -1,9 +1,9 @@
 <linker>
 	<assembly fullname="Assembly-CSharp">
+		<type fullname="CameraSwitcher" preserve="nothing"/>
 		<type fullname="CameraUI" preserve="nothing"/>
 		<type fullname="CanvasElementPositionToggle" preserve="nothing"/>
 		<type fullname="ChangeSceneIndex" preserve="nothing"/>
-		<type fullname="CuboDesaparecer" preserve="nothing"/>
 		<type fullname="Direccion" preserve="nothing"/>
 		<type fullname="DroneNavMeshController" preserve="nothing"/>
 		<type fullname="EliminarTriangulos" preserve="nothing"/>
@@ -11,11 +11,11 @@
 		<type fullname="GeneradorDeBaches" preserve="nothing"/>
 		<type fullname="GeneradorDeCalle" preserve="nothing"/>
 		<type fullname="LoadingScreenController" preserve="nothing"/>
-		<type fullname="MeshCollisionGenerator" preserve="nothing"/>
 		<type fullname="Minimapa" preserve="nothing"/>
 		<type fullname="MostrarSoloAlPasarMouse" preserve="nothing"/>
 		<type fullname="MovementInterface" preserve="nothing"/>
 		<type fullname="NavMeshdrone" preserve="nothing"/>
+		<type fullname="RunYOLO" preserve="nothing"/>
 		<type fullname="SceneSwitcher" preserve="nothing"/>
 		<type fullname="ToggleActiveExclusive" preserve="nothing"/>
 		<type fullname="UIButtonColorToggle" preserve="nothing"/>
@@ -30,6 +30,11 @@
 		<type fullname="UnityEngine.Rendering.PostProcessing.PostProcessProfile" preserve="nothing"/>
 		<type fullname="UnityEngine.Rendering.PostProcessing.PostProcessResources" preserve="nothing"/>
 		<type fullname="UnityEngine.Rendering.PostProcessing.PostProcessVolume" preserve="nothing"/>
+	</assembly>
+	<assembly fullname="Unity.Sentis">
+		<type fullname="Unity.Sentis.ModelAsset" preserve="nothing"/>
+		<type fullname="Unity.Sentis.ModelAssetData" preserve="nothing"/>
+		<type fullname="Unity.Sentis.ModelAssetWeightsData" preserve="nothing"/>
 	</assembly>
 	<assembly fullname="Unity.TextMeshPro">
 		<type fullname="TMPro.TextMeshProUGUI" preserve="nothing"/>

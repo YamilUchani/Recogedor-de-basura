@@ -322,7 +322,7 @@ public class RunYOLO : MonoBehaviour
 
         RectTransform rt2 = text.GetComponent<RectTransform>();
         rt2.offsetMin = new Vector2(20, 0);
-        rt2.offsetMax = new Vector2(0, 30);
+        rt2.offsetMax = new Vector2(0, 100);
         rt2.anchorMin = new Vector2(0, 0);
         rt2.anchorMax = new Vector2(1, 1);
 

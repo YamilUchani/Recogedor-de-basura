@@ -97,8 +97,8 @@
     <Compile Include="Library\PackageCache\com.unity.sentis@ac6218276191\Runtime\Core\TensorIndex.cs" />
     <Compile Include="Library\PackageCache\com.unity.sentis@ac6218276191\Runtime\Core\Serialization\SentisFlatBuffer\KernelTypes.cs" />
     <Compile Include="Library\PackageCache\com.unity.sentis@ac6218276191\Runtime\Core\Serialization\SentisFlatBuffer\Null.cs" />
-    <Compile Include="Library\PackageCache\com.unity.sentis@ac6218276191\Runtime\Core\Backends\CPU\BurstCPU.Backend.cs" />
     <Compile Include="Library\PackageCache\com.unity.sentis@ac6218276191\Runtime\Core\TensorIterator.cs" />
+    <Compile Include="Library\PackageCache\com.unity.sentis@ac6218276191\Runtime\Core\Backends\CPU\BurstCPU.Backend.cs" />
     <Compile Include="Library\PackageCache\com.unity.sentis@ac6218276191\Runtime\Core\Layers\Layer.Transformation.cs" />
     <Compile Include="Library\PackageCache\com.unity.sentis@ac6218276191\Runtime\Core\Backends\GPUPixel\PixelShaderSingleton.cs" />
     <Compile Include="Library\PackageCache\com.unity.sentis@ac6218276191\Runtime\Core\Backends\GPUCompute\ComputeTensorData.cs" />

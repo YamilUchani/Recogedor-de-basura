@@ -1,5 +1,13 @@
 <linker>
 	<assembly fullname="Assembly-CSharp" ignoreIfMissing="1">
+		<type fullname="CameraSwitcher">
+			<method name="ActivarCamara1"/>
+			<method name="ActivarCamara1"/>
+			<method name="ActivarCamara1"/>
+			<method name="ActivarCamara1"/>
+			<method name="IntercambiarCamara"/>
+			<method name="IntercambiarCamara"/>
+		</type>
 		<type fullname="CameraUI">
 			<method name="ToggleSingleCameraMode"/>
 			<method name="ToggleSingleCameraMode"/>
@@ -20,13 +28,22 @@
 		<type fullname="Minimapa">
 			<method name="AlternarAnchors"/>
 			<method name="AlternarAnchors"/>
+			<method name="AlternarAnchors"/>
 		</type>
 		<type fullname="MovementInterface">
 			<method name="AcDc"/>
 			<method name="AcDc"/>
-			<method name="AcDc"/>
 			<method name="restarted"/>
 			<method name="restarted"/>
+		</type>
+		<type fullname="RunYOLO">
+			<method name="DeactivateBoxes"/>
+			<method name="DeactivateBoxes"/>
+			<method name="SelectCameraA"/>
+			<method name="SelectCameraB"/>
+			<method name="ToggleCollider"/>
+			<method name="ToggleCollider"/>
+			<method name="ToggleModelRunning"/>
 		</type>
 		<type fullname="SceneSwitcher">
 			<method name="SwitchScene"/>
@@ -34,14 +51,18 @@
 		</type>
 		<type fullname="ToggleActiveExclusive">
 			<method name="ActivateGroupA"/>
+			<method name="ActivateGroupA"/>
+			<method name="ActivateGroupB"/>
 			<method name="ActivateGroupB"/>
 		</type>
 		<type fullname="UIButtonColorToggle">
+			<method name="ToggleColor"/>
 			<method name="ToggleColor"/>
 		</type>
 	</assembly>
 	<assembly fullname="UnityEngine.CoreModule" ignoreIfMissing="1">
 		<type fullname="UnityEngine.GameObject">
+			<method name="SetActive"/>
 			<method name="SetActive"/>
 			<method name="SetActive"/>
 			<method name="SetActive"/>

@@ -11,6 +11,13 @@
         {
             "managedAssemblyName": "Assembly-CSharp.dll",
             "nativeClass": "",
+            "fullManagedTypeName": "CameraSwitcher",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Assembly-CSharp.dll",
+            "nativeClass": "",
             "fullManagedTypeName": "CameraUI",
             "moduleName": "",
             "usedInScenes": []
@@ -26,13 +33,6 @@
             "managedAssemblyName": "Assembly-CSharp.dll",
             "nativeClass": "",
             "fullManagedTypeName": "ChangeSceneIndex",
-            "moduleName": "",
-            "usedInScenes": []
-        },
-        {
-            "managedAssemblyName": "Assembly-CSharp.dll",
-            "nativeClass": "",
-            "fullManagedTypeName": "CuboDesaparecer",
             "moduleName": "",
             "usedInScenes": []
         },
@@ -138,13 +138,6 @@
         {
             "managedAssemblyName": "Assembly-CSharp.dll",
             "nativeClass": "",
-            "fullManagedTypeName": "MeshCollisionGenerator",
-            "moduleName": "",
-            "usedInScenes": []
-        },
-        {
-            "managedAssemblyName": "Assembly-CSharp.dll",
-            "nativeClass": "",
             "fullManagedTypeName": "Minimapa",
             "moduleName": "",
             "usedInScenes": []
@@ -227,6 +220,13 @@
             "nativeClass": "RuntimeInitializeOnLoadManager",
             "fullManagedTypeName": "",
             "moduleName": "Core",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Assembly-CSharp.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "RunYOLO",
+            "moduleName": "",
             "usedInScenes": []
         },
         {
@@ -321,6 +321,27 @@
             "usedInScenes": []
         },
         {
+            "managedAssemblyName": "Unity.Sentis.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Unity.Sentis.ModelAsset",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Unity.Sentis.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Unity.Sentis.ModelAssetData",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Unity.Sentis.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Unity.Sentis.ModelAssetWeightsData",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
             "managedAssemblyName": "UnityEngine.dll",
             "nativeClass": "AudioManager",
             "fullManagedTypeName": "UnityEditor.AudioManager",
@@ -394,7 +415,8 @@
             "fullManagedTypeName": "UnityEngine.AI.NavMeshAgent",
             "moduleName": "AI",
             "usedInScenes": [
-                "Assets/russian_buildings/scenes/demo_scene_low.unity"
+                "Assets/russian_buildings/scenes/demo_scene_low.unity",
+                "Assets/russian_buildings/scenes/Model_scene_low.unity"
             ]
         },
         {
@@ -403,7 +425,8 @@
             "fullManagedTypeName": "UnityEngine.AI.NavMeshData",
             "moduleName": "AI",
             "usedInScenes": [
-                "Assets/russian_buildings/scenes/demo_scene_low.unity"
+                "Assets/russian_buildings/scenes/demo_scene_low.unity",
+                "Assets/russian_buildings/scenes/Model_scene_low.unity"
             ]
         },
         {
@@ -480,7 +503,8 @@
             "fullManagedTypeName": "UnityEngine.CanvasGroup",
             "moduleName": "UI",
             "usedInScenes": [
-                "Assets/russian_buildings/scenes/demo_scene_low.unity"
+                "Assets/russian_buildings/scenes/demo_scene_low.unity",
+                "Assets/russian_buildings/scenes/Model_scene_low.unity"
             ]
         },
         {
@@ -524,7 +548,8 @@
             "moduleName": "Core",
             "usedInScenes": [
                 "Assets/russian_buildings/scenes/demo_scene_low.unity",
-                "Assets/russian_buildings/scenes/load_scene.unity"
+                "Assets/russian_buildings/scenes/Menu_scene.unity",
+                "Assets/russian_buildings/scenes/Model_scene_low.unity"
             ]
         },
         {
@@ -558,7 +583,8 @@
             "fullManagedTypeName": "UnityEngine.FlareLayer",
             "moduleName": "Core",
             "usedInScenes": [
-                "Assets/russian_buildings/scenes/demo_scene_low.unity"
+                "Assets/russian_buildings/scenes/demo_scene_low.unity",
+                "Assets/russian_buildings/scenes/Model_scene_low.unity"
             ]
         },
         {
@@ -658,6 +684,7 @@
             "moduleName": "Core",
             "usedInScenes": [
                 "Assets/russian_buildings/scenes/demo_scene_low.unity",
+                "Assets/russian_buildings/scenes/Menu_scene.unity",
                 "Assets/russian_buildings/scenes/Model_scene_low.unity"
             ]
         },
@@ -678,6 +705,7 @@
             "moduleName": "Core",
             "usedInScenes": [
                 "Assets/russian_buildings/scenes/demo_scene_low.unity",
+                "Assets/russian_buildings/scenes/Menu_scene.unity",
                 "Assets/russian_buildings/scenes/Model_scene_low.unity"
             ]
         },
@@ -688,6 +716,7 @@
             "moduleName": "Core",
             "usedInScenes": [
                 "Assets/russian_buildings/scenes/demo_scene_low.unity",
+                "Assets/russian_buildings/scenes/Menu_scene.unity",
                 "Assets/russian_buildings/scenes/Model_scene_low.unity"
             ]
         },
@@ -741,6 +770,7 @@
             "moduleName": "Core",
             "usedInScenes": [
                 "Assets/russian_buildings/scenes/demo_scene_low.unity",
+                "Assets/russian_buildings/scenes/Menu_scene.unity",
                 "Assets/russian_buildings/scenes/Model_scene_low.unity"
             ]
         },

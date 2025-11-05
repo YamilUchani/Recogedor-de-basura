@@ -6,16 +6,16 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/russian_buildings/scenes/Menu_scene.unity
+    guid: e0fd1815fa8800b43921fe0c71e4bc05
+  - enabled: 1
     path: Assets/russian_buildings/scenes/load_scene.unity
     guid: 907e97ecb2270fe44ae9b3402720e2fc
   - enabled: 1
     path: Assets/russian_buildings/scenes/demo_scene_low.unity
     guid: 6715a7ea9cec84d4c85678771e8d4813
   - enabled: 1
-    path: Assets/russian_buildings/scenes/Menu_scene.unity
-    guid: e0fd1815fa8800b43921fe0c71e4bc05
-  - enabled: 1
     path: Assets/russian_buildings/scenes/Model_scene_low.unity
-    guid: 646c6a178e5646a40b56ef1a18cbd18e
+    guid: 73622a1f9469e9045b05712b54d2a059
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
