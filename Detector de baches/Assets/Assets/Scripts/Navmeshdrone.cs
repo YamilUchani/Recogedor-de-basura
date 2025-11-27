@@ -11,17 +11,26 @@ public class NavMeshdrone : MonoBehaviour
 
     // Marcar objetos con tag "bache" como estáticos y layer 7
     void PrepararObjetosBache()
+{
+    string[] tagsObjetivo = { "bache", "Pothole", "Crocodile" };
+
+    int contador = 0;
+
+    foreach (string tag in tagsObjetivo)
     {
-        GameObject[] baches = GameObject.FindGameObjectsWithTag("bache");
+        GameObject[] objetos = GameObject.FindGameObjectsWithTag(tag);
 
-        foreach (var bache in baches)
+        foreach (var obj in objetos)
         {
-            bache.isStatic = true;
-            bache.layer = 7;
+            obj.isStatic = true;
+            obj.layer = 7;
+            contador++;
         }
-
-        Debug.Log($"Preparados {baches.Length} objetos con tag 'bache'");
     }
+
+    Debug.Log($"Preparados {contador} objetos con tags: bache, Pothole, Crocodile");
+}
+
 
     public void BakeAllNavMeshes()
     {

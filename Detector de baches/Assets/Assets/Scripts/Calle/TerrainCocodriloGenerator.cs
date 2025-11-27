@@ -1,56 +1,62 @@
 using UnityEngine;
 using System.Collections.Generic;
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 [ExecuteInEditMode]
-public class TerrainCocodriloGenerator : MonoBehaviour
+public class VoronoiBacheGenerator : MonoBehaviour
 {
+    [Header("Opción")]
+    public bool randomizeOnGenerate = true;
+
     [Header("Terreno")]
-    public float width = 1f;
-    public float length = 1f;
+    [Range(0.25f, 1f)] public float width = 0.5f;
+    [Range(0.25f, 1f)] public float length = 0.5f;
 
-    [Header("Cuadrícula de Grietas")]
-    public int gridSizeX = 10;
-    public int gridSizeZ = 10;
+    [Header("Configuración Voronoi (Escala y Bordes Hundidos)")]
+    [Range(8, 20)] public int numSites = 10;
 
-    [Tooltip("Ancho de la grieta como porcentaje del tamaño del terreno (0.001 = 0.1%).")]
-    [Range(0.0001f, 0.1f)]
-    public float anchoGrietaPorcentaje = 0.001f; // 0.1%
+    [Tooltip("Controla simultáneamente el tamaño de las celdas y el ancho relativo de los bordes.")]
+    [Range(0f,1f)] public float escalaCelda = 0.035f;
 
-    [Header("Longitud Aleatoria de Grietas")]
-    [Range(0f, 1f)] public float minCrackLength = 0.3f;
-    [Range(0f, 1f)] public float maxCrackLength = 1f;
+    [Tooltip("La profundidad final de los bordes. Usa un valor negativo para hundirlos.")]
+    public float borderDepth = -0.5f; // ❗ Nunca se aleatoriza
+
+    [Tooltip("Controla cuánto se redondean las esquinas de las celdas. Valores bajos = más redondeo, altos = más angulosos.")]
+    [Range(0f, 2f)] public float roundness = 0.4f;
+
     public int randomSeed = 42;
 
-    [Header("Profundidad")]
-    public float profundidadGrieta = -0.025f;
+    [Header("Borde Exterior")]
+    [Tooltip("Mínimo margen de borde como % del tamaño del terreno")]
+    [Range(10f, 20f)] public float bordeMinPerc = 12f;
 
-    [Header("Bordes")]
-    [Tooltip("Borde sin grietas como porcentaje del tamaño del terreno (0 = sin borde, 0.5 = 50%).")]
-    [Range(0f, 0.5f)]
-    public float bordePorcentaje = 0.05f; // 5%
+    [Tooltip("Máximo margen de borde como % del tamaño del terreno")]
+    [Range(25f, 30f)] public float bordeMaxPerc = 27f;
+
+    public float noiseScale = 2f;
+    [Range(0f, 50f)] public float bordeSuavidad = 3f;
 
     [Header("Rendimiento")]
-    public int maxVertexCount = 60000;
-    [Range(0, 100)] public float polygonBudget = 100f;
+    [Range(50, 200)] public int resolution = 100;
+
+    [Header("Textura")]
+    [Tooltip("Escala de las coordenadas UV para controlar la repetición de la textura")]
+    public float uvScale = 1.0f;
 
     public Material material;
+
     private GameObject meshObject;
 
-    [System.Serializable]
-    private class CrackSegment
+    [ContextMenu("Generar Terreno Voronoi Plano (Bordes Hundidos)")]
+    public void GenerarMeshVoronoi()
     {
-        public float fixedCoord;
-        public float start;
-        public float end;
-    }
+        if (randomizeOnGenerate)
+        {
+            RandomizeParameters();
+        }
 
-    [ContextMenu("Generar")]
-    public void GenerarMeshEnNuevoObjeto()
-    {
         if (meshObject != null)
         {
 #if UNITY_EDITOR
@@ -60,145 +66,91 @@ public class TerrainCocodriloGenerator : MonoBehaviour
 #endif
         }
 
-        // === Resolución ===
-        float effectiveMaxVerts = Mathf.Max(100, maxVertexCount * (polygonBudget / 100f));
-        float maxDim = Mathf.Sqrt(effectiveMaxVerts) - 1;
-        int maxRes = Mathf.Max(10, (int)maxDim);
-        int resX = Mathf.Clamp(Mathf.RoundToInt(200 * (polygonBudget / 100f)), 10, maxRes);
-        int resZ = Mathf.Clamp(Mathf.RoundToInt(200 * (polygonBudget / 100f)), 10, maxRes);
-        if ((resX + 1) * (resZ + 1) > effectiveMaxVerts)
-        {
-            float ratio = width / length;
-            float total = Mathf.Sqrt(effectiveMaxVerts);
-            resX = Mathf.Max(10, (int)(total * Mathf.Sqrt(ratio)));
-            resZ = Mathf.Max(10, (int)(total / Mathf.Sqrt(ratio)));
-        }
-
-#if UNITY_EDITOR
-        int finalVertCount = (resX + 1) * (resZ + 1);
-        if (finalVertCount > maxVertexCount)
-        {
-            Debug.LogWarning($"[TerrainCocodrilo] Resolución ajustada a {resX}x{resZ} ({finalVertCount} vértices).", this);
-        }
-#endif
-
-        // === Calcular parámetros en metros ===
-        float bordeAnchoX = width * bordePorcentaje;
-        float bordeAnchoZ = length * bordePorcentaje;
-        float sizeRef = Mathf.Min(width, length); // Para escalar el ancho de grieta
-        float anchoGrietaReal = sizeRef * anchoGrietaPorcentaje;
-
-        // === Generar grietas aleatorias ===
-        System.Random rand = new System.Random(randomSeed);
-        List<CrackSegment> verticalCracks = new List<CrackSegment>();
-        List<CrackSegment> horizontalCracks = new List<CrackSegment>();
-
-        float interiorW = width - 2f * bordeAnchoX;
-        float interiorL = length - 2f * bordeAnchoZ;
-        float startX = bordeAnchoX;
-        float startZ = bordeAnchoZ;
-
-        if (gridSizeX > 1)
-        {
-            for (int i = 1; i < gridSizeX; i++)
-            {
-                float x = startX + (float)i / gridSizeX * interiorW;
-                float lenFrac = Mathf.Lerp(minCrackLength, maxCrackLength, (float)rand.NextDouble());
-                float usableLen = interiorL * lenFrac;
-                float offset = (interiorL - usableLen) * (float)rand.NextDouble();
-                verticalCracks.Add(new CrackSegment { fixedCoord = x, start = startZ + offset, end = startZ + offset + usableLen });
-            }
-        }
-
-        if (gridSizeZ > 1)
-        {
-            for (int j = 1; j < gridSizeZ; j++)
-            {
-                float z = startZ + (float)j / gridSizeZ * interiorL;
-                float lenFrac = Mathf.Lerp(minCrackLength, maxCrackLength, (float)rand.NextDouble());
-                float usableLen = interiorW * lenFrac;
-                float offset = (interiorW - usableLen) * (float)rand.NextDouble();
-                horizontalCracks.Add(new CrackSegment { fixedCoord = z, start = startX + offset, end = startX + offset + usableLen });
-            }
-        }
-
-        // === Crear objeto ===
-        meshObject = new GameObject("TerrenoConGrietas");
+        meshObject = new GameObject("TerrenoVoronoiPlanoHundido");
         meshObject.transform.SetParent(transform, false);
         var mf = meshObject.AddComponent<MeshFilter>();
         var mr = meshObject.AddComponent<MeshRenderer>();
         if (material != null) mr.sharedMaterial = material;
 
-        // === Vértices con remapeo para ancho métrico ===
-        Vector3[] vertices = new Vector3[(resX + 1) * (resZ + 1)];
+        Random.InitState(randomSeed);
+        List<Vector2> voronoiSites = new List<Vector2>();
+        for (int i = 0; i < numSites; i++)
+        {
+            voronoiSites.Add(new Vector2(Random.value * width, Random.value * length));
+        }
+
+        float bordeMinMetros = Mathf.Min(width, length) * (bordeMinPerc * 0.01f);
+        float bordeMaxMetros = Mathf.Min(width, length) * (bordeMaxPerc * 0.01f);
+
+        int numVertsX = resolution + 1;
+        int numVertsZ = resolution + 1;
+        Vector3[] vertices = new Vector3[numVertsX * numVertsZ];
+        Vector2[] uvs = new Vector2[numVertsX * numVertsZ]; // ✅ NUEVO: Array de UVs
         float halfW = width * 0.5f;
         float halfL = length * 0.5f;
 
-        for (int z = 0; z <= resZ; z++)
+        float[] bordeIzq = new float[numVertsZ];
+        float[] bordeDer = new float[numVertsZ];
+        float[] bordeDetras = new float[numVertsX];
+        float[] bordeFrente = new float[numVertsX];
+
+        for (int z = 0; z < numVertsZ; z++)
         {
-            float tZ = (float)z / resZ;
-            float worldZ = RemapWithCrackDensity(tZ, 0f, length, horizontalCracks, anchoGrietaReal, bordeAnchoZ, length - bordeAnchoZ, false);
+            float t = (float)z / (numVertsZ - 1);
+            bordeIzq[z] = Mathf.Lerp(bordeMinMetros, bordeMaxMetros, Mathf.PerlinNoise(0.1f, t * noiseScale));
+            bordeDer[z] = Mathf.Lerp(bordeMinMetros, bordeMaxMetros, Mathf.PerlinNoise(10.73f, t * noiseScale));
+        }
+        for (int x = 0; x < numVertsX; x++)
+        {
+            float t = (float)x / (numVertsX - 1);
+            bordeDetras[x] = Mathf.Lerp(bordeMinMetros, bordeMaxMetros, Mathf.PerlinNoise(t * noiseScale, 0.3f));
+            bordeFrente[x] = Mathf.Lerp(bordeMinMetros, bordeMaxMetros, Mathf.PerlinNoise(t * noiseScale, 15.41f));
+        }
 
-            for (int x = 0; x <= resX; x++)
+        for (int z = 0; z < numVertsZ; z++)
+        {
+            float localZ = (float)z / resolution * length;
+            float worldZ = localZ - halfL;
+            for (int x = 0; x < numVertsX; x++)
             {
-                float tX = (float)x / resX;
-                float worldX = RemapWithCrackDensity(tX, 0f, width, verticalCracks, anchoGrietaReal, bordeAnchoX, width - bordeAnchoX, true);
+                float localX = (float)x / resolution * width;
+                float worldX = localX - halfW;
 
-                float y = 0f;
+                float dLeft = localX - bordeIzq[z];
+                float dRight = (width - bordeDer[z]) - localX;
+                float dBack = localZ - bordeDetras[x];
+                float dFront = (length - bordeFrente[x]) - localZ;
+                float minDistToBorder = Mathf.Min(dLeft, dRight, dBack, dFront);
 
-                if (worldX >= bordeAnchoX && worldX <= (width - bordeAnchoX) &&
-                    worldZ >= bordeAnchoZ && worldZ <= (length - bordeAnchoZ))
+                float bordeFactor = 0f;
+                if (minDistToBorder > 0f)
                 {
-                    bool inCrack = false;
-
-                    foreach (var crack in verticalCracks)
-                    {
-                        if (Mathf.Abs(worldX - crack.fixedCoord) <= anchoGrietaReal * 0.5f)
-                        {
-                            if (worldZ >= crack.start && worldZ <= crack.end)
-                            {
-                                inCrack = true;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (!inCrack)
-                    {
-                        foreach (var crack in horizontalCracks)
-                        {
-                            if (Mathf.Abs(worldZ - crack.fixedCoord) <= anchoGrietaReal * 0.5f)
-                            {
-                                if (worldX >= crack.start && worldX <= crack.end)
-                                {
-                                    inCrack = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
-                    if (inCrack)
-                    {
-                        y = profundidadGrieta;
-                    }
+                    float t = Mathf.Clamp01(minDistToBorder / (Mathf.Max(width, length) * 0.5f) * bordeSuavidad);
+                    bordeFactor = 1f - (1f - t) * (1f - t);
                 }
 
-                vertices[z * (resX + 1) + x] = new Vector3(worldX - halfW, y, worldZ - halfL);
+                float height = CalculateVoronoiSteppedHeight(new Vector2(localX, localZ), voronoiSites);
+                float finalHeight = height * bordeFactor;
+
+                int vertexIndex = z * numVertsX + x;
+                vertices[vertexIndex] = new Vector3(worldX, finalHeight, worldZ);
+                
+                // ✅ NUEVO: Asignar coordenadas UV basadas en la posición mundial
+                uvs[vertexIndex] = new Vector2(worldX * uvScale, worldZ * uvScale);
             }
         }
 
-        // === Triangulación ===
-        int[] triangles = new int[resX * resZ * 6];
+        int[] triangles = new int[resolution * resolution * 6];
         int idx = 0;
-        for (int row = 0; row < resZ; row++)
+        for (int row = 0; row < resolution; row++)
         {
-            for (int col = 0; col < resX; col++)
+            for (int col = 0; col < resolution; col++)
             {
-                int v0 = row * (resX + 1) + col;
+                int v0 = row * numVertsX + col;
                 int v1 = v0 + 1;
-                int v2 = (row + 1) * (resX + 1) + col;
+                int v2 = (row + 1) * numVertsX + col;
                 int v3 = v2 + 1;
+
                 triangles[idx++] = v0; triangles[idx++] = v2; triangles[idx++] = v1;
                 triangles[idx++] = v1; triangles[idx++] = v2; triangles[idx++] = v3;
             }
@@ -207,53 +159,148 @@ public class TerrainCocodriloGenerator : MonoBehaviour
         Mesh mesh = new Mesh();
         mesh.vertices = vertices;
         mesh.triangles = triangles;
+        mesh.uv = uvs; // ✅ NUEVO: Asignar UVs al mesh
         mesh.RecalculateNormals();
         mesh.RecalculateBounds();
+        
+        // ✅ OPCIONAL: Calcular tangentes para normal maps
+        if (material != null && material.HasProperty("_BumpMap"))
+        {
+            mesh.tangents = CalculateTangents(vertices, uvs, triangles, mesh.normals);
+        }
+        
         mf.mesh = mesh;
     }
 
-    private float RemapWithCrackDensity(float t, float min, float max, List<CrackSegment> cracks, float crackWidth, float zoneMin, float zoneMax, bool isVertical)
+    private void RandomizeParameters()
     {
-        float linear = Mathf.Lerp(min, max, t);
-        if (cracks.Count == 0 || linear < zoneMin || linear > zoneMax)
-            return linear;
+        System.Random sysRand = new System.Random();
 
-        float totalPull = 0f;
-        float totalWeight = 0f;
-        float influenceRange = Mathf.Max(crackWidth * 3f, (max - min) * 0.05f);
+        // ✅ Nuevos: width y length entre 0.25 y 1
+        width = Mathf.Lerp(0.25f, 1f, (float)sysRand.NextDouble());
+        length = Mathf.Lerp(0.25f, 1f, (float)sysRand.NextDouble());
 
-        foreach (var crack in cracks)
+        numSites = sysRand.Next(16, 40); // inclusive 8–20
+
+        escalaCelda = Mathf.Lerp(0.03f, 0.04f, (float)sysRand.NextDouble());
+        // ❗ borderDepth: no se toca
+
+        roundness = Mathf.Lerp(0.3f, 0.5f, (float)sysRand.NextDouble());
+
+        bordeMinPerc = Mathf.Lerp(10f, 20f, (float)sysRand.NextDouble());
+        bordeMaxPerc = Mathf.Lerp(25f, 30f, (float)sysRand.NextDouble());
+
+        noiseScale = 0.5f + (float)sysRand.NextDouble() * 4.5f; // 0.5 → 5.0
+        bordeSuavidad = Mathf.Lerp(2f, 5f, (float)sysRand.NextDouble());
+
+        resolution = Mathf.RoundToInt(Mathf.Lerp(50f, 200f, (float)sysRand.NextDouble()));
+
+        // ✅ Nuevo: Aleatorizar escala UV
+        uvScale = Mathf.Lerp(0.5f, 3.0f, (float)sysRand.NextDouble());
+
+        randomSeed = sysRand.Next();
+    }
+
+    private float CalculateVoronoiSteppedHeight(Vector2 point, List<Vector2> sites)
+    {
+        float f1 = float.MaxValue;
+        float f2 = float.MaxValue;
+        Vector2 scaledPoint = point / escalaCelda;
+
+        foreach (var site in sites)
         {
-            float dist = Mathf.Abs(linear - crack.fixedCoord);
-            if (dist < influenceRange)
+            float dist = Vector2.Distance(scaledPoint, site / escalaCelda);
+            if (dist < f1)
             {
-                float relDist = dist / influenceRange;
-                float weight = 1f - relDist * relDist;
-                totalPull += (crack.fixedCoord - linear) * weight;
-                totalWeight += weight;
+                f2 = f1;
+                f1 = dist;
+            }
+            else if (dist < f2)
+            {
+                f2 = dist;
             }
         }
 
-        if (totalWeight > 0f)
+        float borderThickness = roundness;
+        float ridgeDistance = f2 - f1;
+        float t = Mathf.Clamp01(ridgeDistance / borderThickness);
+        float blend = Mathf.SmoothStep(0f, 1f, t);
+        return Mathf.Lerp(0f, borderDepth, 1f - blend);
+    }
+
+    // ✅ CORREGIDO: Método para calcular tangentes (necesario para normal maps)
+    private Vector4[] CalculateTangents(Vector3[] vertices, Vector2[] uvs, int[] triangles, Vector3[] normals)
+    {
+        Vector4[] tangents = new Vector4[vertices.Length];
+        Vector3[] tan1 = new Vector3[vertices.Length];
+        Vector3[] tan2 = new Vector3[vertices.Length];
+
+        for (int i = 0; i < triangles.Length; i += 3)
         {
-            float pull = totalPull / totalWeight;
-            pull = Mathf.Clamp(pull, -influenceRange * 0.5f, influenceRange * 0.5f);
-            return linear + pull;
+            int i1 = triangles[i];
+            int i2 = triangles[i + 1];
+            int i3 = triangles[i + 2];
+
+            Vector3 v1 = vertices[i1];
+            Vector3 v2 = vertices[i2];
+            Vector3 v3 = vertices[i3];
+
+            Vector2 w1 = uvs[i1];
+            Vector2 w2 = uvs[i2];
+            Vector2 w3 = uvs[i3];
+
+            float x1 = v2.x - v1.x;
+            float x2 = v3.x - v1.x;
+            float y1 = v2.y - v1.y;
+            float y2 = v3.y - v1.y;
+            float z1 = v2.z - v1.z;
+            float z2 = v3.z - v1.z;
+
+            float s1 = w2.x - w1.x;
+            float s2 = w3.x - w1.x;
+            float t1 = w2.y - w1.y;
+            float t2 = w3.y - w1.y;
+
+            float div = s1 * t2 - s2 * t1;
+            float r = div == 0.0f ? 0.0f : 1.0f / div;
+
+            Vector3 sdir = new Vector3((t2 * x1 - t1 * x2) * r, (t2 * y1 - t1 * y2) * r, (t2 * z1 - t1 * z2) * r);
+            Vector3 tdir = new Vector3((s1 * x2 - s2 * x1) * r, (s1 * y2 - s2 * y1) * r, (s1 * z2 - s2 * z1) * r);
+
+            tan1[i1] += sdir;
+            tan1[i2] += sdir;
+            tan1[i3] += sdir;
+
+            tan2[i1] += tdir;
+            tan2[i2] += tdir;
+            tan2[i3] += tdir;
         }
 
-        return linear;
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            Vector3 n = normals[i]; // ✅ CORREGIDO: Usar el array de normals pasado como parámetro
+            Vector3 t = tan1[i];
+
+            Vector3.OrthoNormalize(ref n, ref t);
+            tangents[i].x = t.x;
+            tangents[i].y = t.y;
+            tangents[i].z = t.z;
+            tangents[i].w = (Vector3.Dot(Vector3.Cross(n, t), tan2[i]) < 0.0f) ? -1.0f : 1.0f;
+        }
+
+        return tangents;
     }
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(TerrainCocodriloGenerator))]
+    [CustomEditor(typeof(VoronoiBacheGenerator))]
     public class Editor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {
             DrawDefaultInspector();
-            if (GUILayout.Button("Generar Terreno"))
+            if (GUILayout.Button("Generar Terreno Voronoi Plano (Bordes Hundidos)"))
             {
-                ((TerrainCocodriloGenerator)target).GenerarMeshEnNuevoObjeto();
+                ((VoronoiBacheGenerator)target).GenerarMeshVoronoi();
             }
         }
     }

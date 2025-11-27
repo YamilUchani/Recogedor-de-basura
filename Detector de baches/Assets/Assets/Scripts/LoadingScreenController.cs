@@ -11,7 +11,7 @@ public class LoadingScreenController : MonoBehaviour
     public Image barraProgreso; // Referencia a la barra de progreso en la interfaz de usuario
     public List<GameObject> rootGameObjects;
     public List<string> excludedObjectNames; // Lista de nombres de objetos excluidos
-    public float activationTimePerObject = 2f; // Tiempo en segundos por cada activación de objeto
+    public float activationTimePerObject = 0.1f; // Tiempo en segundos por cada activación de objeto
 
     private float totalObjects;
     private float activeObjects = 1;
@@ -36,6 +36,10 @@ public class LoadingScreenController : MonoBehaviour
         // Se llama cuando la escena ha terminado de cargarse aditivamente
         Scene sceneCargada = SceneManager.GetSceneByName(sceneToLoad);
         rootGameObjects = sceneCargada.GetRootGameObjects().Where(obj => !excludedObjectNames.Contains(obj.name)).ToList();
+
+        // Ordenar la lista para que los objetos con tag "Setting" se activen al final
+        rootGameObjects = rootGameObjects.OrderBy(obj => obj.CompareTag("Setting") ? 1 : 0).ToList();
+
         totalObjects = CountParentObjects(rootGameObjects);
         activeObjects = 1;
         activationInProgress = true;

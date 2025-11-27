@@ -59,7 +59,7 @@
     <UnityVersion>6000.0.36f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Users\Yamil\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.1.3\Analyzers\Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="C:\Users\Yamil\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.2.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
     <Analyzer Include="G:\unity\6000.0.36f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.SourceGenerators.dll" />
     <Analyzer Include="G:\unity\6000.0.36f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
     <Analyzer Include="G:\unity\6000.0.36f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
@@ -70,6 +70,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
     <Compile Include="Assets\Assets\Scripts\CuboDesaparecer.cs" />
+    <Compile Include="Assets\Assets\Scripts\Calle\BacheMeshGenerator.cs" />
     <Compile Include="Assets\Assets\Scripts\giro_cierre.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="Assets\Assets\Scripts\DroneController.cs" />
     <Compile Include="Assets\Assets\Scripts\Navmeshdrone.cs" />
     <Compile Include="Assets\Assets\Scripts\UI\CameraSwitcher.cs" />
+    <Compile Include="Assets\Assets\Scripts\NewMonoBehaviourScript1.cs" />
     <Compile Include="Assets\Assets\Scripts\Destruccion.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
     <Compile Include="Assets\Assets\Scripts\UI\ToggleColorWithText.cs" />
@@ -95,14 +97,12 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
-    <Compile Include="Assets\Assets\Scripts\Calle\TerrainBacheGenerator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
     <Compile Include="Assets\Assets\Scripts\IA\YOLOv8ObjectDetection.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
     <Compile Include="Assets\Assets\Scripts\MeshGenerator.cs" />
     <Compile Include="Assets\Assets\Scripts\ChangeSceneIndex.cs" />
     <Compile Include="Assets\Assets\Scripts\LoadingScreenController.cs" />
-    <Compile Include="Assets\Assets\Scripts\NewMonoBehaviourScript.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
     <Compile Include="Assets\Assets\Scripts\ConvexHull.cs" />
@@ -137,6 +137,8 @@
     <Compile Include="Assets\Assets\Scripts\Conteo.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\Assets\Scripts\CameraUI.cs" />
+    <Compile Include="Assets\Assets\Scripts\Calle\GeneradorBachesUni.cs" />
+    <Compile Include="Assets\Assets\Scripts\RuntimeNavMeshBaker.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
     <Compile Include="Assets\Assets\Scripts\EnergyController.cs" />
     <Compile Include="Assets\Assets\Scripts\Recoger.cs" />

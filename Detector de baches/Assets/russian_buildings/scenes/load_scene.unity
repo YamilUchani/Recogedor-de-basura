@@ -920,12 +920,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   barraProgreso: {fileID: 835578722}
-  rootGameObjects:
-  - {fileID: 0}
+  rootGameObjects: []
   excludedObjectNames:
   - velocity (1)
   - Angle (1)
-  activationTimePerObject: 0.01
+  activationTimePerObject: 0.1
 --- !u!4 &1882720177
 Transform:
   m_ObjectHideFlags: 0

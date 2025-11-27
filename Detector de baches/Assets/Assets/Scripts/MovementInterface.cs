@@ -25,22 +25,25 @@ public class MovementInterface : MonoBehaviour
     private float baseAngle;
     private bool baseAngleSet = false;
     private float timer = 0f;
-    private int count;
+    private int globalCount = 0; // Solo para compatibilidad con UI, no se usa en nombres
 
-    string timestamp;
-    string folderPath;
-    private float lastAngle;
-    private const float TOLERANCIA = 0.1f;
-    private bool initialized = false;
-    public float toleranciaVelocidad = 0.1f;
+    // === NUEVO: Contadores por tipo de defecto ===
+    private Dictionary<string, int> captureCounters = new Dictionary<string, int>
+    {
+        { "Pothole", 0 },
+        { "Crocodile", 0 }
+    };
 
-    private HashSet<string> detectedPotholes = new HashSet<string>();
+    // === NUEVO: Prefabs asignables desde Inspector ===
+    public GameObject potholePlanePrefab;   // Plano azul
+    public GameObject crocodilePlanePrefab; // Plano amarillo
+
+    // === Evitar duplicados en marcadores e imágenes ===
+    private HashSet<string> processedObjects = new HashSet<string>();
 
     // Solo lectura en el inspector
     [SerializeField, TextArea(5, 20)]
-    private string visiblePotholes;
-
-    private string currentPothole = null;
+    private string visibleDefects = "";
 
     private void Update()
     {
@@ -52,14 +55,15 @@ public class MovementInterface : MonoBehaviour
             {
                 Capture();
                 timer = 0f;
-                count++;
+                globalCount++; // opcional, para otro uso
             }
         }
 
-        speed = velocidad.linearVelocity.magnitude;
+        // Actualizar velocidad
         float velocidadActual = velocidad.linearVelocity.magnitude;
-        speed = (velocidadActual < toleranciaVelocidad) ? 0f : velocidadActual;
+        speed = (velocidadActual < 0.1f) ? 0f : velocidadActual;
 
+        // Actualizar ángulo
         if (!angulo_mando)
         {
             if (angulo == null) return;
@@ -92,29 +96,25 @@ public class MovementInterface : MonoBehaviour
             }
 
             lastAngle = currentY;
-
-            if (velocidad.linearVelocity.magnitude > 0.05f)
-            {
-                Vector3 flatVelocity = new Vector3(velocidad.linearVelocity.x, 0, velocidad.linearVelocity.z);
-            }
         }
         else
         {
             angle = direction.anguloactual;
         }
 
+        // Normalización del ángulo
         if (angle >= 134 && angle <= 226)
         {
             angle -= 180;
         }
-
-        if (angle < 360 && angle >= 314)
+        if (angle >= 314 && angle < 360)
         {
             angle -= 360;
         }
 
+        // Actualizar UI
         string velocityTextValue = "Velocity : " + speed.ToString("F2") + " Km/H";
-        string angleTextValue =    "Angle    : " + angle.ToString("F2") + " º";
+        string angleTextValue = "Angle    : " + angle.ToString("F2") + " º";
 
         foreach (TMP_Text velocityText in velocityTexts)
         {
@@ -126,8 +126,15 @@ public class MovementInterface : MonoBehaviour
             angleText.text = angleTextValue;
         }
     }
-[SerializeField] private float offsetDistancia = 0.2f;
-private Vector3 lastMidPoint = Vector3.zero;
+
+    // === Parámetros de captura ===
+    [SerializeField] private float offsetDistancia = 0.2f;
+    private Vector3 lastMidPoint = Vector3.zero;
+    private bool initialized = false;
+    private float lastAngle;
+    private const float TOLERANCIA = 0.1f;
+
+    // === MÉTODO DE CAPTURA ACTUALIZADO ===
     private void Capture()
     {
         if (captureCameras == null || captureCameras.Count == 0)
@@ -136,28 +143,20 @@ private Vector3 lastMidPoint = Vector3.zero;
             return;
         }
 
-        if (speed <= 0.05f && Mathf.Abs(angle) <= 1f)
-        {
-            Debug.Log("Velocity and angle below thresholds. Image capture skipped.");
-        }
-
+        // Calcular punto medio
         Vector3 midPoint = Vector3.zero;
         foreach (Camera cam in captureCameras) midPoint += cam.transform.position;
         midPoint /= captureCameras.Count;
 
-         Vector3 direccionMovimiento = (midPoint - lastMidPoint).normalized;
-
-    // Ajustar midPoint en dirección contraria al movimiento
-    midPoint -= direccionMovimiento * offsetDistancia;
-
-    // Guardar el punto medio actual para el siguiente frame
-    lastMidPoint = midPoint;
+        Vector3 direccionMovimiento = (midPoint - lastMidPoint).normalized;
+        midPoint -= direccionMovimiento * offsetDistancia;
+        lastMidPoint = midPoint;
 
         Vector3 forwardDir = captureCameras[0].transform.forward;
-        Vector3 rightDir = captureCameras[0].transform.right;
         Vector3 upDir = captureCameras[0].transform.up;
+        Vector3 rightDir = captureCameras[0].transform.right;
 
-        float rayLength = 1f;
+        float rayLength = 4f;
         float raySpacing = 0.05f;
 
         Vector3[] rayOrigins = new Vector3[]
@@ -169,9 +168,10 @@ private Vector3 lastMidPoint = Vector3.zero;
             midPoint + (rightDir * raySpacing)
         };
 
-        bool hitDetected = false;
-        string potholeID = "";
-        RaycastHit bestHit = new RaycastHit();
+        bool validHit = false;
+        string hitTag = "";
+        string hitName = "";
+        Vector3 hitPoint = Vector3.zero;
 
         foreach (Vector3 origin in rayOrigins)
         {
@@ -179,58 +179,93 @@ private Vector3 lastMidPoint = Vector3.zero;
 
             if (Physics.Raycast(origin, forwardDir, out RaycastHit hit, rayLength))
             {
-                string hitTag = hit.collider.tag;
-                string hitName = hit.collider.gameObject.name;
+                string tag = hit.collider.tag;
+                string name = hit.collider.gameObject.name;
 
-                if (hitTag == "bache" && hitName.IndexOf("bache", StringComparison.OrdinalIgnoreCase) >= 0)
+                if (tag == "Pothole" || tag == "Crocodile")
                 {
-                    hitDetected = true;
-                    potholeID = hitName;
-                    bestHit = hit;
+                    string uniqueID = tag + "_" + name;
+                    if (processedObjects.Contains(uniqueID))
+                    {
+                        Debug.Log($"Objeto {uniqueID} ya procesado. Saltando.");
+                        return;
+                    }
+
+                    validHit = true;
+                    hitTag = tag;
+                    hitName = name;
+                    hitPoint = hit.point;
+                    processedObjects.Add(uniqueID);
+                    visibleDefects += $"\n{tag}: {name}";
                     break;
                 }
                 else
                 {
-                    Debug.Log($"Objeto detectado no válido. Tag: {hitTag}, Nombre: {hitName}");
+                    Debug.Log($"Objeto no válido. Tag: {tag}, Nombre: {name}");
                 }
             }
         }
 
-        if (!hitDetected)
+        if (!validHit)
         {
-            Debug.Log("No pothole detected by any ray.");
+            Debug.Log("No Pothole or Crocodile detected. No image captured.");
             return;
         }
 
-        if (detectedPotholes.Contains(potholeID))
-        {
-            Debug.Log($"Pothole {potholeID} already captured. Skipping.");
-            return;
-        }
+        // === Incrementar contador del tipo ===
+        captureCounters[hitTag]++;
+        int currentCount = captureCounters[hitTag];
 
-        detectedPotholes.Add(potholeID);
-        currentPothole = potholeID;
-
-        // Actualiza texto visible en Inspector
-        visiblePotholes = string.Join("\n", detectedPotholes);
-
+        // === Generar timestamp ===
         string timestamp = System.DateTime.Now.ToString("yyyyMMdd_HHmmss");
-        string folderPath = Path.Combine(Application.persistentDataPath, "Imagenes", "Imagenes_de_baches", timestamp);
+
+        // === Crear carpeta única por captura ===
+        string folderPath = Path.Combine(Application.persistentDataPath, "Imagenes", "Imagenes_de_defectos", timestamp);
         Directory.CreateDirectory(folderPath);
 
+        // === Instanciar plano de marcador ===
+        GameObject prefabToSpawn = null;
+
+        if (hitTag == "Pothole")
+        {
+            prefabToSpawn = potholePlanePrefab;
+        }
+        else if (hitTag == "Crocodile")
+        {
+            prefabToSpawn = crocodilePlanePrefab;
+        }
+
+        if (prefabToSpawn != null)
+        {
+            // Misma posición X y Z, pero 20 metros más arriba en Y
+            Vector3 spawnPosition = new Vector3(hitPoint.x, hitPoint.y + 20f, hitPoint.z);
+            
+            // Rotación (0, 0, 0)
+            Quaternion spawnRotation = Quaternion.identity;
+            
+            Instantiate(prefabToSpawn, spawnPosition, spawnRotation);
+            Debug.Log($"Marcador {hitTag} instanciado en {spawnPosition}");
+        }
+        else
+        {
+            Debug.LogWarning($"Prefab no asignado para {hitTag}!");
+        }
+
+        // === Capturar imágenes ===
         foreach (Camera cam in captureCameras)
         {
-            string filename = $"Image{count}_{cam.name}.png";
+            // Nombre: [Tag]_[Contador]_[Timestamp].png
+            string filename = $"{hitTag}_{currentCount}_{timestamp}_{cam.name}.png";
             string outputPath = Path.Combine(folderPath, filename);
 
             bool convertToGrayscale = cam.name.Contains("L") || cam.name.Contains("R");
             RenderTexture renderTexture = new RenderTexture(1270, 950, 24);
 
             cam.targetTexture = renderTexture;
-            Texture2D screenshot = new Texture2D(1270, 950, TextureFormat.RGB24, false);
             cam.Render();
 
             RenderTexture.active = renderTexture;
+            Texture2D screenshot = new Texture2D(1270, 950, TextureFormat.RGB24, false);
             screenshot.ReadPixels(new Rect(0, 0, 1270, 950), 0, 0);
 
             if (convertToGrayscale)
@@ -247,15 +282,14 @@ private Vector3 lastMidPoint = Vector3.zero;
             screenshot.Apply();
             File.WriteAllBytes(outputPath, screenshot.EncodeToPNG());
 
+            // Limpiar
             cam.targetTexture = null;
             RenderTexture.active = null;
             Destroy(renderTexture);
             Destroy(screenshot);
 
-            Debug.Log($"Captured image saved to: {outputPath}");
+            Debug.Log($"Imagen guardada: {outputPath}");
         }
-
-        count++;
     }
 
     public void AcDc()
@@ -263,13 +297,11 @@ private Vector3 lastMidPoint = Vector3.zero;
         if (isCapturing)
         {
             isCapturing = false;
-            container = false;
             buttonText.text = "Record";
         }
         else
         {
             isCapturing = true;
-            container = true;
             buttonText.text = "Stop";
         }
     }

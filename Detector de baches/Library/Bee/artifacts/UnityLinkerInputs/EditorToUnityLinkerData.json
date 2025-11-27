@@ -105,6 +105,13 @@
         {
             "managedAssemblyName": "Assembly-CSharp.dll",
             "nativeClass": "",
+            "fullManagedTypeName": "GeneradorDeBachesUnificado",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Assembly-CSharp.dll",
+            "nativeClass": "",
             "fullManagedTypeName": "GeneradorDeCalle",
             "moduleName": "",
             "usedInScenes": []
@@ -220,6 +227,13 @@
             "nativeClass": "RuntimeInitializeOnLoadManager",
             "fullManagedTypeName": "",
             "moduleName": "Core",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Assembly-CSharp.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "RuntimeNavMeshBaker",
+            "moduleName": "",
             "usedInScenes": []
         },
         {

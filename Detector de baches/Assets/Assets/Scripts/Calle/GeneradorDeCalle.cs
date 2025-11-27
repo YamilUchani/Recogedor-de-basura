@@ -1,5 +1,7 @@
 using UnityEngine;
+using System;
 using System.Collections.Generic;
+using UnityEngine.AI;
 
 [RequireComponent(typeof(GeneradorDeBaches))]
 [DisallowMultipleComponent]
@@ -9,14 +11,19 @@ public class GeneradorDeCalle : MonoBehaviour
     public Material calleMaterial;
     public float alturaCalle = 0.0f;
     public float tamanoSegmento = 10.0f; // Tamaño de cada segmento de calle
-
-    private GeneradorDeBaches _genBaches;
+    // 🔹 NUEVO: bandera pública que indica que ya terminó todo
+    public event Action OnGeneracionCalleTerminada;
+    public bool _generacionCalleTerminada = false;
+    private GeneradorDeBachesUnificado _genBaches;
     private bool _generacionIniciada = false;
     private List<GameObject> _segmentosCalle = new List<GameObject>();
+    private NavMeshData navMeshData;
+    private NavMeshDataInstance navMeshDataInstance;
+    public RuntimeNavMeshBaker navMeshBaker;
 
     private void Awake()
     {
-        _genBaches = GetComponent<GeneradorDeBaches>();
+        _genBaches = GetComponent<GeneradorDeBachesUnificado>();
     }
 
     private void Update()
@@ -36,7 +43,6 @@ public class GeneradorDeCalle : MonoBehaviour
             if (segmento != null) Destroy(segmento);
         }
         _segmentosCalle.Clear();
-
         // Obtener todos los baches
         List<Renderer> renderersBaches = new List<Renderer>();
         if (_genBaches.objetoPadre != null)
@@ -47,16 +53,13 @@ public class GeneradorDeCalle : MonoBehaviour
         {
             renderersBaches.AddRange(GetComponentsInChildren<Renderer>());
         }
-
         // Configurar área total
         float ladoTotal = _genBaches.ladoArea;
         Vector3 centro = transform.position;
         float mitad = ladoTotal * 0.5f;
         Vector3 inicio = centro - new Vector3(mitad, 0, mitad);
-
         // Dividir en segmentos
         int numSegmentos = Mathf.CeilToInt(ladoTotal / tamanoSegmento);
-
         for (int zSeg = 0; zSeg < numSegmentos; zSeg++)
         {
             for (int xSeg = 0; xSeg < numSegmentos; xSeg++)
@@ -66,11 +69,14 @@ public class GeneradorDeCalle : MonoBehaviour
                 float zMin = inicio.z + zSeg * tamanoSegmento;
                 float xMax = xMin + tamanoSegmento;
                 float zMax = zMin + tamanoSegmento;
-
                 // Crear segmento
                 CrearSegmentoCalle(xMin, zMin, xMax, zMax, renderersBaches);
             }
         }
+        OnGeneracionCalleTerminada?.Invoke();
+        _generacionCalleTerminada = true;
+        navMeshBaker.BakeNavMesh();
+
     }
 
     private void CrearSegmentoCalle(float xMin, float zMin, float xMax, float zMax, List<Renderer> baches)
@@ -79,27 +85,22 @@ public class GeneradorDeCalle : MonoBehaviour
         List<Vector3> vertices = new List<Vector3>();
         List<int> triangulos = new List<int>();
         List<Vector2> uvs = new List<Vector2>();
-
         // 1. Empezar con el rectángulo completo del segmento
         List<Bounds> areasLibres = new List<Bounds>();
         areasLibres.Add(new Bounds(
             new Vector3((xMin + xMax) * 0.5f, alturaCalle, (zMin + zMax) * 0.5f),
             new Vector3(xMax - xMin, 0.1f, zMax - zMin)
         ));
-
         // 2. Procesar baches que intersectan con este segmento
         foreach (Renderer rend in baches)
         {
             if (rend.transform == transform) continue;
-
             Bounds bache = rend.bounds;
             Bounds segmentoBounds = new Bounds(
                 new Vector3((xMin + xMax) * 0.5f, alturaCalle, (zMin + zMax) * 0.5f),
                 new Vector3(xMax - xMin, 0.1f, zMax - zMin)
             );
-
             if (!segmentoBounds.Intersects(bache)) continue;
-
             List<Bounds> nuevasAreas = new List<Bounds>();
             foreach (Bounds area in areasLibres)
             {
@@ -108,7 +109,6 @@ public class GeneradorDeCalle : MonoBehaviour
                     nuevasAreas.Add(area);
                     continue;
                 }
-
                 // Dividir el área alrededor del bache
                 // Izquierda
                 if (bache.min.x > area.min.x)
@@ -118,7 +118,6 @@ public class GeneradorDeCalle : MonoBehaviour
                         new Vector3(bache.min.x - area.min.x, area.size.y, area.size.z)
                     ));
                 }
-
                 // Derecha
                 if (bache.max.x < area.max.x)
                 {
@@ -127,7 +126,6 @@ public class GeneradorDeCalle : MonoBehaviour
                         new Vector3(area.max.x - bache.max.x, area.size.y, area.size.z)
                     ));
                 }
-
                 // Frente (Z positivo)
                 if (bache.max.z < area.max.z)
                 {
@@ -136,7 +134,6 @@ public class GeneradorDeCalle : MonoBehaviour
                         new Vector3(area.size.x, area.size.y, area.max.z - bache.max.z)
                     ));
                 }
-
                 // Atrás (Z negativo)
                 if (bache.min.z > area.min.z)
                 {
@@ -148,14 +145,12 @@ public class GeneradorDeCalle : MonoBehaviour
             }
             areasLibres = nuevasAreas;
         }
-
         // 3. Generar geometría para las áreas libres
         foreach (Bounds area in areasLibres)
         {
-            AddRectangleToMesh(area.min.x, area.min.z, area.max.x, area.max.z, 
+            AddRectangleToMesh(area.min.x, area.min.z, area.max.x, area.max.z,
                               ref vertices, ref triangulos, ref uvs);
         }
-
         // 4. Crear el GameObject del segmento si tiene geometría
         if (vertices.Count > 0)
         {
@@ -169,16 +164,12 @@ public class GeneradorDeCalle : MonoBehaviour
             mesh.SetUVs(0, uvs);
             mesh.RecalculateNormals();
             mesh.RecalculateBounds();
-
             MeshFilter mf = segmentoGO.AddComponent<MeshFilter>();
             mf.sharedMesh = mesh;
-
             MeshRenderer mr = segmentoGO.AddComponent<MeshRenderer>();
             mr.material = calleMaterial;
-
             MeshCollider mc = segmentoGO.AddComponent<MeshCollider>();
             mc.sharedMesh = mesh;
-
             _segmentosCalle.Add(segmentoGO);
         }
     }
@@ -187,21 +178,44 @@ public class GeneradorDeCalle : MonoBehaviour
                                   ref List<Vector3> vertices, ref List<int> triangulos, ref List<Vector2> uvs)
     {
         int start = vertices.Count;
-
         // Vértices
         vertices.Add(new Vector3(minX, alturaCalle, minZ)); // BL
         vertices.Add(new Vector3(minX, alturaCalle, maxZ)); // TL
         vertices.Add(new Vector3(maxX, alturaCalle, maxZ)); // TR
         vertices.Add(new Vector3(maxX, alturaCalle, minZ)); // BR
-
         // UVs
         uvs.Add(new Vector2(0, 0));
         uvs.Add(new Vector2(0, 1));
         uvs.Add(new Vector2(1, 1));
         uvs.Add(new Vector2(1, 0));
-
         // Triángulos
         triangulos.Add(start + 0); triangulos.Add(start + 1); triangulos.Add(start + 2);
         triangulos.Add(start + 0); triangulos.Add(start + 2); triangulos.Add(start + 3);
+    }
+
+    private void BakeNavMesh()
+    {
+        List<NavMeshBuildSource> sources = new List<NavMeshBuildSource>();
+        foreach (var segmento in _segmentosCalle)
+        {
+            MeshFilter mf = segmento.GetComponent<MeshFilter>();
+            if (mf != null && mf.sharedMesh != null)
+            {
+                NavMeshBuildSource src = new NavMeshBuildSource();
+                src.shape = NavMeshBuildSourceShape.Mesh;
+                src.sourceObject = mf.sharedMesh;
+                src.transform = mf.transform.localToWorldMatrix;
+                src.area = 0;
+                sources.Add(src);
+            }
+        }
+        Bounds bounds = new Bounds(transform.position, new Vector3(_genBaches.ladoArea, 10f, _genBaches.ladoArea));
+        if (navMeshData == null)
+        {
+            navMeshData = new NavMeshData();
+            navMeshDataInstance = NavMesh.AddNavMeshData(navMeshData);
+        }
+        NavMeshBuilder.UpdateNavMeshData(navMeshData, NavMesh.GetSettingsByID(0), sources, bounds);
+        Debug.Log("NavMesh horneado en runtime sobre objetos dinámicos");
     }
 }

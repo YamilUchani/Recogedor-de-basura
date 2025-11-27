@@ -6,14 +6,12 @@ using UnityEngine.AI;
 public class DroneNavMeshController : MonoBehaviour
 {
     public bool apagado = false;
-private bool apagando = false;
-private float tiempoApagado = 0f;
-private float tiempoParaApagarMotores = 2f;
+    private bool apagando = false;
+    private float tiempoApagado = 0f;
+    private float tiempoParaApagarMotores = 2f;
     private float velocidadBajada = 2f;
-private float targetHeightInicial;
-private float minHeightInicial;
-
-
+    private float targetHeightInicial;
+    private float minHeightInicial;
 
     [Header("Height Configuration")]
     public float targetHeight = 5f;
@@ -25,7 +23,8 @@ private float minHeightInicial;
     public float heightDeadZone = 0.1f;
 
     [Header("Movement Configuration")]
-    public float moveSpeed = 10f;
+    public float baseMoveSpeed = 10f; // Base original
+    [HideInInspector] public float moveSpeed; // Valor actual modificable
     public float rotationSpeed = 90f;
     public float tiltAngle = 15f;
     public float stabilizationSpeed = 5f;
@@ -42,6 +41,7 @@ private float minHeightInicial;
     [Header("References")]
     public Transform[] motors;
     public Transform modelRoot;
+    public Transform body; // ✅ Nueva referencia: cuerpo visual ajustable
 
     [Header("Refuel Position")]
     public Vector3 repostajePosition = new Vector3(0.5f, 0f, 0.5f);
@@ -69,8 +69,22 @@ private float minHeightInicial;
 
     void Start()
     {
+        // Validar referencias obligatorias
+        if (motors == null || motors.Length == 0)
+        {
+            Debug.LogError("❌ El array 'motors' no está asignado en el Inspector. ¡Asígname al menos un motor!");
+            enabled = false;
+            return;
+        }
+
+        if (body == null)
+        {
+            Debug.LogWarning("⚠️ El campo 'body' no está asignado. Se usará modelRoot como fallback.");
+            body = modelRoot;
+        }
+
         targetHeightInicial = targetHeight;
-minHeightInicial = minHeight;
+        minHeightInicial = minHeight;
 
         rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
@@ -80,7 +94,10 @@ minHeightInicial = minHeight;
         rb.inertiaTensorRotation = Quaternion.identity;
 
         motorRotationAngles = new float[motors.Length];
+        moveSpeed = baseMoveSpeed; // Inicializar velocidad
+
         transform.position = repostajePosition;
+        agent.Warp(repostajePosition);
 
         ConfigureNavAgent(false);
     }
@@ -88,62 +105,51 @@ minHeightInicial = minHeight;
     void Update()
     {
         if (apagado)
-{
-if (Input.GetKeyDown(KeyCode.Space))
-{
-    apagado = false;
-    manualControl = true;
-
-    // Restaurar valores de altura
-    targetHeight = targetHeightInicial;
-    minHeight = minHeightInicial;
-
-    ConfigureNavAgent(false);
-    Debug.Log("Drone reactivado en modo manual");
-}
-
-
-    return;
-}
-
-if (apagando)
-{
-    tiempoApagado += Time.deltaTime;
-
-    // Suavizar motores
-    for (int i = 0; i < motors.Length; i++)
-    {
-        float t = Mathf.Clamp01(tiempoApagado / tiempoParaApagarMotores);
-        float speedFactor = Mathf.Lerp(1f, 0f, t);
-
-        float rotationDirection = alternateRotation ? (i % 2 == 0 ? 1 : -1) : 1;
-        motorRotationAngles[i] += motorRotationSpeed * speedFactor * rotationDirection * Time.deltaTime;
-
-        motors[i].localRotation = Quaternion.Euler(0f, motorRotationAngles[i], 0f);
-    }
-
-    // Bajar altura objetivo
-    targetHeight = Mathf.MoveTowards(targetHeight, 0.04f, Time.deltaTime * 1.5f);
-
-    // También reducir el minHeight para permitir el descenso total
-    minHeight = Mathf.MoveTowards(minHeight, 0f, Time.deltaTime * 2f);
-
-    // Detectar si ya tocó el suelo
-    Ray ray = new Ray(transform.position, Vector3.down);
-    if (Physics.Raycast(ray, out RaycastHit hit, 5f))
-    {
-        float distanceToGround = hit.distance;
-        if (distanceToGround <= 0.08f && targetHeight <= 0.05f)
         {
-            FinalizarApagado();
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                apagado = false;
+                manualControl = true;
+
+                targetHeight = targetHeightInicial;
+                minHeight = minHeightInicial;
+
+                ConfigureNavAgent(false);
+                Debug.Log("Drone reactivado en modo manual");
+            }
+            return;
         }
-    }
 
-    return;
-}
+        if (apagando)
+        {
+            tiempoApagado += Time.deltaTime;
 
+            for (int i = 0; i < motors.Length; i++)
+            {
+                float t = Mathf.Clamp01(tiempoApagado / tiempoParaApagarMotores);
+                float speedFactor = Mathf.Lerp(1f, 0f, t);
 
+                float rotationDirection = alternateRotation ? (i % 2 == 0 ? 1 : -1) : 1;
+                motorRotationAngles[i] += motorRotationSpeed * speedFactor * rotationDirection * Time.deltaTime;
 
+                motors[i].localRotation = Quaternion.Euler(0f, motorRotationAngles[i], 0f);
+            }
+
+            targetHeight = Mathf.MoveTowards(targetHeight, 0.04f, Time.deltaTime * 1.5f);
+            minHeight = Mathf.MoveTowards(minHeight, 0f, Time.deltaTime * 2f);
+
+            Ray ray = new Ray(transform.position, Vector3.down);
+            if (Physics.Raycast(ray, out RaycastHit hit, 5f))
+            {
+                float distanceToGround = hit.distance;
+                if (distanceToGround <= 0.08f && targetHeight <= 0.05f)
+                {
+                    FinalizarApagado();
+                }
+            }
+
+            return;
+        }
 
         HandleInput();
         ApplyMotorRotation();
@@ -155,12 +161,10 @@ if (apagando)
                 agent.SetDestination(searchWaypoints[currentWaypointIndex]);
                 lastPathUpdateTime = Time.time;
 
-                // Check if reached current waypoint
                 if (!agent.pathPending && agent.remainingDistance <= stoppingDistance)
                 {
                     currentWaypointIndex++;
 
-                    // If completed all waypoints
                     if (currentWaypointIndex >= searchWaypoints.Count)
                     {
                         if (!missionComplete)
@@ -171,7 +175,6 @@ if (apagando)
                         }
                         else if (isReturningToBase)
                         {
-                            // Reached refuel position
                             isReturningToBase = false;
                             hasRoute = false;
                             searchWaypoints.Clear();
@@ -218,7 +221,6 @@ if (apagando)
         searchWaypoints.Clear();
         currentWaypointIndex = 0;
 
-        // Calcular el área real que debe cubrir (incluyendo el tamaño del drone)
         Vector3 realStart = new Vector3(
             Mathf.Min(start.x, end.x),
             targetHeight,
@@ -229,28 +231,21 @@ if (apagando)
             targetHeight,
             Mathf.Max(start.z, end.z));
 
-        // Dimensiones reales del área a cubrir
         float width = realEnd.x - realStart.x;
         float length = realEnd.z - realStart.z;
 
-        // Determinar dirección principal (mejor cobertura)
         bool searchAlongWidth = width >= length;
         float mainAxisLength = searchAlongWidth ? width : length;
         float crossAxisLength = searchAlongWidth ? length : width;
 
-        // Calcular número de pasadas necesarias para cobertura completa
-        // Asegurar al menos 1 pasada incluso para áreas pequeñas
         int passes = Mathf.Max(1, Mathf.CeilToInt(crossAxisLength / (searchSpacing * 0.8f)));
 
-        // Generar waypoints en patrón de zigzag
         for (int i = 0; i <= passes; i++)
         {
             float crossAxisPos = Mathf.Lerp(0, crossAxisLength, (float)i / passes);
 
-            // Alternar direcciones para el patrón de zigzag
             if (i % 2 == 0)
             {
-                // Ida
                 if (searchAlongWidth)
                 {
                     searchWaypoints.Add(new Vector3(realStart.x, targetHeight, realStart.z + crossAxisPos));
@@ -264,7 +259,6 @@ if (apagando)
             }
             else
             {
-                // Vuelta
                 if (searchAlongWidth)
                 {
                     searchWaypoints.Add(new Vector3(realEnd.x, targetHeight, realStart.z + crossAxisPos));
@@ -278,7 +272,6 @@ if (apagando)
             }
         }
 
-        // Eliminar waypoints duplicados consecutivos
         for (int i = searchWaypoints.Count - 1; i > 0; i--)
         {
             if (Vector3.Distance(searchWaypoints[i], searchWaypoints[i - 1]) < 0.1f)
@@ -289,6 +282,7 @@ if (apagando)
 
         Debug.Log($"Patrón generado con {searchWaypoints.Count} waypoints. Área: {width}x{length}m. Pasadas: {passes}");
     }
+
     private void GenerateReturnPath()
     {
         searchWaypoints.Clear();
@@ -307,7 +301,6 @@ if (apagando)
 
         for (int i = 1; i < searchWaypoints.Count - 1; i++)
         {
-            // Average between previous, current and next waypoint
             Vector3 smoothedPoint = (searchWaypoints[i - 1] + searchWaypoints[i] + searchWaypoints[i + 1]) / 3f;
             smoothedPoint.y = targetHeight;
             smoothed.Add(smoothedPoint);
@@ -337,23 +330,28 @@ if (apagando)
 
     private void ConfigureNavAgent(bool active)
     {
-        agent.enabled = active;
         if (active)
         {
             agent.updatePosition = true;
             agent.updateRotation = true;
             agent.stoppingDistance = stoppingDistance;
-            agent.speed = moveSpeed;
+            agent.speed = moveSpeed; // ✅ Usa velocidad actual
             agent.angularSpeed = rotationSpeed;
             agent.acceleration = moveSpeed * 5;
             rb.isKinematic = true;
             rb.interpolation = RigidbodyInterpolation.None;
+            agent.enabled = true;
         }
         else
         {
+            if (agent.enabled && agent.isOnNavMesh)
+            {
+                agent.ResetPath();
+            }
+
+            agent.enabled = false;
             rb.isKinematic = false;
             rb.interpolation = RigidbodyInterpolation.Interpolate;
-            agent.ResetPath();
         }
     }
 
@@ -371,6 +369,52 @@ if (apagando)
             verticalInput = 0;
             movementInput = Vector2.zero;
             currentRotation = 0;
+        }
+
+        // ✅ Ajuste de cuerpo visual con J/L
+        if (!apagado && !apagando && body != null)
+        {
+            if (Input.GetKey(KeyCode.J))
+            {
+                Vector3 localPos = body.localPosition;
+                localPos.y -= 0.5f * Time.deltaTime;
+                body.localPosition = localPos;
+            }
+            if (Input.GetKey(KeyCode.L))
+            {
+                Vector3 localPos = body.localPosition;
+                localPos.y += 0.5f * Time.deltaTime;
+                body.localPosition = localPos;
+            }
+        }
+
+        // ✅ Ajuste de velocidad con I/K
+        if (!apagado && !apagando)
+        {
+            bool speedChanged = false;
+            if (Input.GetKey(KeyCode.I))
+            {
+                moveSpeed = Mathf.Min(baseMoveSpeed * 2f, moveSpeed + 2f * Time.deltaTime);
+                speedChanged = true;
+            }
+            if (Input.GetKey(KeyCode.K))
+            {
+                moveSpeed = Mathf.Max(baseMoveSpeed * 0.2f, moveSpeed - 2f * Time.deltaTime);
+                speedChanged = true;
+            }
+
+            if (speedChanged)
+            {
+                UpdateNavAgentSpeed();
+            }
+        }
+    }
+
+    private void UpdateNavAgentSpeed()
+    {
+        if (agent != null && agent.enabled)
+        {
+            agent.speed = moveSpeed;
         }
     }
 
@@ -476,7 +520,6 @@ if (apagando)
         rb.angularVelocity = angularVelocity;
     }
 
-    // Visualize waypoints in editor
     void OnDrawGizmosSelected()
     {
         if (searchWaypoints != null && searchWaypoints.Count > 0)
@@ -489,7 +532,6 @@ if (apagando)
             }
             Gizmos.DrawSphere(searchWaypoints[searchWaypoints.Count - 1], 0.1f);
 
-            // Draw current target
             if (currentWaypointIndex < searchWaypoints.Count)
             {
                 Gizmos.color = Color.red;
@@ -497,38 +539,29 @@ if (apagando)
             }
         }
     }
-        public void ReturnToBase()
-{
-    missionComplete = true;
-    isReturningToBase = true;
-    hasRoute = true;
 
-    searchWaypoints.Clear();
-    currentWaypointIndex = 0;
-
-    if (!manualControl && agent.isOnNavMesh)
+    public void ReturnToBase()
     {
-        agent.ResetPath();
-        agent.SetDestination(repostajePosition);
+        missionComplete = true;
+        isReturningToBase = true;
+        hasRoute = true;
+
+        searchWaypoints.Clear();
+        currentWaypointIndex = 0;
+
+        if (!manualControl && agent.isOnNavMesh)
+        {
+            agent.ResetPath();
+            agent.SetDestination(repostajePosition);
+        }
+
+        Debug.Log("Retorno forzado a base por energía baja");
     }
 
-    Debug.Log("Retorno forzado a base por energía baja");
-}
+    public bool IsManualControl() => manualControl;
+    public bool IsReturningToBase() => isReturningToBase;
+    public bool IsAtBase() => Vector3.Distance(transform.position, repostajePosition) < 0.5f;
 
-public bool IsManualControl()
-{
-    return manualControl;
-}
-
-public bool IsReturningToBase()
-{
-    return isReturningToBase;
-}
-
-    public bool IsAtBase()
-    {
-        return Vector3.Distance(transform.position, repostajePosition) < 0.5f;
-    }
     public void ApagarDrone()
     {
         if (apagado || apagando) return;
@@ -547,27 +580,21 @@ public bool IsReturningToBase()
 
         tiempoApagado = 0f;
     }
-private void FinalizarApagado()
-{
-    apagado = true;
-    apagando = false;
 
-    rb.linearVelocity = Vector3.zero;
-    rb.angularVelocity = Vector3.zero;
-    rb.isKinematic = true;
+    private void FinalizarApagado()
+    {
+        apagado = true;
+        apagando = false;
 
-    Debug.Log("Dron apagado completamente.");
-}
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.isKinematic = true;
 
+        Debug.Log("Dron apagado completamente.");
+    }
 
-public bool EstaApagado()
-{
-    return apagado;
-}
-public bool IsFullyShutdown()
-{
-    return apagado;
-}
+    public bool EstaApagado() => apagado;
+    public bool IsFullyShutdown() => apagado;
 }
 
 public class PIDController
@@ -599,6 +626,4 @@ public class PIDController
     {
         integral = 0;
     }
-
-
 }

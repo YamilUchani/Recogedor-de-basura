@@ -6,7 +6,7 @@ using UnityEngine.Video;
 using TMPro;
 using System.IO;
 using FF = Unity.Sentis.Functional;
-
+using UnityCamera = UnityEngine.Camera;
 public class RunYOLO : MonoBehaviour
 {
     public enum InputType { Video, Image, Camera }
@@ -34,9 +34,7 @@ public class RunYOLO : MonoBehaviour
     public string imageFilename = "image.jpg";
 
     [Tooltip("Cámara de Unity para usar como entrada")]
-    public Camera sourceCamera;
 
-    [Tooltip("Controla si se ejecuta el modelo")]
     public bool runModel = true;
 
     [Tooltip("Muestra las cajas detectadas")]
@@ -44,9 +42,18 @@ public class RunYOLO : MonoBehaviour
 
     [Header("Controles adicionales")]
     public TextMeshProUGUI toggleModelText;
-    public Camera cameraA;
-    public Camera cameraB;
+    public UnityCamera sourceCamera;
+    public UnityCamera cameraA;
+    public UnityCamera cameraB;
     private bool usingCameraA = true;
+
+    // === NUEVO: Prefabs para marcadores ===
+    public GameObject potholePlanePrefab;   // Plano azul
+    public GameObject crocodilePlanePrefab; // Plano amarillo
+
+    // === Evitar duplicados ===
+    private HashSet<string> processedObjects = new HashSet<string>();
+    private const float RAY_LENGTH = 50f; // Longitud del rayo (ajusta si la cámara está lejos)
 
     const BackendType backend = BackendType.GPUCompute;
 
@@ -102,7 +109,6 @@ public class RunYOLO : MonoBehaviour
             sourceCamera = cameraA;
             usingCameraA = true;
         }
-
 
         SetupInput();
 
@@ -265,17 +271,80 @@ public class RunYOLO : MonoBehaviour
         int boxesFound = output.shape[0];
         for (int n = 0; n < Mathf.Min(boxesFound, 200); n++)
         {
+            string detectedLabel = labels[labelIDs[n]].Trim();
+
+            // Solo procesamos los defectos de interés
+            if (detectedLabel != "Pothole" && detectedLabel != "Crocodile Crack" && detectedLabel != "Lateral Crack")
+                continue;
+
             var box = new BoundingBox
             {
                 centerX = output[n, 0] * scaleX - displayWidth / 2,
                 centerY = output[n, 1] * scaleY - displayHeight / 2,
                 width = output[n, 2] * scaleX,
                 height = output[n, 3] * scaleY,
-                label = labels[labelIDs[n]],
+                label = detectedLabel,
             };
 
             if (showBoxes)
                 DrawBox(box, n, displayHeight * 0.05f);
+
+            // === Convertir centro 2D a rayo en el mundo ===
+            float normX = output[n, 0] / imageWidth;   // [0,1]
+            float normY = output[n, 1] / imageHeight;  // [0,1]
+
+            // Viewport: (0,0) = esquina inferior izquierda
+            Vector3 viewportPoint = new Vector3(normX, 1.0f - normY, 0f);
+            Ray ray = sourceCamera.ViewportPointToRay(viewportPoint);
+
+            // Dibujar rayo para depuración (opcional)
+            Debug.DrawRay(ray.origin, ray.direction * RAY_LENGTH, Color.green, 2f);
+
+            // Realizar raycast
+            if (Physics.Raycast(ray, out RaycastHit hit, RAY_LENGTH))
+            {
+                string hitTag = hit.collider.tag;
+                string objName = hit.collider.gameObject.name;
+                string uniqueID = hitTag + "_" + objName;
+
+                // Validar tag
+                if (hitTag == "Pothole" || hitTag == "Crocodile")
+                {
+                    if (processedObjects.Contains(uniqueID))
+                    {
+                        Debug.Log($"[YOLO] Objeto {uniqueID} ya marcado. Ignorado.");
+                        continue;
+                    }
+
+                    // Determinar prefab
+                    GameObject prefabToSpawn = null;
+                    if (hitTag == "Pothole")
+                    {
+                        prefabToSpawn = potholePlanePrefab;
+                    }
+                    else if (hitTag == "Crocodile")
+                    {
+                        prefabToSpawn = crocodilePlanePrefab;
+                    }
+
+                    if (prefabToSpawn != null)
+                    {
+                        Vector3 spawnPosition = new Vector3(hit.point.x, hit.point.y + 20f, hit.point.z);
+                        Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
+                        Debug.Log($"[YOLO] Marcador '{hitTag}' instanciado en {spawnPosition}");
+
+                        processedObjects.Add(uniqueID);
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"[YOLO] Prefab no asignado para tag: {hitTag}");
+                    }
+                }
+                else
+                {
+                    Debug.Log($"[YOLO] Objeto no válido detectado: Tag={hitTag}, Nombre={objName}");
+                }
+            }
         }
     }
 
@@ -346,48 +415,49 @@ public class RunYOLO : MonoBehaviour
             toggleModelText.text = "Stop";
         }
     }
-public void DeactivateModel()
-{
-    runModel = false;
-    if (toggleModelText != null)
+
+    public void DeactivateModel()
     {
-        toggleModelText.text = "Run";
+        runModel = false;
+        if (toggleModelText != null)
+        {
+            toggleModelText.text = "Run";
+        }
     }
-}
 
-
-public void SelectCameraA()
-{
-    if (cameraA != null)
+    public void SelectCameraA()
     {
-        sourceCamera.targetTexture = null;
-        sourceCamera = cameraA;
-        usingCameraA = true;
-        SetupInput();
+        if (cameraA != null)
+        {
+            sourceCamera.targetTexture = null;
+            sourceCamera = cameraA;
+            usingCameraA = true;
+            SetupInput();
+        }
     }
-}
 
-public void SelectCameraB()
-{
-    if (cameraB != null)
+    public void SelectCameraB()
     {
-        sourceCamera.targetTexture = null;
-        sourceCamera = cameraB;
-        usingCameraA = false;
-        SetupInput();
+        if (cameraB != null)
+        {
+            sourceCamera.targetTexture = null;
+            sourceCamera = cameraB;
+            usingCameraA = false;
+            SetupInput();
+        }
     }
-}
 
-public void ActivateBoxes()
-{
-    showBoxes = true;
-}
-public void DeactivateBoxes()
-{
-    showBoxes = false;
-}
+    public void ActivateBoxes()
+    {
+        showBoxes = true;
+    }
 
-public void ToggleModelRunning()
+    public void DeactivateBoxes()
+    {
+        showBoxes = false;
+    }
+
+    public void ToggleModelRunning()
     {
         runModel = !runModel;
         if (toggleModelText != null)
@@ -418,6 +488,7 @@ public void ToggleModelRunning()
     {
         showBoxes = !showBoxes;
     }
+
     void OnDestroy()
     {
         centersToCorners?.Dispose();

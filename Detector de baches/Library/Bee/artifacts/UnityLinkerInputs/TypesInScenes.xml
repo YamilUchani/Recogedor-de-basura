@@ -9,12 +9,14 @@
 		<type fullname="EliminarTriangulos" preserve="nothing"/>
 		<type fullname="EnergyController" preserve="nothing"/>
 		<type fullname="GeneradorDeBaches" preserve="nothing"/>
+		<type fullname="GeneradorDeBachesUnificado" preserve="nothing"/>
 		<type fullname="GeneradorDeCalle" preserve="nothing"/>
 		<type fullname="LoadingScreenController" preserve="nothing"/>
 		<type fullname="Minimapa" preserve="nothing"/>
 		<type fullname="MostrarSoloAlPasarMouse" preserve="nothing"/>
 		<type fullname="MovementInterface" preserve="nothing"/>
 		<type fullname="NavMeshdrone" preserve="nothing"/>
+		<type fullname="RuntimeNavMeshBaker" preserve="nothing"/>
 		<type fullname="RunYOLO" preserve="nothing"/>
 		<type fullname="SceneSwitcher" preserve="nothing"/>
 		<type fullname="ToggleActiveExclusive" preserve="nothing"/>
