@@ -11,15 +11,18 @@ public class ToggleActiveExclusive : MonoBehaviour
     // Referencia al controlador de energía
     public EnergyController energyController;
 
-    private void OnEnable()
+    public void Initialize()
     {
-        ActivateGroupA();
+        if (energia)
+            ActivateGroupB();
+        else
+            ActivateGroupA();
     }
 
     public void ActivateGroupA()
     {
         foreach (GameObject obj in groupA)
-            obj.SetActive(true);
+            ActivateRecursive(obj);
 
         foreach (GameObject obj in groupB)
             obj.SetActive(false);
@@ -34,7 +37,7 @@ public class ToggleActiveExclusive : MonoBehaviour
     public void ActivateGroupB()
     {
         foreach (GameObject obj in groupB)
-            obj.SetActive(true);
+             ActivateRecursive(obj);
 
         foreach (GameObject obj in groupA)
             obj.SetActive(false);
@@ -44,5 +47,24 @@ public class ToggleActiveExclusive : MonoBehaviour
         // Notificar a EnergyController
         if (energyController != null)
             energyController.energiaActivo = energia;
+    }
+
+    public List<GameObject> exceptions; // Objetos que NO deben activarse, pero sus hijos sí (si se recorren)
+
+    private void ActivateRecursive(GameObject obj)
+    {
+        if (obj != null)
+        {
+            // Solo activar si NO está en la lista de excepciones
+            if (exceptions == null || !exceptions.Contains(obj))
+            {
+                obj.SetActive(true);
+            }
+
+            foreach (Transform child in obj.transform)
+            {
+                ActivateRecursive(child.gameObject);
+            }
+        }
     }
 }

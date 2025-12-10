@@ -21,7 +21,7 @@ public class MovementInterface : MonoBehaviour
     public List<TMP_Text> angleTexts;
     private bool isCapturing = false;
     public bool angulo_mando;
-    private bool container = false;
+    // private bool container = false; // Unused
     private float baseAngle;
     private bool baseAngleSet = false;
     private float timer = 0f;
@@ -263,13 +263,13 @@ private Vector3 lastMidPoint = Vector3.zero;
         if (isCapturing)
         {
             isCapturing = false;
-            container = false;
+            // container = false;
             buttonText.text = "Record";
         }
         else
         {
             isCapturing = true;
-            container = true;
+            // container = true;
             buttonText.text = "Stop";
         }
     }

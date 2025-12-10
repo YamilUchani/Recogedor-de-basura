@@ -51,7 +51,7 @@ public class MostrarSoloAlPasarMouse : MonoBehaviour, IPointerEnterHandler, IPoi
         }
 
         // Enviar posiciones al dron
-        DroneNavMeshController droneController = FindObjectOfType<DroneNavMeshController>();
+        DroneNavMeshController droneController = FindFirstObjectByType<DroneNavMeshController>();
         if (droneController != null)
         {
             droneController.SetSearchArea(primeraPosicion, posicionFinal);

@@ -1,9 +1,15 @@
 using UnityEngine;
 using Unity.AI.Navigation;
+using UnityEngine.AI;
 
 public class NavMeshdrone : MonoBehaviour
 {
     void OnEnable()
+    {
+        // Deshabilitado para ejecución manual desde SceneInitializer.
+    }
+
+    public void ManualBake()
     {
         PrepararObjetosBache();
         BakeAllNavMeshes();
@@ -26,10 +32,16 @@ public class NavMeshdrone : MonoBehaviour
     public void BakeAllNavMeshes()
     {
         // Buscar todos los NavMeshSurface en la escena
-        NavMeshSurface[] surfaces = FindObjectsOfType<NavMeshSurface>();
+        NavMeshSurface[] surfaces = Object.FindObjectsByType<NavMeshSurface>(FindObjectsSortMode.None);
 
         foreach (var surface in surfaces)
         {
+            // Forzar el uso de Colliders en lugar de Meshes para evitar el crash de Memoria "Read/Write"
+            surface.useGeometry = NavMeshCollectGeometry.PhysicsColliders;
+            
+            // Asegurar que la Layer 7 (Obstacles/Baches) esté incluida en el bake
+            surface.layerMask = surface.layerMask | (1 << 7);
+            
             surface.BuildNavMesh();
         }
 

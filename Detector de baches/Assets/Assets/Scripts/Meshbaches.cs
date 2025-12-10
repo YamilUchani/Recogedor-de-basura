@@ -38,6 +38,11 @@ public class GeneradorDeBaches : MonoBehaviour
 
     private void OnEnable()
     {
+        // Deshabilitado para ejecución manual desde SceneInitializer
+    }
+
+    public void Generate()
+    {
 #if UNITY_EDITOR
         if (UnityEditor.EditorApplication.isPaused) return;
 #endif
@@ -82,14 +87,21 @@ public class GeneradorDeBaches : MonoBehaviour
                 continue;
 
             GameObject bache = Instantiate(prefab, posicion, Quaternion.identity);
+            bache.isStatic = true; // ← Generado estático para NavMesh
+            bache.layer = 7; // ← Capa Obstacles
             bache.name = $"bache_{generados + 1}"; // ← Asignar nombre único
 
-            MeshCollider meshCollider = bache.GetComponent<MeshCollider>();
-            if (meshCollider != null)
+            // Asegurar que todos los sub-objetos con malla tengan collider y capa correcta
+            MeshFilter[] meshFilters = bache.GetComponentsInChildren<MeshFilter>();
+            foreach (var mf in meshFilters)
             {
-                Mesh mesh = meshCollider.sharedMesh;
-                meshCollider.sharedMesh = null;
-                meshCollider.sharedMesh = mesh;
+                mf.gameObject.layer = 7; // Asegurar Layer 7 en hijos
+                
+                if (mf.GetComponent<Collider>() == null)
+                {
+                    MeshCollider mc = mf.gameObject.AddComponent<MeshCollider>();
+                    mc.sharedMesh = mf.sharedMesh;
+                }
             }
 
             Renderer rend = bache.GetComponentInChildren<Renderer>();

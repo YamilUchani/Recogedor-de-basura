@@ -9,7 +9,7 @@ public class DroneNavMeshController : MonoBehaviour
 private bool apagando = false;
 private float tiempoApagado = 0f;
 private float tiempoParaApagarMotores = 2f;
-    private float velocidadBajada = 2f;
+    // private float velocidadBajada = 2f; // Unused
 private float targetHeightInicial;
 private float minHeightInicial;
 
@@ -63,8 +63,8 @@ private float minHeightInicial;
     // Waypoint system
     private List<Vector3> searchWaypoints = new List<Vector3>();
     private int currentWaypointIndex = 0;
-    private float droneWidth = 0.3f;
-    private float droneLength = 0.3f;
+    // private float droneWidth = 0.3f; // Unused
+    // private float droneLength = 0.3f; // Unused
     public float searchSpacing = 0.25f;
 
     void Start()
@@ -337,9 +337,9 @@ if (apagando)
 
     private void ConfigureNavAgent(bool active)
     {
-        agent.enabled = active;
         if (active)
         {
+            agent.enabled = true;
             agent.updatePosition = true;
             agent.updateRotation = true;
             agent.stoppingDistance = stoppingDistance;
@@ -351,9 +351,15 @@ if (apagando)
         }
         else
         {
+            // Reset path only if agent is active and on a NavMesh to avoid errors
+            if (agent.enabled && agent.isOnNavMesh)
+            {
+                agent.ResetPath();
+            }
+            
+            agent.enabled = false;
             rb.isKinematic = false;
             rb.interpolation = RigidbodyInterpolation.Interpolate;
-            agent.ResetPath();
         }
     }
 

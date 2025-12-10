@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using Unity.Sentis;
+
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
 using TMPro;
 using System.IO;
-using FF = Unity.Sentis.Functional;
+using FF = Unity.InferenceEngine.Functional;
 
 public class RunYOLO : MonoBehaviour
 {
@@ -13,7 +13,7 @@ public class RunYOLO : MonoBehaviour
     public InputType inputType = InputType.Camera;
 
     [Tooltip("YOLO model (.onnx)")]
-    public ModelAsset modelAsset;
+    public Unity.InferenceEngine.ModelAsset modelAsset;
 
     [Tooltip("Classes file (classes.txt)")]
     public TextAsset classesAsset;
@@ -48,10 +48,10 @@ public class RunYOLO : MonoBehaviour
     public Camera cameraB;
     private bool usingCameraA = true;
 
-    const BackendType backend = BackendType.GPUCompute;
+    const Unity.InferenceEngine.BackendType backend = Unity.InferenceEngine.BackendType.GPUCompute;
 
     private Transform displayLocation;
-    private Worker worker;
+    private Unity.InferenceEngine.Worker worker;
     private string[] labels;
     private RenderTexture targetRT;
     private RenderTexture displayRT;
@@ -67,7 +67,7 @@ public class RunYOLO : MonoBehaviour
     [SerializeField, Range(0, 1)] float iouThreshold = 0.5f;
     [SerializeField, Range(0, 1)] float scoreThreshold = 0.5f;
 
-    Tensor<float> centersToCorners;
+    Unity.InferenceEngine.Tensor<float> centersToCorners;
 
     public struct BoundingBox
     {
@@ -111,9 +111,9 @@ public class RunYOLO : MonoBehaviour
 
     void LoadModel()
     {
-        var model1 = ModelLoader.Load(modelAsset);
+        var model1 = Unity.InferenceEngine.ModelLoader.Load(modelAsset);
 
-        centersToCorners = new Tensor<float>(new TensorShape(4, 4),
+        centersToCorners = new Unity.InferenceEngine.Tensor<float>(new Unity.InferenceEngine.TensorShape(4, 4),
         new float[]
         {
             1, 0, 1, 0,
@@ -122,10 +122,10 @@ public class RunYOLO : MonoBehaviour
             0, -0.5f, 0, 0.5f
         });
 
-        var graph = new FunctionalGraph();
+        var graph = new Unity.InferenceEngine.FunctionalGraph();
         var inputs = graph.AddInputs(model1);
         var modelOutput = FF.Forward(model1, inputs)[0];
-        var boxCoords = modelOutput[0, 0..4, ..].Transpose(0, 1);
+        var boxCoords = Unity.InferenceEngine.Functional.Transpose(modelOutput[0, 0..4, ..], 0, 1);
         var allScores = modelOutput[0, 4.., ..];
         var scores = FF.ReduceMax(allScores, 0);
         var classIDs = FF.ArgMax(allScores, 0);
@@ -134,7 +134,7 @@ public class RunYOLO : MonoBehaviour
         var coords = FF.IndexSelect(boxCoords, 0, indices);
         var labelIDs = FF.IndexSelect(classIDs, 0, indices);
 
-        worker = new Worker(graph.Compile(coords, labelIDs), backend);
+        worker = new Unity.InferenceEngine.Worker(graph.Compile(coords, labelIDs), backend);
     }
 
     void SetupInput()
@@ -249,8 +249,8 @@ public class RunYOLO : MonoBehaviour
         if (currentInput == null || !runModel) return;
 
         Graphics.Blit(currentInput, targetRT);
-        using Tensor<float> inputTensor = new Tensor<float>(new TensorShape(1, 3, imageHeight, imageWidth));
-        TextureConverter.ToTensor(targetRT, inputTensor, default);
+        using Unity.InferenceEngine.Tensor<float> inputTensor = new Unity.InferenceEngine.Tensor<float>(new Unity.InferenceEngine.TensorShape(1, 3, imageHeight, imageWidth));
+        Unity.InferenceEngine.TextureConverter.ToTensor(targetRT, inputTensor, default);
         worker.Schedule(inputTensor);
         Graphics.Blit(targetRT, displayRT);
 
@@ -259,8 +259,8 @@ public class RunYOLO : MonoBehaviour
         float scaleX = displayWidth / imageWidth;
         float scaleY = displayHeight / imageHeight;
 
-        using var output = (worker.PeekOutput("output_0") as Tensor<float>).ReadbackAndClone();
-        using var labelIDs = (worker.PeekOutput("output_1") as Tensor<int>).ReadbackAndClone();
+        using var output = (worker.PeekOutput("output_0") as Unity.InferenceEngine.Tensor<float>).ReadbackAndClone();
+        using var labelIDs = (worker.PeekOutput("output_1") as Unity.InferenceEngine.Tensor<int>).ReadbackAndClone();
 
         int boxesFound = output.shape[0];
         for (int n = 0; n < Mathf.Min(boxesFound, 200); n++)

@@ -50,7 +50,12 @@ public class MeshGenerator : MonoBehaviour {
     public int RangeEdgeSkip;
     public int RangeEdgeInitial;
     Vector3 objectPosition;
-    void Start () {
+    void Start()
+    {
+        // Deshabilitado para ejecución manual
+    }
+
+    public void Generate() {
         objetosGenerados.Add(this.gameObject);
         // Obtener los componentes
         meshFilter = GetComponent<MeshFilter>();

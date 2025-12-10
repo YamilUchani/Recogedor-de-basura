@@ -1,5 +1,0 @@
-sceneSetups:
-- path: Assets/russian_buildings/scenes/Prueba.unity
-  isLoaded: 1
-  isActive: 1
-  isSubScene: 0
