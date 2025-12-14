@@ -217,14 +217,9 @@ private Vector3 lastMidPoint = Vector3.zero;
         // Actualiza texto visible en Inspector
         visiblePotholes = string.Join("\n", detectedPotholes);
 
-        string timestamp = System.DateTime.Now.ToString("yyyyMMdd_HHmmss");
-        string folderPath = Path.Combine(Application.persistentDataPath, "Imagenes", "Imagenes_de_baches", timestamp);
-        Directory.CreateDirectory(folderPath);
-
         foreach (Camera cam in captureCameras)
         {
-            string filename = $"Image{count}_{cam.name}.png";
-            string outputPath = Path.Combine(folderPath, filename);
+            string filename = $"Image{count}_{cam.name}_{potholeID}_{System.DateTime.Now:yyyyMMdd_HHmmss}.png";
 
             bool convertToGrayscale = cam.name.Contains("L") || cam.name.Contains("R");
             RenderTexture renderTexture = new RenderTexture(1270, 950, 24);
@@ -248,14 +243,16 @@ private Vector3 lastMidPoint = Vector3.zero;
             }
 
             screenshot.Apply();
-            File.WriteAllBytes(outputPath, screenshot.EncodeToPNG());
+            
+            // Use FileHandler for cross-platform compatibility
+            FileHandler.SaveImage(screenshot.EncodeToPNG(), filename);
 
             cam.targetTexture = null;
             RenderTexture.active = null;
             Destroy(renderTexture);
             Destroy(screenshot);
 
-            Debug.Log($"Captured image saved to: {outputPath}");
+            Debug.Log($"Captured image: {filename}");
         }
 
         count++;

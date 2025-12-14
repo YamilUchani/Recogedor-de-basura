@@ -61,6 +61,7 @@ public class RunYOLO : MonoBehaviour
     private VideoPlayer video;
     private Texture currentInput;
     private RenderTexture cameraRT;
+    private int frameCounter = 0;
 
 
 
@@ -237,6 +238,14 @@ public class RunYOLO : MonoBehaviour
         else if (inputType == InputType.Camera && sourceCamera != null)
         {
             currentInput = cameraRT;
+        }
+
+        if (PerformanceManager.Instance != null)
+        {
+            int skip = PerformanceManager.Instance.frameSkip;
+            frameCounter++;
+            if (frameCounter <= skip) return;
+            frameCounter = 0;
         }
 
         ExecuteML();

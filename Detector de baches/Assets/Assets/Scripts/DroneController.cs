@@ -363,14 +363,36 @@ if (apagando)
         }
     }
 
+    [Header("Mobile Controls")]
+    public VirtualJoystick virtualJoystick;
+    public VirtualJoystick heightJoystick; // Optional second joystick for height/rot
+
     private void HandleInput()
     {
         if (manualControl)
         {
-            verticalInput = Input.GetKey(KeyCode.Space) ? 1 : Input.GetKey(KeyCode.LeftControl) ? -1 : 0;
-            movementInput.x = Input.GetKey(KeyCode.Q) ? -1 : Input.GetKey(KeyCode.E) ? 1 : 0;
-            movementInput.y = Input.GetKey(KeyCode.W) ? 1 : Input.GetKey(KeyCode.S) ? -1 : 0;
-            currentRotation = Input.GetKey(KeyCode.A) ? -1 : Input.GetKey(KeyCode.D) ? 1 : 0;
+            // Keyboard Input
+            float vKeyboard = Input.GetKey(KeyCode.Space) ? 1 : Input.GetKey(KeyCode.LeftControl) ? -1 : 0;
+            Vector2 mKeyboard = new Vector2(
+                Input.GetKey(KeyCode.Q) ? -1 : Input.GetKey(KeyCode.E) ? 1 : 0,
+                Input.GetKey(KeyCode.W) ? 1 : Input.GetKey(KeyCode.S) ? -1 : 0
+            );
+            float rKeyboard = Input.GetKey(KeyCode.A) ? -1 : Input.GetKey(KeyCode.D) ? 1 : 0;
+
+            // Touch Input (Joystick)
+            Vector3 joyInput = (virtualJoystick != null) ? virtualJoystick.InputDirection : Vector3.zero;
+            Vector3 heightJoyInput = (heightJoystick != null) ? heightJoystick.InputDirection : Vector3.zero;
+
+            // Combine inputs (Keyboard + Joystick)
+            verticalInput = vKeyboard + heightJoyInput.y;
+            movementInput.x = mKeyboard.x + joyInput.x;
+            movementInput.y = mKeyboard.y + joyInput.y;
+            currentRotation = rKeyboard + heightJoyInput.x;
+            
+            // Clamp to ensure we don't exceed 1.0 force if using both
+            verticalInput = Mathf.Clamp(verticalInput, -1f, 1f);
+            movementInput = Vector2.ClampMagnitude(movementInput, 1f);
+            currentRotation = Mathf.Clamp(currentRotation, -1f, 1f);
         }
         else
         {

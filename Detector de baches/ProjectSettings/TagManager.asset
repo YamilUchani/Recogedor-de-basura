@@ -11,6 +11,8 @@ TagManager:
   - Recogedor
   - calle
   - bache
+  - Pothole
+  - Crocodile
   layers:
   - Default
   - TransparentFX
