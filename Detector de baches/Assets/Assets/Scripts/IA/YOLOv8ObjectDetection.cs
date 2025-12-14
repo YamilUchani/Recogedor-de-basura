@@ -62,6 +62,11 @@ public class RunYOLO : MonoBehaviour
     private Texture currentInput;
     private RenderTexture cameraRT;
 
+
+
+    // Set to track spawned markers by ID (or proximity if needed, but using collider name/ID is safer if available)
+    private HashSet<string> detectedObjects = new HashSet<string>();
+
     List<GameObject> boxPool = new();
 
     [SerializeField, Range(0, 1)] float iouThreshold = 0.5f;
@@ -276,6 +281,45 @@ public class RunYOLO : MonoBehaviour
 
             if (showBoxes)
                 DrawBox(box, n, displayHeight * 0.05f);
+
+            // --- 3D MARKER LOGIC ---
+            if (inputType == InputType.Camera && sourceCamera != null)
+            {
+                // Normalize coordinates (0-1)
+                // output is in pixels [0, imageWidth]
+                float normX = output[n, 0] / imageWidth;
+                float normY = output[n, 1] / imageHeight;
+                // Unity Viewport: (0,0) is Bottom-Left. YOLO (0,0) Top-Left usually? 
+                // Let's assume standard image texturing -> Top-Left 0,0.
+                // So Viewport Y = 1.0 - normY.
+                
+                Ray ray = sourceCamera.ViewportPointToRay(new Vector3(normX, 1f - normY, 0));
+                if (Physics.Raycast(ray, out RaycastHit hit, 100f))
+                {
+                    // Check if we hit a pothole/crocodile or just ground?
+                    // We can accept hitting the ground near the object too.
+                    // But to avoid duplicates, we rely on the object Name if we hit the mesh itself.
+                    // Or we just rely on the detection box label.
+                    
+                    string objectID = hit.collider.gameObject.name;
+                    
+                    // Filter: Only mark if it looks like a pothole object?
+                    // TerrainPotholeGenerator IDs: "Bache_X", "Croc_X"
+                    // MovementInterface checked for "bache" in name. 
+                    // Let's trust the YOLO label more, but deduplicate by Hit Object ID.
+                    
+                    if (!detectedObjects.Contains(objectID))
+                    {
+                        string label = labels[labelIDs[n]];
+                        // Map labels to types? 
+                        // Assuming labels in classes.txt are "Pothole", "Crocodile" or similar.
+                        // Let's pass the raw label or mapped one.
+                        
+                        detectedObjects.Add(objectID);
+                        SpawnMarker(hit.point, label);
+                    }
+                }
+            }
         }
     }
 
@@ -299,6 +343,41 @@ public class RunYOLO : MonoBehaviour
         var label = panel.GetComponentInChildren<Text>();
         label.text = box.label;
         label.fontSize = (int)fontSize;
+    }
+
+    private void SpawnMarker(Vector3 position, string label)
+    {
+        // Crear plano primitivo
+        GameObject plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
+        
+        // Posición: 18.91 metros arriba del objeto detectado
+        plane.transform.position = position + Vector3.up * 18.91f;
+        
+        // Escala: 8x8 metros (0.8f de 10)
+        plane.transform.localScale = new Vector3(0.8f, 1f, 0.8f);
+        
+        // Rotación: Plano mirando arriba
+        plane.transform.rotation = Quaternion.identity;
+
+        // Configurar material/color
+        Renderer rend = plane.GetComponent<Renderer>();
+        if (rend != null)
+        {
+            rend.material.shader = Shader.Find("Standard"); 
+            // Check label content. Adjust to match your classes.txt
+            string lowerLabel = label.ToLower();
+            if (lowerLabel.Contains("crocodile") || lowerLabel.Contains("crack") || lowerLabel.Contains("alligator") || lowerLabel.Contains("cocodrilo"))
+            {
+                rend.material.color = new Color(1f, 1f, 0f); // Amarillo Chillón
+            }
+            else
+            {
+                rend.material.color = new Color(0f, 1f, 1f); // Cyan Chillón
+            }
+        }
+
+        Destroy(plane.GetComponent<Collider>());
+        plane.name = $"MarkerML_{label}_{System.DateTime.Now.Ticks}";
     }
 
     public GameObject CreateNewBox(Color color)

@@ -249,6 +249,7 @@ public class TerrainPotholeGenerator : MonoBehaviour
         var mr = obj.AddComponent<MeshRenderer>();
         var mc = obj.AddComponent<MeshCollider>();
         if (sharedMaterial) mr.sharedMaterial = sharedMaterial;
+        obj.tag = "Pothole";
 
         Mesh mesh = new Mesh { name = "Proc_Bache" };
 
@@ -366,6 +367,7 @@ public class TerrainPotholeGenerator : MonoBehaviour
         var mr = obj.AddComponent<MeshRenderer>();
         var mc = obj.AddComponent<MeshCollider>();
         if (sharedMaterial) mr.sharedMaterial = sharedMaterial;
+        obj.tag = "Crocodile";
 
         int crackCount = Random.Range(crocSettings.minCrackCount, crocSettings.maxCrackCount); 
         float crackGap = Random.Range(crocSettings.minCrackGapPercent, crocSettings.maxCrackGapPercent);

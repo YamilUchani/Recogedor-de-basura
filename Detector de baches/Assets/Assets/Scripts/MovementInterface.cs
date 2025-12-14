@@ -182,7 +182,7 @@ private Vector3 lastMidPoint = Vector3.zero;
                 string hitTag = hit.collider.tag;
                 string hitName = hit.collider.gameObject.name;
 
-                if (hitTag == "bache" && hitName.IndexOf("bache", StringComparison.OrdinalIgnoreCase) >= 0)
+                if (hitTag == "Pothole" || hitTag == "Crocodile")
                 {
                     hitDetected = true;
                     potholeID = hitName;
@@ -191,7 +191,7 @@ private Vector3 lastMidPoint = Vector3.zero;
                 }
                 else
                 {
-                    Debug.Log($"Objeto detectado no válido. Tag: {hitTag}, Nombre: {hitName}");
+                    // Debug.Log($"Objeto detectado no válido. Tag: {hitTag}, Nombre: {hitName}");
                 }
             }
         }
@@ -210,6 +210,9 @@ private Vector3 lastMidPoint = Vector3.zero;
 
         detectedPotholes.Add(potholeID);
         currentPothole = potholeID;
+        
+        // Generar marcador visual (Plano 4x4 a 6m de altura)
+        SpawnMarker(bestHit.collider.transform.position, bestHit.collider.tag);
 
         // Actualiza texto visible en Inspector
         visiblePotholes = string.Join("\n", detectedPotholes);
@@ -256,6 +259,43 @@ private Vector3 lastMidPoint = Vector3.zero;
         }
 
         count++;
+    }
+
+    private void SpawnMarker(Vector3 position, string tag)
+    {
+        // Crear plano primitivo
+        GameObject plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
+        
+        // Posición: 18.91 metros arriba del objeto detectado
+        plane.transform.position = position + Vector3.up * 18.91f;
+        
+        // Escala: 8x8 metros (El plano por defecto es 10x10, asi que 0.8f lo hace 8x8)
+        plane.transform.localScale = new Vector3(0.8f, 1f, 0.8f);
+        
+        // Rotación: Plano mirando arriba (por defecto ya está así, pero aseguramos)
+        plane.transform.rotation = Quaternion.identity;
+
+        // Configurar material/color
+        Renderer rend = plane.GetComponent<Renderer>();
+        if (rend != null)
+        {
+            // Usamos material standard temporal o cambiamos color directo si el shader lo permite
+            rend.material.shader = Shader.Find("Standard"); 
+            if (tag == "Crocodile")
+            {
+                rend.material.color = new Color(1f, 1f, 0f); // Amarillo puro chillón
+            }
+            else // Pothole
+            {
+                rend.material.color = new Color(0f, 1f, 1f); // Cyan/Azul eléctrico chillón
+            }
+        }
+
+        // Eliminar collider para no interferir con futuros raycasts del dron
+        Destroy(plane.GetComponent<Collider>());
+        
+        // Asignar un nombre informativo
+        plane.name = $"Marker_{tag}_{System.DateTime.Now.Ticks}";
     }
 
     public void AcDc()
