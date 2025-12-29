@@ -1,259 +1,337 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
-/// <summary>
-/// Utilidades para generar ruido procedural 2D (Perlin + FBM).
-/// </summary>
-public static class NoiseUtils
-{
-    public static float Fbm2D(float x, float y, int octaves = 3, float lacunarity = 2f, float gain = 0.5f)
-    {
-        float value = 0f;
-        float amplitude = 1f;
-        float frequency = 1f;
-        for (int i = 0; i < octaves; i++)
-        {
-            value += Mathf.PerlinNoise(x * frequency, y * frequency) * amplitude;
-            amplitude *= gain;
-            frequency *= lacunarity;
-        }
-        return value;
-    }
-
-    public static Vector2 VectorNoise2D(float x, float y, int seedOffset = 0)
-    {
-        float angle = Fbm2D(x + seedOffset, y + seedOffset, 2, 2f, 0.6f) * Mathf.PI * 2f;
-        float mag = Fbm2D(x + seedOffset + 100, y + seedOffset + 200, 2, 2f, 0.5f);
-        return new Vector2(Mathf.Cos(angle) * mag, Mathf.Sin(angle) * mag);
-    }
-}
-
-/// <summary>
-/// Generador de terreno SOLO en modo aleatorio, controlado por semilla.
-/// </summary>
-[ExecuteInEditMode]
+[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider))]
 public class TerrainBacheGenerator : MonoBehaviour
 {
-    private GameObject terreno;
+    [Header("Configuración Genética (Seed)")]
+    [Tooltip("Semilla única. Cada número genera una variante diferente respetando los rangos.")]
+    public int seed = 0;
 
-    [Header("Main")]
-    public int Seed = 12345;
-    public bool autoUpdate = true;
+    [Header("Dimensiones Generales")]
+    [Tooltip("Ancho del área cuadrada del bache")]
+    [Range(0.25f, 5f)] public float minWidth = 0.5f;
+    [Range(0.25f, 5f)] public float maxWidth = 1.0f;
+    [Range(0.25f, 5f)] public float minLength = 0.5f;
+    [Range(0.25f, 5f)] public float maxLength = 1.0f;
+    
+    [Header("Resolución")]
+    [Range(10, 254)] public int polygonsX = 120;
+    [Range(10, 254)] public int polygonsZ = 120;
+    
+    [Header("Topología (Multi-Spots)")]
+    [Tooltip("Cantidad de núcleos o sub-baches que conforman el bache principal")]
+    [Range(1, 15)] public int minSpots = 5;
+    [Range(1, 15)] public int maxSpots = 10;
+    
+    [Tooltip("Radio de cada núcleo como % del tamaño total del bache")]
+    [Range(5f, 50f)] public float minSpotRadiusPercent = 15f;
+    [Range(5f, 50f)] public float maxSpotRadiusPercent = 35f;
 
-    [Header("Dimension Ranges")]
-    public float minWidth = 1.5f; public float maxWidth = 2.5f;
-    public float minLength = 1.5f; public float maxLength = 2.5f;
+    [Tooltip("Dispersión de los núcleos (0.1 = muy juntos, 0.9 = muy separados)")]
+    [Range(0.1f, 1.0f)] public float minSpread = 0.15f;
+    [Range(0.1f, 1.0f)] public float maxSpread = 0.5f;
 
-    [Header("Random Configuration")]
-    public int cantidadBachesAleatorios = 10;
-    public float minRadioPorcentaje = 3f, maxRadioPorcentaje = 15f;
-    public float minProfundidad = 0.05f, maxProfundidad = 0.2f;
-    public float minDeformacion = 0.2f, maxDeformacion = 0.6f;
-    public float minIrregularidadBorde = 0.4f, maxIrregularidadBorde = 0.9f;
-    public float minFondoPlano = 0.2f, maxFondoPlano = 0.6f;
-    public float minVariacionProf = 0.3f, maxVariacionProf = 0.7f;
+    [Header("Erosión (Aleatoriedad Relativa)")]
+    [Tooltip("Escala del ruido (Ciclos por Objeto). Mismo valor = Mismo aspecto en 0.25m y 1m")]
+    [Range(1f, 20f)] public float minErosionScale = 3.0f;
+    [Range(1f, 20f)] public float maxErosionScale = 8.0f;
+    
+    [Tooltip("Fuerza de la erosión (Amplitud)")]
+    [Range(0.1f, 1.0f)] public float minErosionAmount = 0.5f;
+    [Range(0.1f, 1.0f)] public float maxErosionAmount = 0.9f;
+    
+    [Header("Detalle de Borde (Fractura)")]
+    [Tooltip("Cantidad de fractura en los bordes (0 = suave, 1 = muy roto)")]
+    [Range(0.0f, 1.0f)] public float minEdgeFracture = 0.3f;
+    [Range(0.0f, 1.0f)] public float maxEdgeFracture = 0.8f;
+    
+    [Header("Perfil y Detalle")]
+    [Tooltip("Límite Global de Profundidad (% del Tamaño promedio)")]
+    [Range(1f, 20f)] public float globalDepthLimitPercent = 10f;
 
-    [Header("Resolution & Border")]
-    [Range(20, 200)] public int polygonsX = 100;
-    [Range(20, 200)] public int polygonsZ = 100;
-    public float bordeMin = 0.1f, bordeMax = 0.3f;
-    public float noiseScale = 2f;
-    [Range(0.1f, 5f)] public float bordeSuavidad = 1.5f;
+    [Tooltip("Profundidad Base por Spot (% del Tamaño promedio)")]
+    [Range(0.1f, 10f)] public float minDepthPercent = 1.0f;
+    [Range(0.1f, 10f)] public float maxDepthPercent = 4.0f;
 
-    [Range(0.01f, 1f)] public float profundidadMaximaGlobal = 0.2f;
+    [Tooltip("Pendiente de las paredes (Acantilado)")]
+    [Range(2f, 50f)] public float minWallSteepness = 5f;
+    [Range(2f, 50f)] public float maxWallSteepness = 25f;
 
-    public Material material;
-    public string nombreObjeto = "TerrenoConBaches";
+    [Tooltip("Rugosidad del fondo (Piedras)")]
+    [Range(0.0f, 0.05f)] public float minBottomRoughness = 0.002f;
+    [Range(0.0f, 0.05f)] public float maxBottomRoughness = 0.01f;
+    
+    [Tooltip("Escala de rugosidad (Ciclos por Objeto)")]
+    [Range(10f, 100f)] public float bottomRoughnessRelativeScale = 20f;
 
-    // Internal Bache structure for generation loop
-    private struct BacheInfo {
-        public Vector2 pos;
-        public float rad, prof, def, irreg, plano, varProf, suav;
-        public int seed;
-    }
+    [Header("Márgenes (Contenedor Irregular)")]
+    [Tooltip("Mínimo margen (%)")]
+    [Range(5, 30)] public int bordeMinPercent = 15;
+    [Tooltip("Máximo margen (%)")]
+    [Range(10, 45)] public int bordeMaxPercent = 35;
 
-    private void OnValidate()
+    // --- Variables Internas ---
+    private Mesh mesh;
+    private Vector3[] vertices;
+    private int[] triangles;
+
+    public void GenerarMeshEnNuevoObjeto(int seed, Material material)
     {
-        if (autoUpdate)
-        {
-#if UNITY_EDITOR
-            EditorApplication.delayCall += () =>
-            {
-                if (this != null)
-                    GenerarMeshEnNuevoObjeto();
-            };
-#endif
-        }
-    }
-
-    [ContextMenu("Generar")]
-    public void GenerarMeshEnNuevoObjeto()
-    {
-        // Init Seed
-        Random.InitState(Seed);
+        // 1. Setup Básico
+        Random.InitState(seed);
         
-        // Randomized dimensions
+        // Limpiamos hijos previos si existen (por seguridad)
+        foreach (Transform child in transform) {
+            #if UNITY_EDITOR
+                DestroyImmediate(child.gameObject);
+            #else
+                Destroy(child.gameObject);
+            #endif
+        }
+
+        GameObject nuevoBache = new GameObject("Bache_Procedural_V2");
+        nuevoBache.transform.SetParent(this.transform, false);
+        nuevoBache.transform.localPosition = Vector3.zero;
+        nuevoBache.layer = gameObject.layer;
+
+        MeshFilter mf = nuevoBache.AddComponent<MeshFilter>();
+        MeshRenderer mr = nuevoBache.AddComponent<MeshRenderer>();
+        MeshCollider mc = nuevoBache.AddComponent<MeshCollider>();
+        
+        if (material != null) mr.sharedMaterial = material;
+        
+        // 2. Dimensiones Aleatorias
         float width = Random.Range(minWidth, maxWidth);
         float length = Random.Range(minLength, maxLength);
+        float avgSize = (width + length) * 0.5f; // Tamaño promedio de referencia
+        
+        // --- CALCULO DE PARAMETROS RELATIVOS AL TAMAÑO ---
+        // 1. Escalas de Ruido normalizadas (Ciclos por Objeto)
+        // Si el objeto mide 0.5m y queremos 5 ciclos, la frecuencia mundial debe ser 10.
+        // Frecuencia = Ciclos / Tamaño
+        float currentErosionCycles = Random.Range(minErosionScale, maxErosionScale);
+        float realErosionScale = currentErosionCycles / avgSize;
 
-        // Cleanup
-        if (terreno != null)
+        float realBottomRoughnessScale = bottomRoughnessRelativeScale / avgSize;
+        float realBorderNoiseScale = 8.0f / avgSize; // 8 ciclos por objeto para el borde
+        
+        // Depths (AHORA RELATIVAS %)
+        float currentDepthPercent = Random.Range(minDepthPercent, maxDepthPercent);
+        float currentMaxDepth = avgSize * (currentDepthPercent / 100f);
+
+        float currentErosionAmount = Random.Range(minErosionAmount, maxErosionAmount);
+        float currentWallSteepness = Random.Range(minWallSteepness, maxWallSteepness);
+        float currentBottomRoughness = Random.Range(minBottomRoughness, maxBottomRoughness);
+        float currentSpread = Random.Range(minSpread, maxSpread);
+        
+        // 3. Generar Spots (Núcleos)
+        int spotsCount = Random.Range(minSpots, maxSpots + 1);
+        List<Vector4> spots = new List<Vector4>(); // x, z, radius, seed
+        
+        // Usamos el parametro Spread para decidir cuanto se alejan del centro
+        float spreadX = width * 0.5f * currentSpread;
+        float spreadZ = length * 0.5f * currentSpread;
+        
+        for(int i=0; i<spotsCount; i++)
         {
-            if(Application.isPlaying) Destroy(terreno);
-            else DestroyImmediate(terreno);
+            Vector2 pos = Random.insideUnitCircle;
+            // Potenciar para concentrar mas en el centro si spread es bajo
+            float sx = pos.x * spreadX;
+            float sz = pos.y * spreadZ;
+            
+            // Radio relativo (%)
+            float srPercent = Random.Range(minSpotRadiusPercent, maxSpotRadiusPercent);
+            float sr = avgSize * (srPercent / 100f);
+
+            float ss = Random.Range(0f, 100f);
+            spots.Add(new Vector4(sx, sz, sr, ss));
         }
-
-        terreno = new GameObject(nombreObjeto);
-        terreno.transform.SetParent(transform, false);
-        terreno.transform.localPosition = Vector3.zero;
-        terreno.layer = 7;
-
-        var mf = terreno.AddComponent<MeshFilter>();
-        var mr = terreno.AddComponent<MeshRenderer>();
-        var mc = terreno.AddComponent<MeshCollider>();
-        if (material != null) mr.sharedMaterial = material;
-
-        Mesh mesh = new Mesh { name = "Mesh_" + nombreObjeto };
+        
+        // 4. Generar Mesh
+        mesh = new Mesh { name = "Bache_Erosionado" };
+        
+        int vCount = (polygonsX + 1) * (polygonsZ + 1);
+        vertices = new Vector3[vCount];
+        triangles = new int[polygonsX * polygonsZ * 6];
 
         float stepX = width / polygonsX;
         float stepZ = length / polygonsZ;
         float halfW = width * 0.5f;
         float halfL = length * 0.5f;
-        float avgSize = (width + length) * 0.5f;
 
-        // Border Noise Precalc
-        float[] bordeIzq = new float[polygonsZ + 1];
-        float[] bordeDer = new float[polygonsZ + 1];
-        float[] bordeDet = new float[polygonsX + 1];
-        float[] bordeFre = new float[polygonsX + 1];
+        // Pre-calculo: YA NO ES NECESARIO (Usamos 2D Noise en caliente)
 
-        for (int z = 0; z <= polygonsZ; z++) {
-            float t = (float)z / polygonsZ;
-            bordeIzq[z] = Mathf.Lerp(bordeMin, bordeMax, Mathf.PerlinNoise(0.1f, t * noiseScale));
-            bordeDer[z] = Mathf.Lerp(bordeMin, bordeMax, Mathf.PerlinNoise(10.73f, t * noiseScale));
-        }
-        for (int x = 0; x <= polygonsX; x++) {
-            float t = (float)x / polygonsX;
-            bordeDet[x] = Mathf.Lerp(bordeMin, bordeMax, Mathf.PerlinNoise(t * noiseScale, 0.3f));
-            bordeFre[x] = Mathf.Lerp(bordeMin, bordeMax, Mathf.PerlinNoise(t * noiseScale, 15.41f));
-        }
+        // --- ALGORITMO DE EROSIÓN ---
+        float seedOffset = Random.Range(0f, 100f);
+        // Parametros Locales para fractura
+        float currentEdgeFracture = Random.Range(minEdgeFracture, maxEdgeFracture);
+        float fractureScale = 30f / avgSize; // Alta frecuencia relativa
 
-        // Generate Random Baches List based on Seed
-        List<BacheInfo> baches = new List<BacheInfo>();
-        float mP = Mathf.Max(bordeMax/width, bordeMax/length) * 100f;
-        mP = Mathf.Clamp(mP, 5f, 20f);
-        float minP = mP, maxP = 100f - mP;
-
-        for(int i=0; i<cantidadBachesAleatorios; i++) {
-            baches.Add(new BacheInfo {
-                pos = new Vector2(Random.Range(minP, maxP), Random.Range(minP, maxP)),
-                rad = Random.Range(minRadioPorcentaje, maxRadioPorcentaje),
-                prof = Random.Range(minProfundidad, maxProfundidad),
-                def = Random.Range(minDeformacion, maxDeformacion),
-                irreg = Random.Range(minIrregularidadBorde, maxIrregularidadBorde),
-                plano = Random.Range(minFondoPlano, maxFondoPlano),
-                varProf = Random.Range(minVariacionProf, maxVariacionProf),
-                suav = Random.Range(1f, 3f),
-                seed = Random.Range(1000, 100000)
-            });
-        }
-
-        Vector3[] vertices = new Vector3[(polygonsX + 1) * (polygonsZ + 1)];
-        int index = 0;
-
+        int vIndex = 0;
         for (int z = 0; z <= polygonsZ; z++)
         {
             float localZ = z * stepZ;
             float worldZ = localZ - halfL;
+
             for (int x = 0; x <= polygonsX; x++)
             {
                 float localX = x * stepX;
                 float worldX = localX - halfW;
+                
+                // A. Máscara del Contenedor (ORGANIC 2D NOISE)
+                float dL = localX;
+                float dR = width - localX;
+                float dB = localZ;
+                float dT = length - localZ;
+                float distToEdge = Mathf.Min(dL, dR, dB, dT); 
+                
+                float borderNoise = Mathf.PerlinNoise(worldX * realBorderNoiseScale + seedOffset, worldZ * realBorderNoiseScale + seedOffset);
+                
+                float marginMinInMeters = Mathf.Min(width, length) * (bordeMinPercent / 100f);
+                float marginMaxInMeters = Mathf.Min(width, length) * (bordeMaxPercent / 100f);
+                
+                float dynamicMargin = Mathf.Lerp(marginMinInMeters, marginMaxInMeters, borderNoise);
 
-                float dLeft = localX - bordeIzq[z];
-                float dRight = (width - bordeDer[z]) - localX;
-                float dBack = localZ - bordeDet[x];
-                float dFront = (length - bordeFre[x]) - localZ;
-                float minD = Mathf.Min(dLeft, dRight, dBack, dFront);
-                float borderFactor = 0f;
-                if (minD > 0f) {
-                    float t = Mathf.Clamp01(minD / (Mathf.Max(width, length) * 0.5f) * bordeSuavidad);
-                    borderFactor = 1f - (1f - t) * (1f - t);
-                }
+                // --- CONTAINER FRACTURE ---
+                // Aplicamos la misma logica de "roto" al borde exterior
+                float containerFrac = Mathf.PerlinNoise(worldX * fractureScale + seedOffset + 50f, worldZ * fractureScale + seedOffset + 50f);
+                // Si el parametro de fractura es alto, comemos mas borde
+                dynamicMargin += containerFrac * currentEdgeFracture * 0.5f; // 0.5f factor arb para no comer demasiado
+                
+                float containerMask = 0f;
+                // Fade muy sharp (Corte duro de pavimento)
+                float fadeSize = 0.002f; // 2mm transition
+                float delta = distToEdge - dynamicMargin;
+                containerMask = Mathf.Clamp01(delta / fadeSize);
 
-                float suma = 0f;
-                if (borderFactor > 0f)
+                // B. Cálculo de Profundidad 
+                float accumulatedFactor = 0f;
+                
+                if (containerMask > 0.001f)
                 {
-                    foreach (var b in baches)
+                    // 1. Sumar Factores de Erosion (0..N)
+                    for(int k=0; k<spotsCount; k++)
                     {
-                        float profUsable = Mathf.Min(b.prof, profundidadMaximaGlobal);
-                        float bx = (b.pos.x * 0.01f) * width - halfW;
-                        float bz = (b.pos.y * 0.01f) * length - halfL;
-                        float radM = avgSize * (b.rad * 0.01f);
-                        float dx = worldX - bx;
-                        float dz = worldZ - bz;
-                        float dist = Mathf.Sqrt(dx*dx + dz*dz);
-
-                        if(dist >= radM && b.irreg <= 0f) continue;
-
-                        float radEff = radM;
-                        if(b.irreg > 0f && dist > 0.001f) {
-                            float ang = Mathf.Atan2(dz, dx);
-                            float n1 = Mathf.PerlinNoise(ang*1.3f + b.seed*0.1f, 0f);
-                            float n2 = Mathf.PerlinNoise(ang*2.7f + b.seed*0.1f + 10f, 0f);
-                            float n3 = Mathf.PerlinNoise(ang*5.1f + b.seed*0.1f + 20f, 0f);
-                            float val = n1*0.6f + n2*0.3f + n3*0.1f;
-                            float fac = 1f + (val - 0.5f) * 2f * b.irreg;
-                            radEff = radM * Mathf.Max(0.3f, fac);
-                        }
-
-                        if(dist < radEff) {
-                            Vector2 disp = Vector2.zero;
-                            if(b.def > 0f) {
-                                float s = 5f/Mathf.Max(radM, 0.01f);
-                                Vector2 nv = NoiseUtils.VectorNoise2D(dx*s, dz*s, b.seed); // Global Utils
-                                disp = nv * b.def * radM;
-                            }
-                            Vector2 pr = new Vector2(dx, dz) - disp;
-                            float dd = pr.magnitude;
-                            float t = dd / radEff;
-                            if(t < 1f) {
-                                float fP = 1f;
-                                if(b.varProf > 0f) {
-                                    float sp = 8f/Mathf.Max(radM, 0.01f);
-                                    float np = NoiseUtils.Fbm2D(dx*sp, dz*sp, 4, 2f, 0.5f);
-                                    fP = 1f + (np - 0.5f) * 2f * b.varProf;
-                                    fP = Mathf.Clamp(fP, 0f, 1.5f);
-                                }
-                                float fS = (t<=b.plano) ? 1f : 1f - Mathf.Pow((t-b.plano)/(1f-b.plano), b.suav);
-                                suma += profUsable * fS * fP;
-                            }
-                        }
+                        Vector4 s = spots[k];
+                        float d = CalculateSingleSpotErosion(
+                            worldX - s.x, 
+                            worldZ - s.y, 
+                            s.z, 
+                            s.w, 
+                            realErosionScale,
+                            currentErosionAmount,
+                            currentWallSteepness
+                        );
+                        accumulatedFactor += d; 
                     }
-                    suma = Mathf.Min(suma, profundidadMaximaGlobal);
+                    
+                    // 2. Aplicar FRACTURA DE BORDE MODULADA
+                    // Queremos bordes rotos pero fondo suave.
+                    // La fractura afecta más donde "profundidad" es baja (bordes) y menos donde es alta (fondo).
+                    
+                    float frac = Mathf.PerlinNoise(worldX * fractureScale + seedOffset, worldZ * fractureScale + seedOffset);
+                    
+                    // Modulador: Intenso en superficie (val ~0), Nulo en fondo (val > 1)
+                    // Usamos la inversa de la profundidad acumulada.
+                    float depthProtection = Mathf.Clamp01(accumulatedFactor); 
+                    float fractureInfluence = (1.0f - depthProtection) * currentEdgeFracture;
+                    
+                    // Solo restamos si estamos cerca de la superficie para "romper" el borde
+                    if (accumulatedFactor < 1.0f) 
+                    {
+                        accumulatedFactor -= frac * fractureInfluence;
+                    }
+                    
+                    // Cortar negativos (piso plano)
+                    accumulatedFactor = Mathf.Max(0f, accumulatedFactor);
+
+                    // 3. Convertir a Metros
+                    float accumulatedDepthVal = accumulatedFactor * currentMaxDepth;
+                    
+                    // 4. Tope Global (Ahora relativo)
+                    float globalLimit = avgSize * (globalDepthLimitPercent / 100f);
+                    accumulatedDepthVal = Mathf.Min(accumulatedDepthVal, globalLimit);
+
+                    // 5. Rubble (Detalle fino en el fondo)
+                    if (accumulatedDepthVal > 0.0001f)
+                    {
+                        float rubble = Mathf.PerlinNoise(worldX * realBottomRoughnessScale, worldZ * realBottomRoughnessScale);
+                        rubble = Mathf.Abs(rubble - 0.5f) * 2f; 
+                        accumulatedDepthVal += (rubble - 0.5f) * currentBottomRoughness;
+                    }
+                    
+                    // Final Assignment
+                     float finalY = -Mathf.Max(0f, accumulatedDepthVal * containerMask);
+                    vertices[vIndex] = new Vector3(worldX, finalY, worldZ);
                 }
-                vertices[index++] = new Vector3(worldX, -suma * borderFactor, worldZ);
+                else
+                {
+                     vertices[vIndex] = new Vector3(worldX, 0f, worldZ);
+                }
+                
+                vIndex++;
             }
         }
 
-        int[] tris = new int[polygonsX * polygonsZ * 6];
-        int ti = 0;
+        // Triángulos
+        int tIndex = 0;
         for (int z = 0; z < polygonsZ; z++) {
             for (int x = 0; x < polygonsX; x++) {
-                int v = z * (polygonsX + 1) + x;
-                tris[ti++] = v; tris[ti++] = v + polygonsX + 1; tris[ti++] = v + 1;
-                tris[ti++] = v + 1; tris[ti++] = v + polygonsX + 1; tris[ti++] = v + polygonsX + 2;
+                int start = z * (polygonsX + 1) + x;
+                triangles[tIndex++] = start;
+                triangles[tIndex++] = start + polygonsX + 1;
+                triangles[tIndex++] = start + 1;
+                triangles[tIndex++] = start + 1;
+                triangles[tIndex++] = start + polygonsX + 1;
+                triangles[tIndex++] = start + polygonsX + 2;
             }
         }
 
         mesh.vertices = vertices;
-        mesh.triangles = tris;
+        mesh.triangles = triangles;
         mesh.RecalculateNormals();
         mesh.RecalculateBounds();
+        
         mf.sharedMesh = mesh;
         mc.sharedMesh = mesh;
     }
+
+    // --- ALGORITMO EROSIÓN UNITARIA ---
+    // Retorna un valor 0..1 indicando "factor de profundidad"
+    private float CalculateSingleSpotErosion(float dx, float dz, float radius, float seed, float scale, float amount, float steepness)
+    {
+        float dist = Mathf.Sqrt(dx*dx + dz*dz);
+        float angle = Mathf.Atan2(dz, dx);
+
+        // Deformacion del radio
+        float angleNoise = Mathf.PerlinNoise(angle * 2.5f, seed) * 0.3f; 
+        float posNoise = Mathf.PerlinNoise(dx * scale + seed, dz * scale + seed);
+        
+        float effectiveRadius = radius * (1.0f - amount * posNoise + angleNoise * 0.2f);
+        
+        if (dist >= effectiveRadius) return 0f;
+
+        float t = dist / effectiveRadius;
+        // 0 en centro, 1 en borde.
+        // Queremos 1 en centro, 0 en borde.
+        // Wall Profile: 
+        return 1f - Mathf.Pow(t, steepness);
+    }
+
+#if UNITY_EDITOR
+    [Header("Debug Editor")]
+    [SerializeField] private Material debugMaterial;
+
+    private void OnValidate()
+    {
+        if (Application.isPlaying) return;
+        // Auto-update en editor
+        // Usamos delayCall para evitar errores de SendMessage/Destroy durante el ciclo de inspeccion
+        UnityEditor.EditorApplication.delayCall += () => { 
+            if(this != null) GenerarMeshEnNuevoObjeto(seed, debugMaterial); 
+        };
+    }
+#endif
 }

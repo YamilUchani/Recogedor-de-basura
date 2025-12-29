@@ -8,6 +8,19 @@ public static class FileHandler
     [DllImport("__Internal")]
     private static extern void DownloadFileFromBase64(string fileName, string base64);
 #endif
+    
+    private static string currentSessionFolder = "";
+
+    public static string GetCurrentFolderPath()
+    {
+        if (string.IsNullOrEmpty(currentSessionFolder))
+        {
+            string timestamp = System.DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            currentSessionFolder = Path.Combine(Application.persistentDataPath, "Dataset_Baches", timestamp);
+            if (!Directory.Exists(currentSessionFolder)) Directory.CreateDirectory(currentSessionFolder);
+        }
+        return currentSessionFolder;
+    }
 
     public static void SaveImage(byte[] pngBytes, string filename)
     {
@@ -17,15 +30,22 @@ public static class FileHandler
         DownloadFileFromBase64(filename, b64);
 #else
         // PC / Android: Save to disk
-        string timestamp = System.DateTime.Now.ToString("yyyyMMdd_HHmmss");
-        string folderPath = Path.Combine(Application.persistentDataPath, "Imagenes", "Imagenes_de_baches", timestamp);
-        
-        // Ensure directory exists
-        if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
-        
+        string folderPath = GetCurrentFolderPath();
         string fullPath = Path.Combine(folderPath, filename);
         File.WriteAllBytes(fullPath, pngBytes);
         Debug.Log($"File saved to: {fullPath}");
+#endif
+    }
+
+    public static void SaveText(string content, string filename)
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        // For WebGL we'd need another JSLib call, but assuming PC/Editor for training
+#else
+        string folderPath = GetCurrentFolderPath();
+        string fullPath = Path.Combine(folderPath, filename);
+        File.WriteAllText(fullPath, content);
+        Debug.Log($"Label saved: {fullPath}");
 #endif
     }
 }

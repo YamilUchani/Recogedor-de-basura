@@ -17,5 +17,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/russian_buildings/scenes/Model_scene_low.unity
     guid: 73622a1f9469e9045b05712b54d2a059
+  - enabled: 1
+    path: Assets/russian_buildings/scenes/Capture_scene.unity
+    guid: ebf00c70774ccd041975fb713c8ed2f5
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

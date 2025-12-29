@@ -22,8 +22,25 @@ public class LoadingScreenController : MonoBehaviour
     void Start()
     {
         // Determinar qué escena cargar según la variable global
-        sceneToLoad = sceneIndex == 0 ? "Demo_scene_low" : "Model_scene_low";
-        Debug.Log(sceneIndex);
+        switch (sceneIndex)
+        {
+            case 0:
+                sceneToLoad = "Demo_scene_low";
+                break;
+            case 1:
+                sceneToLoad = "Model_scene_low";
+                break;
+            case 2:
+                sceneToLoad = "Capture_scene";
+                break;
+            default:
+                sceneToLoad = "Demo_scene_low"; // Escena por defecto
+                Debug.LogWarning($"sceneIndex inválido: {sceneIndex}. Cargando escena por defecto.");
+                break;
+        }
+        
+        Debug.Log($"Cargando escena: {sceneToLoad} (sceneIndex: {sceneIndex})");
+        
         // Cargar la escena especificada aditivamente
         asyncLoad = SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
 
