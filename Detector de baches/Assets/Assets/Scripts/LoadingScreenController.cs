@@ -120,6 +120,8 @@ public class LoadingScreenController : MonoBehaviour
     {
         foreach (GameObject obj in rootGameObjects)
         {
+            if (obj == null) continue;
+
             // Si es el SceneInitializer, asegurarse que esté activo
             if (obj.GetComponent<SceneInitializer>() != null)
             {
@@ -147,7 +149,8 @@ public class LoadingScreenController : MonoBehaviour
         SceneInitializer initializer = null;
         foreach (var obj in rootGameObjects)
         {
-            if (managedObjects.Contains(obj)) continue; // Optimización leve, aunque el initializer no suele estar en managedObjects de sí mismo
+            if (obj == null) continue;
+            if (managedObjects.Contains(obj)) continue; 
             
             initializer = obj.GetComponent<SceneInitializer>();
             if (initializer != null) break;
@@ -179,6 +182,7 @@ public class LoadingScreenController : MonoBehaviour
 
     private void ActivateObjectAndChildren(GameObject parent)
     {
+        if (parent == null) return;
         // Si el objeto está en la lista de exclusion del SceneInitializer, NO tocarlo
         if (managedObjects.Contains(parent)) return;
 

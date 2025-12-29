@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 989
   m_ShowMode: 4
-  m_Title: Inspector
+  m_Title: Game
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -119,7 +119,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 100}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 108
+  controlID: 49
   draggingID: 0
 --- !u!114 &6
 MonoBehaviour:
@@ -219,8 +219,8 @@ MonoBehaviour:
     y: 0
     width: 497
     height: 478
-  m_MinSize: {x: 202, y: 226}
-  m_MaxSize: {x: 4002, y: 4026}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 14}
   m_Panes:
   - {fileID: 14}
@@ -365,8 +365,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Scene\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 356
-    y: 24
+    x: 355
+    y: 79
     width: 495
     height: 452
   m_SerializedDataModeController:
@@ -839,9 +839,9 @@ MonoBehaviour:
   m_AudioPlay: 0
   m_DebugDrawModesUseInteractiveLightBakingData: 0
   m_Position:
-    m_Target: {x: 83.76077, y: -286.13782, z: 350.59363}
+    m_Target: {x: 0, y: 2, z: 0}
     speed: 2
-    m_Value: {x: 83.76077, y: -286.13782, z: 350.59363}
+    m_Value: {x: 0, y: 2, z: 0}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -887,13 +887,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.41053694, y: 0.34068578, z: -0.16874501, w: 0.82882583}
+    m_Target: {x: 0.5698329, y: -0.2691588, z: 0.20479397, w: 0.74896437}
     speed: 2
-    m_Value: {x: -0.41053694, y: -0.34068578, z: 0.16874501, w: -0.82882583}
+    m_Value: {x: 0.56982034, y: -0.26915288, z: 0.20478946, w: 0.74894786}
   m_Size:
-    m_Target: 0.13775879
+    m_Target: 10
     speed: 2
-    m_Value: 0.13775879
+    m_Value: 10
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -949,7 +949,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 24
+    y: 79
     width: 354
     height: 452
   m_SerializedDataModeController:
@@ -966,23 +966,23 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
+      m_SelectedIDs: b6220200
       m_LastClickedID: 0
-      m_ExpandedIDs: 3a5afeff045bfeff9a5cfeffea71fefff4cffeff88e5feff12e6feff7ee6feff4244ffffb859ffff585affff5671ffff9873ffff8674ffff1478fffffc78ffff8c7affff367bffffde7dffffca7effffca81ffff2486ffffcafaffff9297000084af0200
+      m_ExpandedIDs: f8fefcff5633fdffe034fdfff038fdff8040fdffcc42fdffc046fdffe848fdfffe79fdffa27cfdffc281fdffe48afdff16a9fdff2aacfdff66b4fdff7ce5fdff0cebfdff36f3fdff1ef9fdff8efafdff680cfeff2c1bfeffe829feffe42cfeff5a2ffeffec30feff8232feffae35feff6636feff1a38feff8869feff006bfeff86a1feff44adfeff32b1feffb4b2feff78b4feff8eb7feff1cb9feff06bffeff52c1feffe0c2feff56c3feff68c4feff54c6feffdec7feffeac8feffd8c9feffcacefeff58d0feffa6e8feff0cebfeffa6ebfeff04f2feffa2f3feffb6f7feff70f8feff02fafeffc2fafeffe6fbfeff70fdfeff70fefeff7200ffff9803ffffdc0effffa811ffff6414fffffe16ffff9619ffffa01cffff501fffff1420ffffb420ffff5e26ffff1a29ffff562bfffff62dffffdc35ffff8c38ffff3639ffff2243ffff4e46ffff0c4effff8850ffffa059ffff4a5cffffd262ffff9e65ffff866affff646dffffb870ffff4e73ffff6c74fffff675ffff3c77ffff5479ffff1cc9ffffcafafffff4ffffffbefa00003cff00009c0001003c0301004c090100f20a0100484301008278010054d40100a0e20100d0170200f01a0200
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: 
-        m_OriginalName: 
+        m_Name: Pothole
+        m_OriginalName: Pothole
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 0
+        m_UserData: 120780
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 11
+        m_OriginalEventType: 0
         m_IsRenamingFilename: 0
         m_TrimLeadingAndTrailingWhitespace: 0
         m_ClientGUIView: {fileID: 8}
@@ -1014,8 +1014,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Game\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 853
-    y: 24
+    x: 852
+    y: 79
     width: 545
     height: 452
   m_SerializedDataModeController:
@@ -1141,7 +1141,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/russian_buildings/scenes
+    - Assets/Assets/Baches
     m_Globs: []
     m_ProductIds: 
     m_AnyWithAssetOrigin: 0
@@ -1151,17 +1151,17 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/russian_buildings/scenes
+  - Assets/Assets/Baches
   m_LastFoldersGridSize: -1
   m_LastProjectPath: G:\Github\Software de simulacion\Recogedor-de-basura\Detector
     de baches
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 459}
-    m_SelectedIDs: e28b0000
-    m_LastClickedID: 35810
-    m_ExpandedIDs: 00000000988a00009a8a00009c8a00009e8a0000a08a0000a28a0000a48a0000a68a0000a88a0000aa8a0000ac8a0000ae8a0000b08a0000
+    scrollPos: {x: 0, y: 120}
+    m_SelectedIDs: 3e8b0000
+    m_LastClickedID: 35646
+    m_ExpandedIDs: 00000000988a00009a8a00009c8a00009e8a0000a08a0000a28a0000a48a0000a68a0000a88a0000aa8a0000ac8a0000ae8a0000b08a00003a8b0000a48b0000ac8b0000ee22020000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1216,9 +1216,9 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 84af0200
-    m_LastClickedInstanceID: 176004
-    m_HadKeyboardFocusLastEvent: 1
+    m_SelectedInstanceIDs: b6220200
+    m_LastClickedInstanceID: 139958
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c6230000046700005480000014740000ee8a0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -1270,7 +1270,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 502
+    y: 557
     width: 1398
     height: 429
   m_SerializedDataModeController:
@@ -1305,8 +1305,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Inspector\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 1400
-    y: 24
+    x: 1399
+    y: 79
     width: 520
     height: 907
   m_SerializedDataModeController:
@@ -1327,7 +1327,7 @@ MonoBehaviour:
     m_ControlHash: -371814159
     m_PrefName: Preview_InspectorPreview
   m_LastInspectedObjectInstanceID: -1
-  m_LastVerticalScrollValue: 194
+  m_LastVerticalScrollValue: 0
   m_GlobalObjectId: 
   m_InspectorMode: 0
   m_LockTracker:

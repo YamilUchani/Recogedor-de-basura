@@ -289,6 +289,7 @@ public class TerrainPotholeGenerator : MonoBehaviour
                 obj.transform.SetParent(transform);
                 obj.transform.position = pos;
                 obj.layer = 7; 
+                obj.hideFlags = HideFlags.DontSave; 
 
                 if (!useCroc) GenerateBacheMesh(obj, w, l, instanceSeed);
                 else GenerateCrocMesh(obj, w, l, instanceSeed);
@@ -312,10 +313,18 @@ public class TerrainPotholeGenerator : MonoBehaviour
     private void ClearChildren()
     {
         if (this == null) return;
-        var children = new List<GameObject>();
-        foreach (Transform child in transform) children.Add(child.gameObject);
-        foreach (var child in children)
+        
+        // Use a list to avoid modifying the collection while iterating
+        List<GameObject> toDestroy = new List<GameObject>();
+        foreach (Transform child in transform)
         {
+            if (child != null) toDestroy.Add(child.gameObject);
+        }
+
+        foreach (var child in toDestroy)
+        {
+            if (child == null) continue;
+            
             if (Application.isPlaying) Destroy(child);
             else DestroyImmediate(child);
         }

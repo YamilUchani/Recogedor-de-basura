@@ -149,4 +149,12 @@ public class PotholeCaptureManager : MonoBehaviour
 
     private IEnumerator AutoCaptureLoop()
     {
-        whi
+        while (isAutoMode)
+        {
+            RandomizeAndGenerate();
+            yield return new WaitForSeconds(0.1f);
+            CaptureScreenshot();
+            yield return new WaitForSeconds(autoInterval);
+        }
+    }
+}
