@@ -36,6 +36,10 @@ public class TerrainPotholeGenerator : MonoBehaviour
     public float ladoArea = 10f;
     public float margenBorde = 0.5f;
     public LayerMask capasObstaculos = ~0; 
+    
+    [Header("Global Depth Control")]
+    [Tooltip("Profundidad global que afecta a todos los baches generados.")]
+    [Range(0.01f, 0.5f)] public float depthGlobal = 0.15f;
 
     [Header("Bache Configuration")]
     public BacheConfig bacheSettings;
@@ -108,6 +112,9 @@ public class TerrainPotholeGenerator : MonoBehaviour
         [Range(10f, 100f)] public float bottomRoughnessRelativeScale = 24f;
 
         [Header("Márgenes (Contenedor Irregular)")]
+        [Tooltip("Si es true, el bache se cortará rectangulamente en los bordes de la malla, ignorando los márgenes orgánicos.")]
+        public bool cropToRectangularBounds = false;
+
         [Tooltip("Mínimo margen (%)")]
         [Range(5, 30)] public int bordeMinPercent = 5;
         [Tooltip("Máximo margen (%)")]
@@ -123,45 +130,97 @@ public class TerrainPotholeGenerator : MonoBehaviour
         public float minLength = 2.5f;
         public float maxLength = 3.5f;
 
+        public enum MetricType { Euclidean, Chebyshev, Minkowski }
+        
+        [Header("Fractura Angular (Alligator)")]
+        [Tooltip("Tipo de métrica de distancia Voronoi.")]
+        public MetricType distanceMetric = MetricType.Minkowski;
+        [Tooltip("Parámetro p de Minkowski (2 = Euclidean, inf = Chebyshev).")]
+        [Range(1f, 5f)] public float minkowskiP = 2.33f;
+        [Tooltip("Inyecta ruido en las coordenadas antes del Voronoi para bordes 'mordidos'.")]
+        [Range(0f, 1f)] public float edgeBiteAmount = 0.08f;
+        [Range(20f, 100f)] public float edgeBiteScale = 53.8f;
+
         [Header("Calidad")]
         [Tooltip("Polígonos por eje. A mayor número, menos 'dientes de sierra', pero más costo.")]
-        [Range(20, 200)] public int polygonsX = 200;
-        [Range(20, 200)] public int polygonsZ = 200;
+        [Range(20, 500)] public int polygonsX = 184;
+        [Range(20, 500)] public int polygonsZ = 191;
 
         [Header("Patrón Cocodrilo")]
-        [Tooltip("Cantidad de bloques poligonales.")]
-        [Range(10, 100)] public int cellCount = 51;
+        [Tooltip("Cantidad mínima de bloques poligonales.")]
+        [Range(10, 100)] public int minCellCount = 20;
+        [Tooltip("Cantidad máxima de bloques poligonales.")]
+        [Range(10, 100)] public int maxCellCount = 40;
         
         [Tooltip("Ancho mínimo de las grietas (% del tamaño).")]
-        [Range(0.1f, 2f)] public float minCrackWidthPercent = 0.332f;
+        [Range(0.01f, 2f)] public float minCrackWidthPercent = 0.12f;
 
         [Tooltip("Ancho máximo de las grietas (% del tamaño).")]
-        [Range(0.5f, 5f)] public float maxCrackWidthPercent = 2.79f;
+        [Range(0.01f, 5f)] public float maxCrackWidthPercent = 1.29f;
         
         [Tooltip("Profundidad de las grietas.")]
-        [Range(0.01f, 0.08f)] public float crackDepth = 0.0279f;
+        [Range(0.01f, 0.4f)] public float crackDepth = 0.145f;
         
         [Tooltip("Suavidad del borde de la grieta.")]
-        [Range(1f, 4f)] public float crackSmoothness = 2.99f;
+        [Range(1f, 4f)] public float crackSmoothness = 2.76f;
 
         [Header("Variación Orgánica")]
         [Tooltip("Escala del ruido para variar el ancho (mayor = cambios más rápidos).")]
-        [Range(0.1f, 10f)] public float widthNoiseScale = 1.43f;
+        [Range(0.1f, 10f)] public float widthNoiseScale = 1.89f;
 
         [Tooltip("Irregularidad de los bordes (dientes naturales).")]
-        [Range(0f, 0.5f)] public float edgeIrregularity = 0.05f;
+        [Range(0f, 0.5f)] public float edgeIrregularity = 0.141f;
 
         [Tooltip("Escala del ruido de irregularidad (mayor = más detalle fino).")]
-        [Range(5f, 50f)] public float irregularityScale = 18.8f;
+        [Range(5f, 50f)] public float irregularityScale = 7f;
 
         [Tooltip("Distorsión leve para que no sean líneas perfectas (0 = rectas).")]
-        [Range(0f, 1f)] public float distortion = 0.668f;
+        [Range(0f, 1f)] public float distortion = 0.327f;
+
+        [Header("Variación de Profundidad")]
+        [Tooltip("Escala del ruido de profundidad (Musgrave style).")]
+        [Range(0.1f, 10f)] public float depthNoiseScale = 1.34f;
+        [Tooltip("Cuánto varía la profundidad a lo largo de la grieta.")]
+        [Range(0f, 1f)] public float depthVariation = 0.271f;
+        [Tooltip("Suavidad del borde (SDF). 0 = abrupto, 1 = muy suave.")]
+        [Range(0f, 1f)] public float edgeSmoothness = 0.271f;
+        [Tooltip("Profundidad mínima del fondo (clamp) para evitar picos.")]
+        [Range(0f, 0.1f)] public float minFloorDepth = 0.0266f;
+
+        [Header("Desorden de Segmentos")]
+        [Tooltip("Desfase de altura aleatorio por cada bloque de asfalto.")]
+        [Range(0f, 0.04f)] public float cellHeightVariation = 0f;
+        [Tooltip("Inclinación aleatoria de los bloques.")]
+        [Range(0f, 0.1f)] public float cellTiltAmount = 0f;
+
+        [Header("Brutalismo y Textura")]
+        [Tooltip("Serrado extra en los bordes para imitar piedras.")]
+        [Range(0f, 1f)] public float edgeSerration = 0.04f;
+        [Range(50f, 300f)] public float serrationScale = 96f;
+        [Tooltip("Hace que las piedras resalten más.")]
+        [Range(0f, 0.5f)] public float stoneHighlight = 0f;
+
+        [Header("Efecto Labio y Borde")]
+        [Tooltip("Altura del labio/bulto en los bordes. Positivo = hacia arriba, Negativo = hacia abajo.")]
+        [Range(-0.02f, 0.02f)] public float lipHeight = -0.016f;
+        [Tooltip("Ancho absoluto del área afectada (en metros) desde el borde de la grieta.")]
+        [Range(0.01f, 0.2f)] public float lipWidth = 0.0721f;
+        [Tooltip("Cuánto se 'hunde' o redondea el borde justo antes de la grieta.")]
+        [Range(0f, 0.02f)] public float edgeRoundingDepth = 0.0178f;
+
+        [Header("Capas de Detalle Surface")]
+        [Tooltip("Pequeños puntos donde se saltó el material.")]
+        [Range(0f, 0.01f)] public float pittingAmount = 0.00151f;
+        [Range(50f, 200f)] public float pittingScale = 91.5f;
+        [Tooltip("Rugosidad micro-textural para evitar brillo plástico.")]
+        [Range(0f, 0.005f)] public float microRoughness = 0.00007f;
+        [Range(100f, 500f)] public float microScale = 428f;
 
         [Header("Bordes Orgánicos")]
         [Tooltip("Distancia mínima al borde sin grietas (% del tamaño).")]
-        [Range(5f, 25f)] public float bordeMinPercent = 11.3f;
+        [Range(0f, 15f)] public float bordeMinPercent = 0.0f;
         [Tooltip("Distancia máxima al borde (% del tamaño).")]
-        [Range(10f, 35f)] public float bordeMaxPercent = 24f;
+        [Range(0f, 20f)] public float bordeMaxPercent = 0.1f;
     }
 
     // ─── UNITY EVENTS ───────────────────────────────────────────────────────
@@ -409,13 +468,48 @@ public class TerrainPotholeGenerator : MonoBehaviour
         }
 
         // Generar Mesh
+        
+        // --- CÁLCULO DE BOUNDS AJUSTADOS (CROP) ---
+        float meshMinX = -width * 0.5f;
+        float meshMaxX = width * 0.5f;
+        float meshMinZ = -length * 0.5f;
+        float meshMaxZ = length * 0.5f;
+
+        if (bacheSettings.cropToRectangularBounds)
+        {
+             float sxMin = float.MaxValue, sxMax = float.MinValue;
+             float szMin = float.MaxValue, szMax = float.MinValue;
+             
+             foreach(var s in spots)
+             {
+                 float spotX = s.x;
+                 float spotZ = s.y; 
+                 float r = s.z; 
+                 
+                 sxMin = Mathf.Min(sxMin, spotX - r);
+                 sxMax = Mathf.Max(sxMax, spotX + r);
+                 szMin = Mathf.Min(szMin, spotZ - r);
+                 szMax = Mathf.Max(szMax, spotZ + r);
+             }
+             
+             meshMinX = sxMin;
+             meshMaxX = sxMax;
+             meshMinZ = szMin;
+             meshMaxZ = szMax;
+             
+             width = meshMaxX - meshMinX;
+             length = meshMaxZ - meshMinZ;
+        }
+
         Vector3[] verts = new Vector3[(px + 1) * (pz + 1)];
         Vector2[] uvs = new Vector2[verts.Length];
 
         float stepX = width / px;
         float stepZ = length / pz;
-        float halfW = width * 0.5f;
-        float halfL = length * 0.5f;
+        
+        // Offset de inicio
+        float startX = meshMinX; 
+        float startZ = meshMinZ;
 
         // --- ALGORITMO DE EROSIÓN ---
         float seedOffset = Random.Range(0f, 100f);
@@ -425,35 +519,43 @@ public class TerrainPotholeGenerator : MonoBehaviour
         for (int z = 0; z <= pz; z++)
         {
             float localZ = z * stepZ;
-            float worldZ = localZ - halfL;
+            float worldZ = startZ + localZ;
 
             for (int x = 0; x <= px; x++)
             {
                 float localX = x * stepX;
-                float worldX = localX - halfW;
-
-                // A. Máscara del Contenedor (ORGANIC 2D NOISE)
-                float dL = localX;
-                float dR = width - localX;
-                float dB = localZ;
-                float dT = length - localZ;
-                float distToEdge = Mathf.Min(dL, dR, dB, dT);
-
-                float borderNoise = Mathf.PerlinNoise(worldX * realBorderNoiseScale + seedOffset, worldZ * realBorderNoiseScale + seedOffset);
-
-                float marginMinInMeters = Mathf.Min(width, length) * (bacheSettings.bordeMinPercent / 100f);
-                float marginMaxInMeters = Mathf.Min(width, length) * (bacheSettings.bordeMaxPercent / 100f);
-
-                float dynamicMargin = Mathf.Lerp(marginMinInMeters, marginMaxInMeters, borderNoise);
-
-                // --- CONTAINER FRACTURE ---
-                float containerFrac = Mathf.PerlinNoise(worldX * fractureScale + seedOffset + 50f, worldZ * fractureScale + seedOffset + 50f);
-                dynamicMargin += containerFrac * currentEdgeFracture * 0.5f;
+                float worldX = startX + localX;
 
                 float containerMask = 0f;
-                float fadeSize = 0.002f; // 2mm transition
-                float delta = distToEdge - dynamicMargin;
-                containerMask = Mathf.Clamp01(delta / fadeSize);
+
+                if (bacheSettings.cropToRectangularBounds)
+                {
+                    containerMask = 1.0f;
+                }
+                else
+                {
+                    // A. Máscara del Contenedor (ORGANIC 2D NOISE)
+                    float dL = localX;
+                    float dR = width - localX;
+                    float dB = localZ;
+                    float dT = length - localZ;
+                    float distToEdge = Mathf.Min(dL, dR, dB, dT);
+    
+                    float borderNoise = Mathf.PerlinNoise(worldX * realBorderNoiseScale + seedOffset, worldZ * realBorderNoiseScale + seedOffset);
+    
+                    float marginMinInMeters = Mathf.Min(width, length) * (bacheSettings.bordeMinPercent / 100f);
+                    float marginMaxInMeters = Mathf.Min(width, length) * (bacheSettings.bordeMaxPercent / 100f);
+    
+                    float dynamicMargin = Mathf.Lerp(marginMinInMeters, marginMaxInMeters, borderNoise);
+    
+                    // --- CONTAINER FRACTURE ---
+                    float containerFrac = Mathf.PerlinNoise(worldX * fractureScale + seedOffset + 50f, worldZ * fractureScale + seedOffset + 50f);
+                    dynamicMargin += containerFrac * currentEdgeFracture * 0.5f;
+    
+                    float fadeSize = 0.002f; // 2mm transition
+                    float delta = distToEdge - dynamicMargin;
+                    containerMask = Mathf.Clamp01(delta / fadeSize);
+                }
 
                 // B. Cálculo de Profundidad
                 float accumulatedFactor = 0f;
@@ -571,13 +673,16 @@ public class TerrainPotholeGenerator : MonoBehaviour
         float bordeMin = avgSize * (crocSettings.bordeMinPercent / 100f);
         float bordeMax = avgSize * (crocSettings.bordeMaxPercent / 100f);
 
+        // Determinar cantidad de celdas basado en el seed
+        int cellCount = Random.Range(crocSettings.minCellCount, crocSettings.maxCellCount + 1);
+
         // Generar semillas Voronoi
         List<Vector2> seeds = new List<Vector2>();
-        for (int i = 0; i < crocSettings.cellCount; i++)
+        for (int i = 0; i < cellCount; i++)
         {
             seeds.Add(new Vector2(
-                Random.Range(-width * 0.6f, width * 0.6f),
-                Random.Range(-length * 0.6f, length * 0.6f)
+                Random.Range(-width * 0.5f, width * 0.5f),
+                Random.Range(-length * 0.5f, length * 0.5f)
             ));
         }
 
@@ -590,8 +695,8 @@ public class TerrainPotholeGenerator : MonoBehaviour
         float halfW = width * 0.5f;
         float halfL = length * 0.5f;
 
-        // Precalcular bordes irregulares
-        float noiseScale = 2f;
+        // Precalcular bordes irregulares con más variación
+        float noiseScale = 5f; // Aumentado para bordes más orgánicos
         float noiseOffX = Random.Range(0f, 100f);
 
         float[] bordeIzq = new float[pz + 1];
@@ -614,7 +719,7 @@ public class TerrainPotholeGenerator : MonoBehaviour
         }
 
         Vector3[] vertices = new Vector3[(px + 1) * (pz + 1)];
-        Vector2[] uvs = new Vector2[vertices.Length];
+        Color[] colors = new Color[vertices.Length];
         int index = 0;
 
         for (int z = 0; z <= pz; z++)
@@ -637,20 +742,28 @@ public class TerrainPotholeGenerator : MonoBehaviour
                 float borderFactor = 0f;
                 if (minD > 0f)
                 {
-                    float t = Mathf.Clamp01(minD / (Mathf.Max(width, length) * 0.1f));
+                    float t = Mathf.Clamp01(minD / (Mathf.Max(width, length) * 0.01f));
                     borderFactor = Mathf.SmoothStep(0f, 1f, t);
                 }
 
                 // 2. Calcular profundidad de grieta Voronoi
-                float depth = 0f;
+                float heightOffset = 0f;
+                float vMask = 0f;
                 if (borderFactor > 0.01f)
                 {
-                    depth = CalculateVoronoiDepth(worldX, worldZ, seeds, minCrackWidth, maxCrackWidth, seed);
+                    heightOffset = CalculateVoronoiDepth(worldX, worldZ, seeds, minCrackWidth, maxCrackWidth, seed, out vMask);
                 }
 
-                // 3. Aplicar altura (solo Y)
-                vertices[index] = new Vector3(worldX, -depth * borderFactor, worldZ);
-                uvs[index] = new Vector2((float)x / px, (float)z / pz);
+                // 3. Aplicar altura con CLAMP para evitar picos en intersecciones
+                float finalHeight = heightOffset * borderFactor;
+                // CRITICAL: Limitar la profundidad máxima para evitar que se acumulen múltiples grietas
+                finalHeight = Mathf.Max(finalHeight, -crocSettings.crackDepth * 1.2f);
+                
+                vertices[index] = new Vector3(worldX, finalHeight, worldZ);
+                
+                // Color: R = Dirt/AO (profundidad), G = Micro Detail, B = Lip Mask factor
+                float dirt = vMask * borderFactor;
+                colors[index] = new Color(dirt, 0.5f + (heightOffset * 2f), 0f, 1f);
                 index++;
             }
         }
@@ -674,7 +787,7 @@ public class TerrainPotholeGenerator : MonoBehaviour
         }
 
         mesh.vertices = vertices;
-        mesh.uv = uvs;
+        mesh.colors = colors;
         mesh.triangles = triangles;
         mesh.RecalculateNormals();
         mesh.RecalculateBounds();
@@ -682,72 +795,133 @@ public class TerrainPotholeGenerator : MonoBehaviour
         mc.sharedMesh = mesh;
     }
 
-    private float CalculateVoronoiDepth(float x, float z, List<Vector2> seeds, float minCrackWidth, float maxCrackWidth, int instanceSeed)
+    private float CalculateVoronoiDepth(float x, float z, List<Vector2> seeds, float minCrackWidth, float maxCrackWidth, int instanceSeed, out float vertexMask)
     {
-        // 1. Distorsión de dominio para bordes irregulares ("dientes naturales")
-        float warpX = 0f;
-        float warpZ = 0f;
+        vertexMask = 0f;
+        float origX = x;
+        float origZ = z;
+
+        // 1. Distorsión de dominio (Bite & Serration) - Ajustado para evitar 'blobbing'
+        if (crocSettings.edgeBiteAmount > 0f || crocSettings.edgeSerration > 0f)
+        {
+            // Usamos un factor de escala más pequeño para el warp para no destruir la topología
+            float b1 = Mathf.PerlinNoise(x * crocSettings.edgeBiteScale, z * crocSettings.edgeBiteScale);
+            float s1 = Mathf.PerlinNoise(x * crocSettings.serrationScale, z * crocSettings.serrationScale) * crocSettings.edgeSerration;
+            
+            float combinedBite = (b1 * 0.5f + s1 * 0.5f);
+            
+            // Reducimos el multiplicador para mantener líneas afiladas
+            float warpFactor = (crocSettings.edgeBiteAmount + crocSettings.edgeSerration) * 0.05f; 
+            x += (combinedBite - 0.5f) * warpFactor;
+            z += (Mathf.PerlinNoise(x * crocSettings.edgeBiteScale + 123f, z * crocSettings.edgeBiteScale + 456f) - 0.5f) * warpFactor;
+        }
 
         if (crocSettings.edgeIrregularity > 0f)
         {
-            warpX = (Mathf.PerlinNoise(x * crocSettings.irregularityScale, z * crocSettings.irregularityScale) - 0.5f) * crocSettings.edgeIrregularity;
-            warpZ = (Mathf.PerlinNoise(x * crocSettings.irregularityScale + 15.3f, z * crocSettings.irregularityScale + 15.3f) - 0.5f) * crocSettings.edgeIrregularity;
+            float warpX = (Mathf.PerlinNoise(x * crocSettings.irregularityScale, z * crocSettings.irregularityScale) - 0.5f) * crocSettings.edgeIrregularity;
+            float warpZ = (Mathf.PerlinNoise(x * crocSettings.irregularityScale + 15.3f, z * crocSettings.irregularityScale + 15.3f) - 0.5f) * crocSettings.edgeIrregularity;
+            x += warpX;
+            z += warpZ;
         }
 
-        x += warpX;
-        z += warpZ;
-
-        // 2. Distorsión global leve
-        if (crocSettings.distortion > 0f)
-        {
-            float noiseX = Mathf.PerlinNoise(x * 0.5f + instanceSeed + 123f, z * 0.5f);
-            float noiseZ = Mathf.PerlinNoise(x * 0.5f, z * 0.5f + instanceSeed + 456f);
-            x += (noiseX - 0.5f) * crocSettings.distortion * 0.5f;
-            z += (noiseZ - 0.5f) * crocSettings.distortion * 0.5f;
-        }
-
-        // 3. Encontrar las 2 semillas más cercanas
+        // 2. Voronoi con métricas y extracción de ID de celda
         float d1 = float.MaxValue;
         float d2 = float.MaxValue;
-
-        foreach (var s in seeds)
+        Vector2 closestSeed = Vector2.zero;
+        
+        foreach (var seed in seeds)
         {
-            float dx = x - s.x;
-            float dz = z - s.y;
-            float d = Mathf.Sqrt(dx * dx + dz * dz);
+            float dx = Mathf.Abs(x - seed.x);
+            float dz = Mathf.Abs(z - seed.y);
+            float d = 0f;
 
-            if (d < d1)
+            switch (crocSettings.distanceMetric)
             {
-                d2 = d1;
-                d1 = d;
+                case CrocodileConfig.MetricType.Euclidean: d = Mathf.Sqrt(dx * dx + dz * dz); break;
+                case CrocodileConfig.MetricType.Chebyshev: d = Mathf.Max(dx, dz); break;
+                case CrocodileConfig.MetricType.Minkowski: d = Mathf.Pow(Mathf.Pow(dx, crocSettings.minkowskiP) + Mathf.Pow(dz, crocSettings.minkowskiP), 1f / crocSettings.minkowskiP); break;
             }
-            else if (d < d2)
-            {
-                d2 = d;
-            }
+
+            if (d < d1) { d2 = d1; d1 = d; closestSeed = seed; }
+            else if (d < d2) { d2 = d; }
         }
 
         float distToEdge = d2 - d1;
 
-        // 4. Ancho variable de grieta
-        float widthNoise = Mathf.PerlinNoise(x * crocSettings.widthNoiseScale + instanceSeed, z * crocSettings.widthNoiseScale + instanceSeed);
-        float currentCrackWidth = Mathf.Lerp(minCrackWidth, maxCrackWidth, widthNoise);
+        // 3. Variación de celda (Tilt y Height Offset)
+        float cellHash = (closestSeed.x * 123.456f + closestSeed.y * 456.789f) % 1.0f;
+        float cellOffset = (cellHash - 0.5f) * crocSettings.cellHeightVariation;
+        // Tilt simple basado en la distancia al centro de la celda
+        float tiltX = (x - closestSeed.x) * (cellHash * 2f - 1f) * crocSettings.cellTiltAmount;
+        float tiltZ = (z - closestSeed.y) * (Mathf.Cos(cellHash * 10f) * 2f - 1f) * crocSettings.cellTiltAmount;
+        float totalCellEffect = cellOffset + tiltX + tiltZ;
 
+        // 4. Variación de ancho
+        float noise = Mathf.PerlinNoise(x * crocSettings.widthNoiseScale + instanceSeed, z * crocSettings.widthNoiseScale + instanceSeed);
+        float currentCrackWidth = Mathf.Lerp(minCrackWidth, maxCrackWidth, noise);
+        
+        // Usamos SOLO el ancho real de la grieta, sin "influence radius"
+        // Esto evita que grietas cercanas se fusionen visualmente
+
+        // 5. Lip & Rounding logic
+        float edgeEffect = 0f;
+        float outerRadius = currentCrackWidth + crocSettings.lipWidth;
+        
+        if (distToEdge < outerRadius && distToEdge > currentCrackWidth)
+        {
+            float tEdge = (distToEdge - currentCrackWidth) / crocSettings.lipWidth;
+            
+            // Bulge (Upward lip)
+            float bulge = Mathf.Sin(tEdge * Mathf.PI) * crocSettings.lipHeight;
+            
+            // Rounding (Downward break at the very edge)
+            float rounding = -Mathf.Exp(-tEdge * 10f) * crocSettings.edgeRoundingDepth;
+            
+            edgeEffect = bulge + rounding;
+        }
+
+        // Usamos currentCrackWidth en lugar de influenceRadius para el check
         if (distToEdge > currentCrackWidth)
         {
-            return 0f;
+            return totalCellEffect + edgeEffect; 
         }
 
+        // 6. Profundidad con SDF suave (Smooth Distance Field)
+        float dNoise = Mathf.PerlinNoise(x * crocSettings.depthNoiseScale + instanceSeed + 500f, z * crocSettings.depthNoiseScale + instanceSeed + 500f);
+        float depthMod = Mathf.Lerp(1f - crocSettings.depthVariation, 1f, dNoise);
+        
+        // Normalizamos la distancia respecto al ancho real de la grieta
         float t = distToEdge / currentCrackWidth;
-
-        float roughness = 0f;
-        if (distToEdge < currentCrackWidth * 0.8f)
+        
+        // SDF Profile con SmoothStep SOLO dentro del ancho de la grieta
+        float profile = 0f;
+        if (distToEdge <= currentCrackWidth)
         {
-            roughness = (Mathf.PerlinNoise(x * 30f, z * 30f) - 0.5f) * 0.2f * crocSettings.crackDepth;
+            // Dentro de la grieta: profundidad completa con transición suave
+            float innerT = distToEdge / currentCrackWidth;
+            profile = Mathf.SmoothStep(1f, 0f, innerT - crocSettings.edgeSmoothness);
+        }
+        
+        // Aplicamos la profundidad con clamp en el fondo para uniformidad
+        float rawDepth = crocSettings.crackDepth * profile * depthMod;
+        float finalDepth = Mathf.Max(rawDepth, profile > 0.5f ? crocSettings.minFloorDepth : 0f);
+
+        // 7. Roughness y Detail
+        float detail = 0f;
+        if (crocSettings.pittingAmount > 0f || crocSettings.microRoughness > 0f)
+        {
+            float stoneNoise = Mathf.PerlinNoise(origX * crocSettings.microScale, origZ * crocSettings.microScale);
+            float p = Mathf.PerlinNoise(origX * crocSettings.pittingScale + 77f, origZ * crocSettings.pittingScale + 77f);
+            
+            float edgeBoost = Mathf.Lerp(1.5f, 4f, 1f - t); 
+            if (p > (0.88f / edgeBoost)) detail -= (p - (0.88f / edgeBoost)) * crocSettings.pittingAmount * 20f;
+            
+            detail += (stoneNoise - 0.5f) * crocSettings.microRoughness;
+            if (stoneNoise > 0.7f) detail += (stoneNoise - 0.7f) * crocSettings.stoneHighlight; 
         }
 
-        float profile = 1f - Mathf.Pow(t, crocSettings.crackSmoothness);
-
-        return (crocSettings.crackDepth * profile) + roughness;
+        // Contrasted AO
+        vertexMask = profile; 
+        return (totalCellEffect - finalDepth + detail + edgeEffect);
     }
 }

@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a84cda66c22e0d47ab0e5c970409d57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneInitializer
-  calleGenerator: {fileID: 1706126542}
+  calleGenerator: {fileID: 0}
   bachesGenerator: {fileID: 1706126543}
   navMeshDrone: {fileID: 0}
   gameLogicToggle: {fileID: 0}
@@ -215,6 +215,118 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1240684595
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1240684599}
+  - component: {fileID: 1240684598}
+  - component: {fileID: 1240684597}
+  - component: {fileID: 1240684596}
+  m_Layer: 0
+  m_Name: Plane
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!64 &1240684596
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1240684595}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &1240684597
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1240684595}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 992e6f50a83ff354a8951e58368d8855, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1240684598
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1240684595}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1240684599
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1240684595}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: -3.65, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1279202498
 GameObject:
   m_ObjectHideFlags: 0
@@ -231,7 +343,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!108 &1279202499
 Light:
   m_ObjectHideFlags: 0
@@ -440,7 +552,7 @@ Camera:
     height: 1
   near clip plane: 0.04
   far clip plane: 1000
-  field of view: 24
+  field of view: 20
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -467,7 +579,7 @@ Transform:
   m_GameObject: {fileID: 1705554388}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalPosition: {x: 0, y: 5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -491,12 +603,16 @@ MonoBehaviour:
   minHeight: 0.5
   maxHeight: 25
   autoInterval: 2
+  minVisibilityPercentage: 0.4
   resolution: {x: 1270, y: 950}
+  colorPothole: {r: 0, g: 1, b: 1, a: 1}
+  colorCrocodile: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   keyMoveUp: 273
   keyMoveDown: 274
   keyManualSeed: 115
   keyManualCapture: 114
   keyToggleAuto: 116
+  menuSceneName: Menu_scene
 --- !u!1 &1706126531
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,7 +625,6 @@ GameObject:
   - component: {fileID: 1706126539}
   - component: {fileID: 1706126538}
   - component: {fileID: 1706126543}
-  - component: {fileID: 1706126542}
   m_Layer: 7
   m_Name: calles (1)
   m_TagString: calle
@@ -588,21 +703,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1706126542
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1706126531}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80a82c3623cf05b42ac11caa0d714d1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  calleMaterial: {fileID: 2100000, guid: 992e6f50a83ff354a8951e58368d8855, type: 2}
-  alturaCalle: 0
-  tamanoSegmento: 5
 --- !u!114 &1706126543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -616,67 +716,90 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TerrainPotholeGenerator
   mode: 0
-  crocodileMixRatio: 0.613
-  Seed: 12821
-  autoUpdate: 1
+  crocodileMixRatio: 0.347
+  Seed: 427217
+  autoUpdate: 0
   randomizeSeedOnStart: 1
-  modoCaptura: 1
+  modoCaptura: 0
   sharedMaterial: {fileID: 2100000, guid: 992e6f50a83ff354a8951e58368d8855, type: 2}
   generacionTerminada: 1
-  cantidadBaches: 20
-  ladoArea: 5
-  margenBorde: 0.1
+  cantidadBaches: 30
+  ladoArea: 4
+  margenBorde: 0.5
   capasObstaculos:
     serializedVersion: 2
     m_Bits: 4294967295
+  depthGlobal: 0.15
   bacheSettings:
-    seed: 0
-    minWidth: 0.25
-    maxWidth: 0.5
-    minLength: 0.25
-    maxLength: 0.5
-    polygonsX: 138
-    polygonsZ: 139
+    seed: 296
+    minWidth: 0.42
+    maxWidth: 0.78
+    minLength: 1.18
+    maxLength: 0.97
+    polygonsX: 161
+    polygonsZ: 144
     minSpots: 5
     maxSpots: 10
-    minSpotRadiusPercent: 16.8
-    maxSpotRadiusPercent: 32.4
-    minSpread: 0.544
-    maxSpread: 0.76
-    minErosionScale: 8.35
-    maxErosionScale: 12.4
-    minErosionAmount: 0.56
-    maxErosionAmount: 1
-    minEdgeFracture: 0
-    maxEdgeFracture: 0.084
-    globalDepthLimitPercent: 6.83
-    minDepthPercent: 0.67
-    maxDepthPercent: 2.43
-    minWallSteepness: 5.6
-    maxWallSteepness: 10.4
-    minBottomRoughness: 0.002
-    maxBottomRoughness: 0.0047
-    bottomRoughnessRelativeScale: 12.4
-    bordeMinPercent: 8
-    bordeMaxPercent: 35
+    minSpotRadiusPercent: 10.9
+    maxSpotRadiusPercent: 21.5
+    minSpread: 0.276
+    maxSpread: 0.475
+    minErosionScale: 7.78
+    maxErosionScale: 11.5
+    minErosionAmount: 0.521
+    maxErosionAmount: 0.869
+    minEdgeFracture: 0.03
+    maxEdgeFracture: 0.447
+    globalDepthLimitPercent: 15.99
+    minDepthPercent: 1.89
+    maxDepthPercent: 3.48
+    minWallSteepness: 5.2
+    maxWallSteepness: 7
+    minBottomRoughness: 0.004
+    maxBottomRoughness: 0.0015
+    bottomRoughnessRelativeScale: 10.9
+    cropToRectangularBounds: 1
+    bordeMinPercent: 7
+    bordeMaxPercent: 19
   crocSettings:
-    minWidth: 0.4
-    maxWidth: 1.5
-    minLength: 0.4
-    maxLength: 1.5
-    polygonsX: 200
-    polygonsZ: 200
-    cellCount: 51
-    minCrackWidthPercent: 0.193
-    maxCrackWidthPercent: 4.66
-    crackDepth: 0.02
-    crackSmoothness: 1.95
-    widthNoiseScale: 5.64
-    edgeIrregularity: 0.124
-    irregularityScale: 5.4
-    distortion: 0.24
-    bordeMinPercent: 8.2
-    bordeMaxPercent: 35
+    minWidth: 0.5
+    maxWidth: 1.3
+    minLength: 0.5
+    maxLength: 1.4
+    distanceMetric: 2
+    minkowskiP: 2.33
+    edgeBiteAmount: 0.08
+    edgeBiteScale: 53.8
+    polygonsX: 184
+    polygonsZ: 191
+    minCellCount: 11
+    maxCellCount: 27
+    minCrackWidthPercent: 0.12
+    maxCrackWidthPercent: 1.29
+    crackDepth: 0.145
+    crackSmoothness: 2.76
+    widthNoiseScale: 1.05
+    edgeIrregularity: 0.063
+    irregularityScale: 13.6
+    distortion: 0.06
+    depthNoiseScale: 1.34
+    depthVariation: 0.271
+    edgeSmoothness: 0.271
+    minFloorDepth: 0.0266
+    cellHeightVariation: 0
+    cellTiltAmount: 0
+    edgeSerration: 0.075
+    serrationScale: 96
+    stoneHighlight: 0
+    lipHeight: -0.0182
+    lipWidth: 0.0157
+    edgeRoundingDepth: 0.0006
+    pittingAmount: 0.00151
+    pittingScale: 91.5
+    microRoughness: 0.00007
+    microScale: 428
+    bordeMinPercent: 0.65
+    bordeMaxPercent: 15.8
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -687,3 +810,4 @@ SceneRoots:
   - {fileID: 1344913015}
   - {fileID: 487586610}
   - {fileID: 441332626}
+  - {fileID: 1240684599}

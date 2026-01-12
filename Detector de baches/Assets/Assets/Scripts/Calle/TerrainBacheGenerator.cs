@@ -67,6 +67,9 @@ public class TerrainBacheGenerator : MonoBehaviour
     [Range(10f, 100f)] public float bottomRoughnessRelativeScale = 20f;
 
     [Header("Márgenes (Contenedor Irregular)")]
+    [Tooltip("Si es true, el bache se cortará rectangulamente en los bordes de la malla, ignorando los márgenes orgánicos.")]
+    public bool cropToRectangularBounds = false;
+
     [Tooltip("Mínimo margen (%)")]
     [Range(5, 30)] public int bordeMinPercent = 15;
     [Tooltip("Máximo margen (%)")]
@@ -152,14 +155,55 @@ public class TerrainBacheGenerator : MonoBehaviour
         // 4. Generar Mesh
         mesh = new Mesh { name = "Bache_Erosionado" };
         
+        // --- CÁLCULO DE BOUNDS AJUSTADOS (CROP) ---
+        float meshMinX = -width * 0.5f;
+        float meshMaxX = width * 0.5f;
+        float meshMinZ = -length * 0.5f;
+        float meshMaxZ = length * 0.5f;
+
+        if (cropToRectangularBounds)
+        {
+             float sxMin = float.MaxValue, sxMax = float.MinValue;
+             float szMin = float.MaxValue, szMax = float.MinValue;
+             
+             // Unir bounding boxes de todos los spots
+             foreach(var s in spots)
+             {
+                 // s = (x, z, radius, seed) -> Recuerda que s.y es Z en la lista
+                 float px = s.x;
+                 float pz = s.y; 
+                 float r = s.z; 
+                 
+                 // Agregamos un pequeño margen de seguridad (ej. 5%) para asegurar que no cortamos la caída
+                 // O si el usuario quiere CORTAR, quizás deberíamos restar el radio? 
+                 // Asumimos que quiere eliminar espacio VACÍO ("dead border"), así que ajustamos al radio completo.
+                 sxMin = Mathf.Min(sxMin, px - r);
+                 sxMax = Mathf.Max(sxMax, px + r);
+                 szMin = Mathf.Min(szMin, pz - r);
+                 szMax = Mathf.Max(szMax, pz + r);
+             }
+             
+             // Asignamos los nuevos límites
+             meshMinX = sxMin;
+             meshMaxX = sxMax;
+             meshMinZ = szMin;
+             meshMaxZ = szMax;
+             
+             // Actualizamos width y length para que el bucle de vértices use las nuevas dimensiones
+             width = meshMaxX - meshMinX;
+             length = meshMaxZ - meshMinZ;
+        }
+
         int vCount = (polygonsX + 1) * (polygonsZ + 1);
         vertices = new Vector3[vCount];
         triangles = new int[polygonsX * polygonsZ * 6];
 
         float stepX = width / polygonsX;
         float stepZ = length / polygonsZ;
-        float halfW = width * 0.5f;
-        float halfL = length * 0.5f;
+        
+        // Offset de inicio para world coordinates (Si no es crop, es -halfWidth, si es crop, es meshMinX)
+        float startX = meshMinX; 
+        float startZ = meshMinZ;
 
         // Pre-calculo: YA NO ES NECESARIO (Usamos 2D Noise en caliente)
 
@@ -173,38 +217,49 @@ public class TerrainBacheGenerator : MonoBehaviour
         for (int z = 0; z <= polygonsZ; z++)
         {
             float localZ = z * stepZ;
-            float worldZ = localZ - halfL;
+            float worldZ = startZ + localZ;
 
             for (int x = 0; x <= polygonsX; x++)
             {
                 float localX = x * stepX;
-                float worldX = localX - halfW;
-                
-                // A. Máscara del Contenedor (ORGANIC 2D NOISE)
-                float dL = localX;
-                float dR = width - localX;
-                float dB = localZ;
-                float dT = length - localZ;
-                float distToEdge = Mathf.Min(dL, dR, dB, dT); 
-                
-                float borderNoise = Mathf.PerlinNoise(worldX * realBorderNoiseScale + seedOffset, worldZ * realBorderNoiseScale + seedOffset);
-                
-                float marginMinInMeters = Mathf.Min(width, length) * (bordeMinPercent / 100f);
-                float marginMaxInMeters = Mathf.Min(width, length) * (bordeMaxPercent / 100f);
-                
-                float dynamicMargin = Mathf.Lerp(marginMinInMeters, marginMaxInMeters, borderNoise);
-
-                // --- CONTAINER FRACTURE ---
-                // Aplicamos la misma logica de "roto" al borde exterior
-                float containerFrac = Mathf.PerlinNoise(worldX * fractureScale + seedOffset + 50f, worldZ * fractureScale + seedOffset + 50f);
-                // Si el parametro de fractura es alto, comemos mas borde
-                dynamicMargin += containerFrac * currentEdgeFracture * 0.5f; // 0.5f factor arb para no comer demasiado
+                float worldX = startX + localX;
                 
                 float containerMask = 0f;
-                // Fade muy sharp (Corte duro de pavimento)
-                float fadeSize = 0.002f; // 2mm transition
-                float delta = distToEdge - dynamicMargin;
-                containerMask = Mathf.Clamp01(delta / fadeSize);
+
+                if (cropToRectangularBounds)
+                {
+                    // Si recortamos rectangulamente, la máscara es 1 total (o 0 si queremos márgenes duros, 
+                    // pero la idea es que el bache llegue al borde si los spots lo tocan).
+                    // Simplemente no aplicamos el desvanecimiento de borde.
+                    containerMask = 1.0f;
+                }
+                else
+                {
+                    // A. Máscara del Contenedor (ORGANIC 2D NOISE)
+                    float dL = localX;
+                    float dR = width - localX;
+                    float dB = localZ;
+                    float dT = length - localZ;
+                    float distToEdge = Mathf.Min(dL, dR, dB, dT); 
+                    
+                    float borderNoise = Mathf.PerlinNoise(worldX * realBorderNoiseScale + seedOffset, worldZ * realBorderNoiseScale + seedOffset);
+                    
+                    float marginMinInMeters = Mathf.Min(width, length) * (bordeMinPercent / 100f);
+                    float marginMaxInMeters = Mathf.Min(width, length) * (bordeMaxPercent / 100f);
+                    
+                    float dynamicMargin = Mathf.Lerp(marginMinInMeters, marginMaxInMeters, borderNoise);
+
+                    // --- CONTAINER FRACTURE ---
+                    // Aplicamos la misma logica de "roto" al borde exterior
+                    float containerFrac = Mathf.PerlinNoise(worldX * fractureScale + seedOffset + 50f, worldZ * fractureScale + seedOffset + 50f);
+                    // Si el parametro de fractura es alto, comemos mas borde
+                    dynamicMargin += containerFrac * currentEdgeFracture * 0.5f; // 0.5f factor arb para no comer demasiado
+                    
+                    // Fade muy sharp (Corte duro de pavimento)
+                    float fadeSize = 0.002f; // 2mm transition
+                    float delta = distToEdge - dynamicMargin;
+                    containerMask = Mathf.Clamp01(delta / fadeSize);
+                }
 
                 // B. Cálculo de Profundidad 
                 float accumulatedFactor = 0f;

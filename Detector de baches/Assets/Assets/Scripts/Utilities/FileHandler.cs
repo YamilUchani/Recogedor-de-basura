@@ -48,4 +48,9 @@ public static class FileHandler
         Debug.Log($"Label saved: {fullPath}");
 #endif
     }
+
+    public static void SaveAnnotation(string content, string filename)
+    {
+        SaveText(content, filename);
+    }
 }
