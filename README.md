@@ -147,10 +147,10 @@ Diseñado para ejecuciones de alto rendimiento con **conexión opcional a Python
 
 - **Conexión API (FastAPI)**: Puede conectarse a un servidor externo (`.py`) para realizar inferencia remota y validación de datos.
 - **Captura de Imágenes**: Si no se detecta conexión con el archivo Python, el modo funciona como un sistema de captura de imágenes puras.
-- **Archivos Generados** en `Assets/Output/`:
-    - `events.csv`: Historial de detecciones y colisiones.
-    - `stats.json`: Resumen de rendimiento y actividad de agentes.
-    - `simulation.log`: Log técnico detallado.
+- **Archivos Generados**:
+    - **CSV del Gemelo Digital**: Se guardan en `Assets/DigitalTwin_Logs/` (historial de eventos, telemetría y tráfico).
+    - **Capturas y Datasets**: Se guardan en la carpeta de datos persistentes del sistema (`PersistentDataPath`).
+    - `simulation.log`: Log técnico detallado de la ejecución.
 
 ---
 
@@ -212,8 +212,11 @@ A continuación se detallan los únicos controles funcionales en el simulador:
 ### ❓ "No puedo mover la cámara con el mouse"
 **Respuesta**: En este simulador, el control de navegación es principalmente por teclado mediante **WASD** e **IK** para garantizar precisión en la inspección.
 
-### ❓ "¿Dónde encuentro los archivos CSV de la simulación?"
-**Respuesta**: Se guardan automáticamente en la carpeta `Assets/Output/` al finalizar una sesión en **Mode_Data**.
+### ❓ "¿Dónde encuentro los archivos de la simulación?"
+**Respuesta**: Los archivos se dividen según su tipo:
+1.  **Logs y CSV**: Se encuentran directamente en el proyecto en la carpeta `Assets/DigitalTwin_Logs/`.
+2.  **Imágenes y Etiquetas (Datasets)**: Unity los guarda en la carpeta de datos de usuario. En Windows, puedes acceder rápidamente pegando esto en el explorador de archivos:
+    `%AppData%\..\LocalLow\DefaultCompany\Recogedor de Basura\Dataset_Baches\`
 
 ### ❓ "¿Cómo activo el Modo Debug?"
 **Respuesta**: El modo Debug debe cargarse directamente desde el Editor de Unity abriendo la escena `Assets/Scenes/Mode_Debug.unity`. No es accesible desde el menú de usuario final.
