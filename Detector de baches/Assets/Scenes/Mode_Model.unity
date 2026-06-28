@@ -8908,6 +8908,8 @@ MonoBehaviour:
   outputFolder: CapturedImages
   captureInterval: 0.1
   raySpacing: 0.05
+  useDynamicRaySpacing: 1
+  captureDelay: 0.15
   buttonText: {fileID: 1453772162}
   velocityText: {fileID: 902396935}
   angleText: {fileID: 146656346}
@@ -65070,7 +65072,7 @@ MonoBehaviour:
     maxCrackWidthPercent: 0.61
     crackDepthPercent: 4.54
     crackSmoothness: 2.59
-    wiggleScale: 7.06
+    wiggleScale: 3.65
     wiggleAmplitude: 0.128
     edgeBiteAmount: 0
     edgeBiteScale: 20
@@ -65714,6 +65716,8 @@ MonoBehaviour:
   outputFolder: CapturedImages
   captureInterval: 0.1
   raySpacing: 0.05
+  useDynamicRaySpacing: 1
+  captureDelay: 0.15
   buttonText: {fileID: 1453772162}
   velocityText: {fileID: 902396935}
   angleText: {fileID: 146656346}

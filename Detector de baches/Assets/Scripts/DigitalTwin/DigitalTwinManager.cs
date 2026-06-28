@@ -257,6 +257,13 @@ namespace DigitalTwin
         // Se declara la variable para guardar en memoria
         public RecoveryPolicy currentPolicy = RecoveryPolicy.None;
 
+        /// <summary>
+        /// Cuando es true, DroneController NO llama EndEpisode() automáticamente
+        /// al volver a base. El ExperimentAutomator lo llama manualmente al terminar
+        /// todos los segmentos de la calle.
+        /// </summary>
+        public bool suppressAutoEndEpisode = false;
+
         public void StartNewEpisode()
         {
             currentEpisode++;
@@ -266,6 +273,12 @@ namespace DigitalTwin
             inspectionMemory.Clear();
             revisitQueue.Clear();
             previousAgentPositions.Clear();
+            
+            // Resetear contadores de métricas
+            if (movementInterface != null)
+            {
+                movementInterface.ResetDetectedPotholes();  // Resetea TODO (ground truth + detected)
+            }
             
             episodeLog.Clear();
             // Encabezados usando la nomenclatura matemática estricta del paper:
@@ -284,6 +297,13 @@ namespace DigitalTwin
         public void EndEpisode()
         {
             isEpisodeActive = false;
+            
+            // AUTO-DESACTIVAR ACDC al terminar episodio
+            if (movementInterface != null && movementInterface.isCapturing)
+            {
+                movementInterface.AcDc();
+                Debug.Log("[Digital Twin] ✗ ACDC DESACTIVADO - finalizando captura");
+            }
             
             // Guardar el log a un archivo .txt
             string folderPath = Path.Combine(Application.dataPath, "DigitalTwin_Logs");

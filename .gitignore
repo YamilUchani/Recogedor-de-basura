@@ -1,1 +1,94 @@
-payload.tar.7z
+# ============================================
+# UNITY PROJECT - .gitignore mejorado
+# ============================================
+
+# ======================
+# BUILD COMPILADO
+# ======================
+Detector de baches/Detector_Baches/
+Detector de baches/Detector_Baches_*/
+
+# ======================
+# DATOS GENERADOS POR SIMULACION (Digital Twin Logs)
+# ======================
+Detector de baches/DigitalTwin_Logs/
+Detector de baches/Assets/DigitalTwin_Logs/
+
+# ======================
+# CACHE Y TEMPORALES DE UNITY EDITOR
+# ======================
+Detector de baches/Library/
+Detector de baches/Temp/
+Detector de baches/Logs/
+Detector de baches/obj/
+Detector de baches/Build/
+Detector de baches/Builds/
+
+# ======================
+# ESCENAS DE RECUPERACION AUTOMATICAS
+# ======================
+Detector de baches/Assets/_Recovery/
+
+# ======================
+# CONFIGURACION PERSONAL DEL IDE
+# ======================
+Detector de baches/.idea/
+Detector de baches/.vscode/
+Detector de baches/UserSettings/
+Detector de baches/.vsconfig
+Detector de baches/.agents/
+
+# ======================
+# ARCHIVOS DE INSTRUCCIONES / DOCUMENTACION (NO CODIGO)
+# ======================
+# Excluye archivos .md de instrucciones (excepto READMEs)
+/Detector de baches/*.md
+!/Detector de baches/README.md
+/Detector de baches/Assets/**/*.md
+/Detector de baches/Assets/Scripts/**/*.md
+
+# Archivos de analisis/reportes generados
+Detector de baches/analysis_report.txt
+Detector de baches/performance_analysis_report.txt
+Detector de baches/script_analysis_output.txt
+Detector de baches/*.txt
+
+# ======================
+# MODELOS DE IA ENTRENADOS (archivos binarios pesados)
+# ======================
+Detector de baches/Assets/Scripts/IA/*.pt
+Detector de baches/Assets/Scripts/IA/*.pth
+Detector de baches/Assets/Scripts/IA/*.onnx
+Detector de baches/Assets/Scripts/IA/runs/
+
+# ======================
+# IMAGENES GENERADAS POR IA (detections, crops, results)
+# ======================
+Detector de baches/Assets/Scripts/IA/debug_crops/
+Detector de baches/Assets/Scripts/IA/imagen*.jpg
+Detector de baches/Assets/Scripts/IA/resultado_*.jpg
+Detector de baches/Assets/Scripts/IA/*.jpg
+
+# ======================
+# ARCHIVOS .CSV GENERADOS (resultados de simulacion/entrenamiento)
+# ======================
+Detector de baches/**/*.csv
+
+# ======================
+# ARCHIVOS DE PROYECTO GENERADOS (se regeneran con la solucion)
+# ======================
+Detector de baches/*.csproj
+Detector de baches/*.sln
+Detector de baches/*.slnx
+
+# ======================
+# SISTEMA
+# ======================
+*.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+~$*.doc
+~$*.docx

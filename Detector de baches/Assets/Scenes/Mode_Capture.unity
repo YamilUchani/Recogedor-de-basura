@@ -617,16 +617,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PrefabObjectGenerator
   prefabs:
-  - {fileID: 1380682245570053460, guid: 18d41a14e8b235748b791c4aeb1e87b7, type: 3}
-  - {fileID: 2149879016439948767, guid: 430db6a90336b6d4eaf83c14175ded4f, type: 3}
-  - {fileID: 6915651894099444807, guid: a4954ec029ef7c545b92409c53976bf0, type: 3}
-  - {fileID: 1894043488507560949, guid: 4e5ee881680472b4fbadd759a824062b, type: 3}
-  - {fileID: 1791610274100610447, guid: 5dc08663d7b77ad41bb9d35ea7a95c86, type: 3}
-  - {fileID: 6062337558641870881, guid: c9632a6b7be83084a9f2b5511741b83a, type: 3}
-  - {fileID: 2216339830563916397, guid: 32c12e96ef1e1024d9297aff8fbe188e, type: 3}
-  - {fileID: 7568911171718856028, guid: b30c2b1aa2fc75f46ab32337a6a59b4c, type: 3}
-  - {fileID: 2562560829435009914, guid: d98754ef1a7f4d94da7eff19e4dfc74f, type: 3}
-  cantidad: 34
+  - prefab: {fileID: 1894043488507560949, guid: 4e5ee881680472b4fbadd759a824062b, type: 3}
+    porcentaje: 11.8
+    extraSpacing: 0
+    prioridad: 0
+  - prefab: {fileID: 6062337558641870881, guid: c9632a6b7be83084a9f2b5511741b83a, type: 3}
+    porcentaje: 13.5
+    extraSpacing: 0
+    prioridad: 0
+  - prefab: {fileID: 2562560829435009914, guid: d98754ef1a7f4d94da7eff19e4dfc74f, type: 3}
+    porcentaje: 19.3
+    extraSpacing: 2
+    prioridad: 1
+  - prefab: {fileID: 7568911171718856028, guid: b30c2b1aa2fc75f46ab32337a6a59b4c, type: 3}
+    porcentaje: 18.8
+    extraSpacing: 0
+    prioridad: 0
+  - prefab: {fileID: 2216339830563916397, guid: 32c12e96ef1e1024d9297aff8fbe188e, type: 3}
+    porcentaje: 17.5
+    extraSpacing: 2
+    prioridad: 0
+  - prefab: {fileID: 7167574326068506331, guid: d72573eac3001ae46a833fcf06e8d77c, type: 3}
+    porcentaje: 4.4
+    extraSpacing: 1
+    prioridad: 1
+  - prefab: {fileID: 4071384275231718286, guid: 715528540baf1644ca182c495385f1d6, type: 3}
+    porcentaje: 4.4
+    extraSpacing: 1
+    prioridad: 1
+  - prefab: {fileID: 287455660364212236, guid: d4b318be5d7aa2246bae511f4de7f39b, type: 3}
+    porcentaje: 4.4
+    extraSpacing: 1
+    prioridad: 0
+  - prefab: {fileID: 1791610274100610447, guid: 5dc08663d7b77ad41bb9d35ea7a95c86, type: 3}
+    porcentaje: 0.9
+    extraSpacing: 1
+    prioridad: 0
+  cantidad: 65
   seed: 42
   randomizeSeedOnStart: 1
   autoUpdate: 0
@@ -636,6 +663,8 @@ MonoBehaviour:
   margenExtra: 0.1
   alturaY: 0
   randomRotacionY: 1
+  intentosPorObjeto: 2
+  distanciaMinimaGlobal: 0.58
 --- !u!4 &922265975
 Transform:
   m_ObjectHideFlags: 0
@@ -1545,11 +1574,16 @@ MonoBehaviour:
   minVisibilityPercentage: 0.4
   resolution: {x: 1270, y: 950}
   boundingBoxScale: 0.806
+  enableDeadAreaFiltering: 1
+  flatSurfaceThreshold: 0.95
+  minVolumeReduction: 0.3
+  useAdvancedEdgeAnalysis: 0
   colorPothole: {r: 0, g: 1, b: 1, a: 1}
   colorCrocodile: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   colorRajadura: {r: 1, g: 0, b: 1, a: 1}
   colorPerson: {r: 0, g: 1, b: 0, a: 1}
   colorTag: {r: 0, g: 0, b: 1, a: 1}
+  additionalElements: []
   menuScene: Mode_Menu
 --- !u!1 &1706126531
 GameObject:
@@ -1655,15 +1689,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TerrainPotholeGenerator
   mode: 0
   chanceBache: 0.465
-  chanceCrocodile: 0.345
-  chanceRajadura: 0.237
+  chanceCrocodile: 0.537
+  chanceRajadura: 0.736
   Seed: 21
   autoUpdate: 0
   randomizeSeedOnStart: 1
   modoCaptura: 0
   sharedMaterial: {fileID: 2100000, guid: 992e6f50a83ff354a8951e58368d8855, type: 2}
   generacionTerminada: 1
-  cantidadBaches: 90
+  cantidadBaches: 612
   ladoArea: 300
   margenBorde: 0.5
   capasObstaculos:
@@ -1755,8 +1789,8 @@ MonoBehaviour:
     minLength: 1
     maxLength: 2
     randomizeRotation: 1
-    minRotation: 73
-    maxRotation: 276
+    minRotation: 51
+    maxRotation: 142
     polygonsX: 221
     polygonsZ: 223
     segmentCount: 24
@@ -1764,7 +1798,7 @@ MonoBehaviour:
     maxCrackWidthPercent: 0.61
     crackDepthPercent: 4.54
     crackSmoothness: 2.59
-    wiggleScale: 7.06
+    wiggleScale: 3.61
     wiggleAmplitude: 0.128
     edgeBiteAmount: 0
     edgeBiteScale: 20

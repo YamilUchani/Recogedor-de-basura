@@ -84,7 +84,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture2:
-        m_Texture: {fileID: 2800000, guid: 0a5be8e9fa1ac2941ada1fe04091b4a7, type: 3}
+        m_Texture: {fileID: 2800000, guid: 8e4eb5c40cd777f49b1f53e0b270d930, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
@@ -114,12 +114,12 @@ Material:
     - _Proportion2: 0.238
     - _Scale0: 12.79
     - _Scale1: 13.44
-    - _Scale2: 8.9
+    - _Scale2: 5.2
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _StochasticBlend: 0.245
-    - _StochasticScale: 1.117
+    - _StochasticBlend: 0.685
+    - _StochasticScale: 0.009
     - _Threshold1: -0.02
     - _Threshold2: -0.005
     - _TransitionRange: 0.006

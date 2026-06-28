@@ -1,10 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 using System.Collections.Generic;
 
 public enum TrafficDensity
 {
+    Off = 0,
     Low = 1,
     Medium = 2,
     High = 3
@@ -20,7 +22,7 @@ public class TrafficDensityController : MonoBehaviour
 
     [Header("Estado Actual")]
     [Tooltip("La densidad actual de agentes dinámicos.")]
-    public TrafficDensity currentDensity = TrafficDensity.Low;
+    public TrafficDensity currentDensity = TrafficDensity.Off;
 
     [Header("Límites de Densidad")]
     public int lowLimit = 7;
@@ -35,11 +37,37 @@ public class TrafficDensityController : MonoBehaviour
 
     private List<InitialState> carStates = new List<InitialState>();
     private List<InitialState> personStates = new List<InitialState>();
+    
+    private SceneInitializer sceneInitializer;
 
     private void Start()
     {
-        // Capturamos el estado inicial con un pequeño retraso para permitir que los generadores terminen
-        Invoke(nameof(InitialSetup), 0.5f);
+        // Capturamos el estado inicial esperando a que SceneInitializer complete
+        StartCoroutine(WaitForSceneAndSetup());
+    }
+    
+    private IEnumerator WaitForSceneAndSetup()
+    {
+        // Buscar SceneInitializer
+        sceneInitializer = Object.FindFirstObjectByType<SceneInitializer>();
+        
+        if (sceneInitializer != null)
+        {
+            // Esperar a que SceneInitializer complete
+            while (!sceneInitializer.IsInitializeComplete)
+            {
+                yield return null;
+            }
+            // Pequeño margen de seguridad
+            yield return new WaitForSeconds(0.5f);
+        }
+        else
+        {
+            // Si no hay SceneInitializer, esperar un tiempo prudencial
+            yield return new WaitForSeconds(1f);
+        }
+        
+        InitialSetup();
     }
 
     private void InitialSetup()
@@ -95,11 +123,11 @@ public class TrafficDensityController : MonoBehaviour
     }
 
     /// <summary>
-    /// Cicla la densidad de tráfico en el orden: Low -> Medium -> High -> Low.
+    /// Cicla la densidad de tráfico en el orden: Off -> Low -> Medium -> High -> Off.
     /// </summary>
     public void CycleDensityMode()
     {
-        int next = (int)currentDensity % 3 + 1;
+        int next = ((int)currentDensity + 1) % 4;
         currentDensity = (TrafficDensity)next;
         
         Debug.Log($"[TrafficDensity] La densidad ha cambiado a: {currentDensity}");
@@ -130,10 +158,11 @@ public class TrafficDensityController : MonoBehaviour
     {
         switch (density)
         {
+            case TrafficDensity.Off: return 0;
             case TrafficDensity.Low: return lowLimit;
             case TrafficDensity.Medium: return mediumLimit;
             case TrafficDensity.High: return int.MaxValue;
-            default: return lowLimit;
+            default: return 0;
         }
     }
 
@@ -175,7 +204,8 @@ public class TrafficDensityController : MonoBehaviour
         TMP_Text label = densityButtonText != null ? densityButtonText : densityButton.GetComponentInChildren<TMP_Text>();
         if (label != null)
         {
-            label.text = "Traffic:" + currentDensity.ToString();
+            string densityText = currentDensity == TrafficDensity.Off ? "OFF" : currentDensity.ToString();
+            label.text = "Traffic:" + densityText;
         }
     }
 }
