@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// Patrulla simple de auto entre waypoints. Sin carriles, sin complejidad extra.
@@ -96,6 +97,15 @@ public class CarPatrol : MonoBehaviour
         StartCoroutine(WaitForSceneAndInit());
     }
 
+    private void OnEnable()
+    {
+        // Cuando el objeto se reactiva, buscar waypoints nuevamente
+        if (waypoints != null && waypoints.Length > 0)
+            return; // Ya inicializado
+        
+        StartCoroutine(InitializeWaypoints());
+    }
+
     private IEnumerator WaitForSceneAndInit()
     {
         // Esperar a que SceneInitializer haya terminado de generar todo el contenido
@@ -112,8 +122,18 @@ public class CarPatrol : MonoBehaviour
             yield return null;
         }
 
-        // --- Auto-descubrimiento de Waypoints por tag ---
-        GameObject[] wpObjects = GameObject.FindGameObjectsWithTag("Waypoint");
+        // Esperar 10 segundos adicionales antes de reconocer waypoints
+        yield return new WaitForSeconds(10f);
+
+        yield return StartCoroutine(InitializeWaypoints());
+    }
+
+    private IEnumerator InitializeWaypoints()
+    {
+
+        // --- Auto-descubrimiento de Waypoints por tag (incluyendo desactivados) ---
+        GameObject[] wpObjects = FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+            .Where(go => go.CompareTag("Waypoint")).ToArray();
         if (wpObjects.Length == 0)
         {
             Debug.LogError("[CarPatrol] No se encontraron GameObjects con tag 'Waypoint' en la escena. Asegúrate de que existen y tienen ese tag.");
@@ -124,9 +144,11 @@ public class CarPatrol : MonoBehaviour
             waypoints[i] = wpObjects[i].transform;
         // Debug.Log($"[CarPatrol] '{gameObject.name}' encontró {waypoints.Length} waypoints con tag 'Waypoint'.");
 
-        // --- Auto-descubrimiento de Anti-targets (Acera + Houses) ---
-        GameObject[] acObjects    = GameObject.FindGameObjectsWithTag("Acera");
-        GameObject[] houseObjects = GameObject.FindGameObjectsWithTag("Houses");
+        // --- Auto-descubrimiento de Anti-targets (Acera + Houses, incluyendo desactivados) ---
+        GameObject[] acObjects    = FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+            .Where(go => go.CompareTag("Acera")).ToArray();
+        GameObject[] houseObjects = FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+            .Where(go => go.CompareTag("Houses")).ToArray();
 
         if (acObjects.Length == 0 && houseObjects.Length == 0)
         {
@@ -144,6 +166,7 @@ public class CarPatrol : MonoBehaviour
         }
 
         SelectNextWaypoint();
+        yield break;
     }
 
     void Update()

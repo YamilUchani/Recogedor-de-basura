@@ -52,7 +52,7 @@ public class SceneInitializer : MonoBehaviour
 
         // 4. Esperar a que la física se estabilice y EliminarTriangulos haga su trabajo
         Debug.Log("[SceneInitializer] Esperando estabilización física...");
-        yield return new WaitForSeconds(0.5f); // Dar tiempo para que OnCollisionStay detecte y elimine triángulos
+        yield return new WaitForSeconds(1.5f); // Incrementado para asegurar que la malla se genera completamente
 
         // 5. Hornear NavMesh
         if (navMeshDrone != null)

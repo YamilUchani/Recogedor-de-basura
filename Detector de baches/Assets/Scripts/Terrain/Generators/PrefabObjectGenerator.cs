@@ -8,17 +8,37 @@ using UnityEditor;
 
 /// <summary>
 /// Generador robusto de prefabs evitando intersecciones reales
-/// usando BoxColliders.
+/// usando BoxColliders + sistema de probabilidades.
 /// </summary>
 [ExecuteInEditMode]
 public class PrefabObjectGenerator : MonoBehaviour
 {
     // ─────────────────────────────────────────────
+    // CLASE DE PREFAB PONDERADO
+    // ─────────────────────────────────────────────
+
+    [System.Serializable]
+    public class WeightedPrefab
+    {
+        public GameObject prefab;
+
+        [Range(0f, 100f)]
+        [Tooltip("Probabilidad relativa de aparición")]
+        public float porcentaje = 20f;
+
+        [Tooltip("Separación extra individual")]
+        public float extraSpacing = 0f;
+
+        [Tooltip("Prioridad de aparición. Grandes primero.")]
+        public int prioridad = 0;
+    }
+
+    // ─────────────────────────────────────────────
     // PREFABS
     // ─────────────────────────────────────────────
 
     [Header("Prefabs")]
-    public List<GameObject> prefabs = new();
+    public List<WeightedPrefab> prefabs = new();
 
     // ─────────────────────────────────────────────
     // CONFIGURACIÓN
@@ -57,6 +77,12 @@ public class PrefabObjectGenerator : MonoBehaviour
 
     public bool randomRotacionY = true;
 
+    [Tooltip("Intentos máximos por objeto")]
+    public int intentosPorObjeto = 400;
+
+    [Tooltip("Distancia mínima global entre objetos")]
+    public float distanciaMinimaGlobal = 0.25f;
+
     // ─────────────────────────────────────────────
     // INTERNO
     // ─────────────────────────────────────────────
@@ -64,6 +90,7 @@ public class PrefabObjectGenerator : MonoBehaviour
     private class PlacedObject
     {
         public Bounds bounds;
+        public Vector3 position;
     }
 
     private readonly List<PlacedObject> placedObjects = new();
@@ -128,7 +155,6 @@ public class PrefabObjectGenerator : MonoBehaviour
         }
         else
         {
-            // En modo editor generamos instantáneamente como antes
             GenerateSync();
         }
     }
@@ -136,6 +162,7 @@ public class PrefabObjectGenerator : MonoBehaviour
     private void GenerateSync()
     {
         IsGenerating = true;
+
         ClearChildren();
         placedObjects.Clear();
 
@@ -148,40 +175,111 @@ public class PrefabObjectGenerator : MonoBehaviour
         Random.InitState(seed);
 
         int generated = 0;
-        int attempts = 0;
-        int maxAttempts = cantidad * 400;
-        float usableHalf = Mathf.Max(0f, ladoArea * 0.5f - margenBorde);
 
-        while (generated < cantidad && attempts < maxAttempts)
+        float usableHalf =
+            Mathf.Max(0f, ladoArea * 0.5f - margenBorde);
+
+        int maxAttempts =
+            cantidad * intentosPorObjeto;
+
+        int attempts = 0;
+        int failedAttemptsInARow = 0;
+
+        while (generated < cantidad && attempts < maxAttempts && failedAttemptsInARow < 10)
         {
             attempts++;
-            GameObject prefab = prefabs[generated % prefabs.Count];
-            if (prefab == null) continue;
 
-            Vector2 posXZ = GetCenteredRandomPosition(usableHalf);
-            Vector3 spawnPos = new Vector3(transform.position.x + posXZ.x, transform.position.y + alturaY, transform.position.z + posXZ.y);
-            Quaternion rotation = randomRotacionY ? Quaternion.Euler(0f, Random.Range(0f, 360f), 0f) : Quaternion.identity;
+            WeightedPrefab selected =
+                GetRandomWeightedPrefab();
 
-            Bounds candidateBounds = CalculatePrefabBounds(prefab, spawnPos, rotation);
-            if (IntersectsAny(candidateBounds)) continue;
+            if (selected == null || selected.prefab == null)
+            {
+                failedAttemptsInARow++;
+                continue;
+            }
 
-            GameObject instance;
+            GameObject prefab = selected.prefab;
+
+            Vector2 posXZ =
+                GetCenteredRandomPosition(usableHalf);
+
+            Vector3 spawnPos =
+                new Vector3(
+                    transform.position.x + posXZ.x,
+                    transform.position.y + alturaY,
+                    transform.position.z + posXZ.y
+                );
+
+            Quaternion rotation =
+                randomRotacionY
+                ? Quaternion.Euler(0f, Random.Range(0f, 360f), 0f)
+                : Quaternion.identity;
+
+            Bounds candidateBounds =
+                CalculatePrefabBounds(
+                    prefab,
+                    spawnPos,
+                    rotation,
+                    selected.extraSpacing
+                );
+
+            if (IntersectsAny(candidateBounds))
+            {
+                failedAttemptsInARow++;
+                continue;
+            }
+
+            if (!HasMinimumDistance(spawnPos))
+            {
+                failedAttemptsInARow++;
+                continue;
+            }
+
 #if UNITY_EDITOR
-            instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab, transform);
-            instance.transform.SetPositionAndRotation(spawnPos, rotation);
+            GameObject instance =
+                (GameObject)PrefabUtility.InstantiatePrefab(
+                    prefab,
+                    transform
+                );
+
+            instance.transform.SetPositionAndRotation(
+                spawnPos,
+                rotation
+            );
 #else
-            instance = Instantiate(prefab, spawnPos, rotation, transform);
+            GameObject instance =
+                Instantiate(
+                    prefab,
+                    spawnPos,
+                    rotation,
+                    transform
+                );
 #endif
+
             instance.name = $"{prefab.name}_{generated}";
-            placedObjects.Add(new PlacedObject { bounds = candidateBounds });
+
+            placedObjects.Add(new PlacedObject
+            {
+                bounds = candidateBounds,
+                position = spawnPos
+            });
+
             generated++;
+            failedAttemptsInARow = 0;  // Reiniciar contador al lograr generar
         }
+
+        if (failedAttemptsInARow >= 10)
+            Debug.Log($"Detenida generación: 10 intentos fallidos. Generados: {generated}/{cantidad}");
+        else
+            Debug.Log($"Generados: {generated}/{cantidad}");
+
         IsGenerating = false;
     }
 
     public IEnumerator GenerateRoutine()
     {
         IsGenerating = true;
+
         try
         {
             ClearChildren();
@@ -189,67 +287,115 @@ public class PrefabObjectGenerator : MonoBehaviour
 
             if (prefabs == null || prefabs.Count == 0)
             {
-                Debug.LogWarning("[PrefabObjectGenerator] No hay prefabs.");
+                Debug.LogWarning("No hay prefabs.");
                 yield break;
             }
 
             Random.InitState(seed);
 
             int generated = 0;
-            int attempts = 0;
-            int maxAttempts = cantidad * 400;
-            float usableHalf = Mathf.Max(0f, ladoArea * 0.5f - margenBorde);
 
-            while (generated < cantidad && attempts < maxAttempts)
+            float usableHalf =
+                Mathf.Max(0f, ladoArea * 0.5f - margenBorde);
+
+            int maxAttempts =
+                cantidad * intentosPorObjeto;
+
+            int attempts = 0;
+            int failedAttemptsInARow = 0;
+
+            while (generated < cantidad && attempts < maxAttempts && failedAttemptsInARow < 10)
             {
                 attempts++;
 
-                GameObject prefab = prefabs[generated % prefabs.Count];
-                if (prefab == null) continue;
+                WeightedPrefab selected =
+                    GetRandomWeightedPrefab();
 
-                Vector2 posXZ = GetCenteredRandomPosition(usableHalf);
-                Vector3 spawnPos = new Vector3(transform.position.x + posXZ.x, transform.position.y + alturaY, transform.position.z + posXZ.y);
-                Quaternion rotation = randomRotacionY ? Quaternion.Euler(0f, Random.Range(0f, 360f), 0f) : Quaternion.identity;
-
-                Bounds candidateBounds = CalculatePrefabBounds(prefab, spawnPos, rotation);
-                if (IntersectsAny(candidateBounds)) continue;
-
-                // ─────────────────────────────
-                // INSTANTIAR
-                // ─────────────────────────────
-                GameObject instance = Instantiate(prefab, spawnPos, rotation, transform);
-                instance.name = $"{prefab.name}_{generated}";
-
-                // ─────────────────────────────
-                // GESTIÓN DE OVERLAP SCRIPT
-                // ─────────────────────────────
-                var overlapScript = instance.GetComponent<DestroyIfOverlap>();
-                if (overlapScript != null)
+                if (selected == null || selected.prefab == null)
                 {
-                    overlapScript.enabled = true;
+                    failedAttemptsInARow++;
+                    continue;
                 }
 
-                // Esperar un breve momento para que las colisiones se procesen
-                yield return new WaitForSeconds(0.1f);
+                GameObject prefab = selected.prefab;
 
-                // Si el objeto sobrevivió (no fue destruido por el script de overlap)
+                Vector2 posXZ =
+                    GetCenteredRandomPosition(usableHalf);
+
+                Vector3 spawnPos =
+                    new Vector3(
+                        transform.position.x + posXZ.x,
+                        transform.position.y + alturaY,
+                        transform.position.z + posXZ.y
+                    );
+
+                Quaternion rotation =
+                    randomRotacionY
+                    ? Quaternion.Euler(0f, Random.Range(0f, 360f), 0f)
+                    : Quaternion.identity;
+
+                Bounds candidateBounds =
+                    CalculatePrefabBounds(
+                        prefab,
+                        spawnPos,
+                        rotation,
+                        selected.extraSpacing
+                    );
+
+                if (IntersectsAny(candidateBounds))
+                {
+                    failedAttemptsInARow++;
+                    continue;
+                }
+
+                if (!HasMinimumDistance(spawnPos))
+                {
+                    failedAttemptsInARow++;
+                    continue;
+                }
+
+                GameObject instance =
+                    Instantiate(
+                        prefab,
+                        spawnPos,
+                        rotation,
+                        transform
+                    );
+
+                instance.name = $"{prefab.name}_{generated}";
+
+                var overlapScript =
+                    instance.GetComponent<DestroyIfOverlap>();
+
+                if (overlapScript != null)
+                    overlapScript.enabled = true;
+
+                yield return new WaitForSeconds(0.05f);
+
                 if (instance != null)
                 {
                     if (overlapScript != null)
-                    {
                         overlapScript.enabled = false;
-                    }
 
                     placedObjects.Add(new PlacedObject
                     {
-                        bounds = candidateBounds
+                        bounds = candidateBounds,
+                        position = spawnPos
                     });
 
                     generated++;
+                    failedAttemptsInARow = 0;  // Reiniciar contador al lograr generar
+                }
+                else
+                {
+                    failedAttemptsInARow++;
                 }
             }
 
-            Debug.Log($"[PrefabObjectGenerator] {generated}/{cantidad} generados ({attempts} intentos)");
+            if (failedAttemptsInARow >= 5)
+                Debug.Log($"Detenida generación: 10 intentos fallidos. Generados: {generated}/{cantidad}");
+            else
+                Debug.Log($"Generados: {generated}/{cantidad}");
         }
         finally
         {
@@ -258,10 +404,47 @@ public class PrefabObjectGenerator : MonoBehaviour
     }
 
     // ─────────────────────────────────────────────
-    // POSICIÓN MÁS CENTRADA
+    // SELECCIÓN PONDERADA
     // ─────────────────────────────────────────────
 
-    private Vector2 GetCenteredRandomPosition(float usableHalf)
+    private WeightedPrefab GetRandomWeightedPrefab()
+    {
+        float total = 0f;
+
+        foreach (var p in prefabs)
+        {
+            if (p.prefab != null)
+                total += Mathf.Max(0f, p.porcentaje);
+        }
+
+        if (total <= 0f)
+            return null;
+
+        float randomValue =
+            Random.Range(0f, total);
+
+        float current = 0f;
+
+        foreach (var p in prefabs)
+        {
+            if (p.prefab == null)
+                continue;
+
+            current += Mathf.Max(0f, p.porcentaje);
+
+            if (randomValue <= current)
+                return p;
+        }
+
+        return prefabs[0];
+    }
+
+    // ─────────────────────────────────────────────
+    // POSICIÓN CENTRADA
+    // ─────────────────────────────────────────────
+
+    private Vector2 GetCenteredRandomPosition(
+        float usableHalf)
     {
         float power =
             Mathf.Lerp(1f, 3.5f, concentracionCentro);
@@ -276,6 +459,24 @@ public class PrefabObjectGenerator : MonoBehaviour
         float z = tz * usableHalf * sz;
 
         return new Vector2(x, z);
+    }
+
+    // ─────────────────────────────────────────────
+    // DISTANCIA MÍNIMA
+    // ─────────────────────────────────────────────
+
+    private bool HasMinimumDistance(Vector3 position)
+    {
+        foreach (var p in placedObjects)
+        {
+            float dist =
+                Vector3.Distance(position, p.position);
+
+            if (dist < distanciaMinimaGlobal)
+                return false;
+        }
+
+        return true;
     }
 
     // ─────────────────────────────────────────────
@@ -294,24 +495,26 @@ public class PrefabObjectGenerator : MonoBehaviour
     }
 
     // ─────────────────────────────────────────────
-    // CALCULAR BOUNDS REALES
+    // CALCULAR BOUNDS
     // ─────────────────────────────────────────────
 
     private Bounds CalculatePrefabBounds(
         GameObject prefab,
         Vector3 position,
-        Quaternion rotation)
+        Quaternion rotation,
+        float extraSpacing)
     {
         BoxCollider[] colliders =
             prefab.GetComponentsInChildren<BoxCollider>(true);
 
-        // Fallback
         if (colliders.Length == 0)
         {
             Bounds fallback =
                 new Bounds(position, Vector3.one);
 
-            fallback.Expand(margenExtra);
+            fallback.Expand(
+                margenExtra + extraSpacing
+            );
 
             return fallback;
         }
@@ -336,47 +539,25 @@ public class PrefabObjectGenerator : MonoBehaviour
             Vector3 scaledSize =
                 Vector3.Scale(box.size, scale);
 
-            Matrix4x4 matrix = Matrix4x4.TRS(
-                worldCenter,
-                rotation * t.localRotation,
-                Vector3.one
-            );
+            Matrix4x4 matrix =
+                Matrix4x4.TRS(
+                    worldCenter,
+                    rotation * t.localRotation,
+                    Vector3.one
+                );
 
             Vector3 ext = scaledSize * 0.5f;
 
             Vector3[] corners = new Vector3[8]
             {
-                matrix.MultiplyPoint3x4(
-                    new Vector3(-ext.x, -ext.y, -ext.z)
-                ),
-
-                matrix.MultiplyPoint3x4(
-                    new Vector3(ext.x, -ext.y, -ext.z)
-                ),
-
-                matrix.MultiplyPoint3x4(
-                    new Vector3(-ext.x, -ext.y, ext.z)
-                ),
-
-                matrix.MultiplyPoint3x4(
-                    new Vector3(ext.x, -ext.y, ext.z)
-                ),
-
-                matrix.MultiplyPoint3x4(
-                    new Vector3(-ext.x, ext.y, -ext.z)
-                ),
-
-                matrix.MultiplyPoint3x4(
-                    new Vector3(ext.x, ext.y, -ext.z)
-                ),
-
-                matrix.MultiplyPoint3x4(
-                    new Vector3(-ext.x, ext.y, ext.z)
-                ),
-
-                matrix.MultiplyPoint3x4(
-                    new Vector3(ext.x, ext.y, ext.z)
-                )
+                matrix.MultiplyPoint3x4(new Vector3(-ext.x,-ext.y,-ext.z)),
+                matrix.MultiplyPoint3x4(new Vector3(ext.x,-ext.y,-ext.z)),
+                matrix.MultiplyPoint3x4(new Vector3(-ext.x,-ext.y,ext.z)),
+                matrix.MultiplyPoint3x4(new Vector3(ext.x,-ext.y,ext.z)),
+                matrix.MultiplyPoint3x4(new Vector3(-ext.x,ext.y,-ext.z)),
+                matrix.MultiplyPoint3x4(new Vector3(ext.x,ext.y,-ext.z)),
+                matrix.MultiplyPoint3x4(new Vector3(-ext.x,ext.y,ext.z)),
+                matrix.MultiplyPoint3x4(new Vector3(ext.x,ext.y,ext.z))
             };
 
             Bounds colliderBounds =
@@ -398,7 +579,9 @@ public class PrefabObjectGenerator : MonoBehaviour
             }
         }
 
-        combined.Expand(margenExtra);
+        combined.Expand(
+            margenExtra + extraSpacing
+        );
 
         return combined;
     }
@@ -435,7 +618,6 @@ public class PrefabObjectGenerator : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        // Área
         Gizmos.color =
             new Color(0f, 0.8f, 1f, 0.15f);
 
@@ -451,7 +633,6 @@ public class PrefabObjectGenerator : MonoBehaviour
             new Vector3(ladoArea, 0.05f, ladoArea)
         );
 
-        // Bounds
         Gizmos.color =
             new Color(1f, 0.4f, 0f, 0.75f);
 

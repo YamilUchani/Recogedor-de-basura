@@ -457,23 +457,21 @@ def predict_image(
                 ]
 
                 # =========================================
-                # DEBUG CROPS
+                # DEBUG CROPS - COMENTADO PARA NO GUARDAR
                 # =========================================
-                debug_name = (
-                    f"crop_"
-                    f"{datetime.now().strftime('%H%M%S_%f')}"
-                    f".jpg"
-                )
+                # debug_name = (
+                #     f"crop_"
+                #     f"{datetime.now().strftime('%H%M%S_%f')}"
+                #     f".jpg"
+                # )
 
-                cv2.imwrite(
-
-                    os.path.join(
-                        DEBUG_CROPS_DIR,
-                        debug_name
-                    ),
-
-                    crop
-                )
+                # cv2.imwrite(
+                #     os.path.join(
+                #         DEBUG_CROPS_DIR,
+                #         debug_name
+                #     ),
+                #     crop
+                # )
 
                 if crop.size == 0:
 
@@ -611,25 +609,25 @@ def predict_image(
             )
 
         # =================================================
-        # GUARDAR RESULTADO
+        # GUARDAR RESULTADO - COMENTADO PARA NO GUARDAR
         # =================================================
-        ts = datetime.now().strftime(
-            "%Y%m%d_%H%M%S_%f"
-        )
+        # ts = datetime.now().strftime(
+        #     "%Y%m%d_%H%M%S_%f"
+        # )
 
-        output_name = (
-            f"resultado_api_{ts}.jpg"
-        )
+        # output_name = (
+        #     f"resultado_api_{ts}.jpg"
+        # )
 
-        output_path = os.path.join(
-            DETECTIONS_DIR,
-            output_name
-        )
+        # output_path = os.path.join(
+        #     DETECTIONS_DIR,
+        #     output_name
+        # )
 
-        cv2.imwrite(
-            output_path,
-            draw_img
-        )
+        # cv2.imwrite(
+        #     output_path,
+        #     draw_img
+        # )
 
         dropped_count = max(
             0,
@@ -659,6 +657,7 @@ def predict_image(
                 "error": str(e)
             }
         )
+
 
 # =========================================================
 # MAIN

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -18,25 +19,101 @@ public class PotholeCaptureManager : MonoBehaviour
 
     [Header("Capture Settings")]
     public float autoInterval = 2.0f;
-    [Range(0f, 1f)] public float minVisibilityPercentage = 0.4f;
+    [Range(0f, 1f)] public float minVisibilityPercentage = 0.35f;
+    [Tooltip("Porcentaje MÍNIMO para que un bache sea detectado. 0.35 = 35%. " +
+        "BAJO = Más permisivo. Se aplica DESPUÉS de filtrar áreas planas.")]
     public Vector2Int resolution = new Vector2Int(1270, 950);
     [Tooltip("Escala del Bounding Box (1 = Ajustado, 0.8 = Más pequeño, 1.2 = Más holgado)")]
     [Range(0.1f, 2f)] public float boundingBoxScale = 1.0f;
+    
+    [Header("Dead Area Filtering")]
+    [Tooltip("Detectar y eliminar áreas planas/muertas en bordes de baches")]
+    public bool enableDeadAreaFiltering = true;
+    [Tooltip("Umbral para detectar normales planas. 0.95 = casi horizontal (solo elimina lo MUY plano). " +
+        "ALTO = Más permisivo con baches legales. Predeterminado: 0.95")]
+    [Range(0.5f, 0.99f)] public float flatSurfaceThreshold = 0.95f;
+    [Tooltip("Reducción mínima de volumen para activar filtrado (0.30 = 30%). " +
+        "Si el bounds se reduce por <30%, NO se filtra (bache legítimo). ALTO = Más conservador.")]
+    [Range(0.01f, 0.5f)] public float minVolumeReduction = 0.30f;
+    [Tooltip("Usar método avanzado con análisis de varianza en bordes")]
+    public bool useAdvancedEdgeAnalysis = false;
+    
     public Color colorPothole = Color.cyan;
     public Color colorCrocodile = Color.yellow;
     public Color colorRajadura = Color.magenta;
     public Color colorPerson = Color.green;
     public Color colorTag = Color.blue;
 
+    [System.Serializable]
+    public class CaptureElement
+    {
+        public string tag;
+        public int classId;
+        public string className;
+        public Color boxColor;
+    }
+
+    [Header("Additional Elements to Capture")]
+    [Tooltip("Agrega aquí otros tags que quieras capturar (e.g. Trash, Cone).")]
+    public List<CaptureElement> additionalElements = new List<CaptureElement>();
+
     [Header("UI & Navigation")]
     public string menuScene = "Mode_Menu";
 
+    [Header("Multi-Height Capture")]
+    [Tooltip("Alturas a capturar en modo automático (en metros)")]
+    public List<float> captureHeights = new List<float> { 15f, 20f, 25f };
+    [Tooltip("Habilitar captura multi-altura automática")]
+    public bool enableMultiHeightCapture = true;
+
     private bool isAutoMode = false;
     private Coroutine autoCoroutine;
+    private float currentCaptureHeight = 0f;  // Altura actual en captura multi-altura
 
     // Movement state for UI buttons
     private bool isMovingUp = false;
     private bool isMovingDown = false;
+
+    // ─── REUSABLE CAPTURE ASSETS ───
+    private RenderTexture captureRT;
+    private Texture2D texClean;
+    private Texture2D texAnnotated;
+
+    private void PrepareCaptureAssets()
+    {
+        if (captureRT == null || captureRT.width != resolution.x || captureRT.height != resolution.y)
+        {
+            // Limpiar recursos OLD completamente ANTES de crear nuevos
+            if (captureRT != null)
+            {
+                captureRT.Release();
+                Destroy(captureRT);
+                captureRT = null;
+            }
+            if (texClean != null)
+            {
+                Destroy(texClean);
+                texClean = null;
+            }
+            if (texAnnotated != null)
+            {
+                Destroy(texAnnotated);
+                texAnnotated = null;
+            }
+            
+            // Force GPU memory cleanup
+            Graphics.SetRenderTarget(null);
+            RenderTexture.active = null;
+
+            // Crear nuevos recursos
+            captureRT = new RenderTexture(resolution.x, resolution.y, 24);
+            captureRT.name = "CaptureRT";
+            captureRT.wrapMode = TextureWrapMode.Clamp;
+            
+            texClean = new Texture2D(resolution.x, resolution.y, TextureFormat.RGB24, false);
+            texAnnotated = new Texture2D(resolution.x, resolution.y, TextureFormat.RGB24, false);
+        }
+    }
 
     void Start()
     {
@@ -45,6 +122,34 @@ public class PotholeCaptureManager : MonoBehaviour
         
         if (targetCamera == null) Debug.LogError("CaptureManager: No Camera found!");
         if (potholeGenerator == null) Debug.LogWarning("CaptureManager: No TerrainPotholeGenerator found in scene!");
+
+        // Configurar carpeta temporal para guardar capturas
+        SetupTemporaryFolder();
+    }
+
+    private void SetupTemporaryFolder()
+    {
+        string tempFolder = @"E:\PotholeCaptureData";
+        
+        FileHandler.SetCustomFolder(tempFolder);
+        Debug.Log($"<color=cyan>[PotholeCaptureManager] Carpeta temporal configurada: {tempFolder}</color>");
+    }
+
+    private void SetupFolderForHeight(float height)
+    {
+        string baseFolder = @"E:\PotholeCaptureData";
+        string heightFolder = System.IO.Path.Combine(baseFolder, $"{height:F0}meters");
+        
+        // Crear carpeta si no existe
+        if (!System.IO.Directory.Exists(heightFolder))
+        {
+            System.IO.Directory.CreateDirectory(heightFolder);
+            Debug.Log($"<color=cyan>[Height Capture] Carpeta creada: {heightFolder}</color>");
+        }
+        
+        FileHandler.SetCustomFolder(heightFolder);
+        currentCaptureHeight = height;
+        Debug.Log($"<color=yellow>[Height Capture] Capturando a altura: {height}m</color>");
     }
 
     void Update()
@@ -141,65 +246,108 @@ public class PotholeCaptureManager : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
 
-        // 1. Setup RenderTexture (Resolution Correcta)
-        RenderTexture rt = new RenderTexture(resolution.x, resolution.y, 24);
+        PrepareCaptureAssets();
+
         RenderTexture previousRT = targetCamera.targetTexture;
-        targetCamera.targetTexture = rt;
+        targetCamera.targetTexture = captureRT;
 
-        // 2. CAPTURA LIMPIA (Clean)
-        Texture2D screenShotClean = new Texture2D(resolution.x, resolution.y, TextureFormat.RGB24, false);
-        targetCamera.Render();
-        RenderTexture.active = rt;
-        screenShotClean.ReadPixels(new Rect(0, 0, resolution.x, resolution.y), 0, 0);
-        screenShotClean.Apply();
-        RenderTexture.active = null; // Liberar temporalmente
-
-        string timeID = System.DateTime.Now.ToString("yyyyMMdd_HHmmss");
-        string filename = $"Capture_{timeID}_{Random.Range(0, 1000)}";
-
-        // 3. CALCULAR DATOS (Txt)
-        // Calculamos las cajas basándonos en la cámara configurada
-        List<BoundingBoxInfo> boxes = GenerateYOLOAnnotations(filename);
-        
-        // 4. VISUALIZAR EN ESCENA (UI Canvas)
-        GameObject canvasObj = CreateVisualizationCanvas(boxes);
-        
-        // Esperar un frame para que la UI se actualice/renderice?
-        // En RenderTextures a veces es inmediato si forzamos Render.
-        
-        // 5. CAPTURA ANOTADA (Annotated)
-        Texture2D screenShotAnnotated = new Texture2D(resolution.x, resolution.y, TextureFormat.RGB24, false);
-        targetCamera.Render(); // Renderizar de nuevo con la UI superpuesta
-        RenderTexture.active = rt;
-        screenShotAnnotated.ReadPixels(new Rect(0, 0, resolution.x, resolution.y), 0, 0);
-        screenShotAnnotated.Apply();
-        RenderTexture.active = null;
-
-        // 6. LIMPIEZA
-        targetCamera.targetTexture = previousRT;
-        Destroy(rt);
-        Destroy(canvasObj); // Borrar la UI visualizada
-
-        // 7. GUARDAR ARCHIVOS
-        byte[] bytesClean = screenShotClean.EncodeToPNG();
-        FileHandler.SaveImage(bytesClean, filename + ".png");
-
-        if (boxes.Count > 0)
+        try
         {
-            byte[] bytesAnnotated = screenShotAnnotated.EncodeToPNG();
-            FileHandler.SaveImage(bytesAnnotated, filename + "_annotated.png");
+            // 2. CAPTURA LIMPIA (Clean)
+            targetCamera.Render();
+            RenderTexture.active = captureRT;
+            texClean.ReadPixels(new Rect(0, 0, resolution.x, resolution.y), 0, 0);
+            texClean.Apply();
+            RenderTexture.active = null;
+
+            string timeID = System.DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            string filename = $"Capture_{timeID}_{Random.Range(0, 1000)}";
+
+            // 3. CALCULAR DATOS (Txt) - con limpieza de arrays temporales
+            List<BoundingBoxInfo> boxes = GenerateYOLOAnnotations(filename);
+            
+            // 4. VISUALIZAR EN ESCENA (UI Canvas)
+            GameObject canvasObj = CreateVisualizationCanvas(boxes);
+            
+            // 5. CAPTURA ANOTADA (Annotated)
+            targetCamera.Render();
+            RenderTexture.active = captureRT;
+            texAnnotated.ReadPixels(new Rect(0, 0, resolution.x, resolution.y), 0, 0);
+            texAnnotated.Apply();
+            RenderTexture.active = null;
+
+            // 6. GUARDAR ARCHIVOS - Mejor manejo de memoria
+            byte[] bytesClean = texClean.EncodeToPNG();
+            byte[] bytesAnnotated = (boxes.Count > 0) ? texAnnotated.EncodeToPNG() : null;
+
+            // Pre-cargamos la ruta en el hilo principal
+            string folderPath = FileHandler.GetCurrentFolderPath();
+
+            // Usar una acción local para capturar solo lo necesario y liberar referencias rápido
+            System.Threading.Tasks.Task saveTask = System.Threading.Tasks.Task.Run(() => 
+            {
+                try
+                {
+                    string fullPathClean = System.IO.Path.Combine(folderPath, filename + ".png");
+                    System.IO.File.WriteAllBytes(fullPathClean, bytesClean);
+
+                    if (bytesAnnotated != null)
+                    {
+                        string fullPathAnn = System.IO.Path.Combine(folderPath, filename + "_annotated.png");
+                        System.IO.File.WriteAllBytes(fullPathAnn, bytesAnnotated);
+                    }
+                }
+                finally
+                {
+                    // Liberar referencias explícitamente al terminar la tarea
+                    bytesClean = null;
+                    bytesAnnotated = null;
+                }
+            });
+
+            // 7. LIMPIEZA INMEDIATA
+            Destroy(canvasObj);
+            
+            // Limpiar boxes list que ya no necesitamos
+            boxes.Clear();
+            boxes = null;
+
+            // Yield hasta que la tarea de guardado se complete (sin bloquear)
+            while (!saveTask.IsCompleted)
+            {
+                yield return null;
+            }
+
+            // Liberar memoria local
+            bytesClean = null;
+            bytesAnnotated = null;
+
+            // Forzar limpieza cada 3 capturas para evitar acumulación
+            if (Random.Range(0, 3) == 0) 
+            {
+                yield return null;  // Dar un frame para que Unity limpie
+                Resources.UnloadUnusedAssets();
+                System.GC.Collect(0, System.GCCollectionMode.Optimized);
+            }
+
+            Debug.Log($"<color=cyan>Capture Complete: {filename}</color>");
         }
-
-        Destroy(screenShotClean);
-        Destroy(screenShotAnnotated);
-
-        Debug.Log($"<color=cyan>Capture Complete: {filename} ({boxes.Count} objects)</color>");
+        finally
+        {
+            // Restaurar cámara original garantizado
+            RenderTexture.active = null;
+            Graphics.SetRenderTarget(null);
+            if (targetCamera != null)
+                targetCamera.targetTexture = previousRT;
+        }
     }
 
     // ─── VISUALIZATION HELPERS ───────────────────────────────────────────────
 
     private GameObject CreateVisualizationCanvas(List<BoundingBoxInfo> boxes)
     {
+        if (boxes.Count == 0) return null;
+
         // 1. Crear Canvas
         GameObject canvasObj = new GameObject("Temp_Vis_Canvas");
         Canvas canvas = canvasObj.AddComponent<Canvas>();
@@ -213,7 +361,10 @@ public class PotholeCaptureManager : MonoBehaviour
         scaler.referenceResolution = new Vector2(resolution.x, resolution.y);
         scaler.matchWidthOrHeight = 0.5f;
 
-        // 2. Crear Cajas
+        // GraphicRaycaster para optimización
+        GraphicRaycaster raycaster = canvasObj.AddComponent<GraphicRaycaster>();
+        
+        // 2. Crear Cajas - Optimizadas
         foreach (var box in boxes)
         {
             CreateBoxUI(canvasObj.transform, box);
@@ -352,76 +503,127 @@ public class PotholeCaptureManager : MonoBehaviour
 
         List<string> annotations = new List<string>();
         
-        // Buscar todos los baches generados en la escena
-        GameObject[] potholes = GameObject.FindGameObjectsWithTag("Pothole");
-        GameObject[] crocodiles = GameObject.FindGameObjectsWithTag("Crocodile");
-        GameObject[] rajaduras = GameObject.FindGameObjectsWithTag("Crack");
-        GameObject[] persons = GameObject.FindGameObjectsWithTag("Person");
-        GameObject[] tagObjs = GameObject.FindGameObjectsWithTag("Car");
+        // Buscar todos los baches generados en la escena - CACHEAR REFERENCES LOCALES
+        GameObject[] potholes = null;
+        GameObject[] crocodiles = null;
+        GameObject[] rajaduras = null;
+        GameObject[] persons = null;
+        GameObject[] tagObjs = null;
 
-        Debug.Log($"<color=orange>[Capture] Objects Found - Potholes: {potholes.Length}, Crocodiles: {crocodiles.Length}, Cracks: {rajaduras.Length}, Persons: {persons.Length}, Cars: {tagObjs.Length}</color>");
-
-        // Procesar baches normales (clase 0)
-        foreach (var pothole in potholes)
+        try
         {
-            var boxInfo = GetBoundingBoxInfo(pothole, 0, "Bache", colorPothole);
-            if (boxInfo.HasValue)
+            potholes = GameObject.FindGameObjectsWithTag("Pothole");
+            crocodiles = GameObject.FindGameObjectsWithTag("Crocodile");
+            rajaduras = GameObject.FindGameObjectsWithTag("Crack");
+            persons = GameObject.FindGameObjectsWithTag("Person");
+            tagObjs = GameObject.FindGameObjectsWithTag("Car");
+
+            Debug.Log($"<color=orange>[Capture] Objects Found - Potholes: {potholes.Length}, Crocodiles: {crocodiles.Length}, Cracks: {rajaduras.Length}, Persons: {persons.Length}, Cars: {tagObjs.Length}</color>");
+
+            // Procesar baches normales (clase 0)
+            foreach (var pothole in potholes)
             {
-                boxes.Add(boxInfo.Value);
-                annotations.Add(FormatYOLOAnnotation(boxInfo.Value));
+                var boxInfo = GetBoundingBoxInfo(pothole, 0, "Bache", colorPothole);
+                if (boxInfo.HasValue)
+                {
+                    boxes.Add(boxInfo.Value);
+                }
+            }
+
+            // Procesar cocodrilos (clase 1)
+            foreach (var croc in crocodiles)
+            {
+                var boxInfo = GetBoundingBoxInfo(croc, 1, "Cocodrilo", colorCrocodile);
+                if (boxInfo.HasValue)
+                {
+                    boxes.Add(boxInfo.Value);
+                }
+            }
+
+            // Procesar rajaduras (clase 2)
+            foreach (var raj in rajaduras)
+            {
+                var boxInfo = GetBoundingBoxInfo(raj, 2, "Crack", colorRajadura);
+                if (boxInfo.HasValue)
+                {
+                    boxes.Add(boxInfo.Value);
+                }
+            }
+
+            // Procesar Personas (clase 3)
+            foreach (var p in persons)
+            {
+                var boxInfo = GetBoundingBoxInfo(p, 3, "Person", colorPerson);
+                if (boxInfo.HasValue)
+                {
+                    boxes.Add(boxInfo.Value);
+                }
+            }
+
+            // Procesar Tags (clase 4)
+            foreach (var t in tagObjs)
+            {
+                var boxInfo = GetBoundingBoxInfo(t, 4, "Car", colorTag);
+                if (boxInfo.HasValue)
+                {
+                    boxes.Add(boxInfo.Value);
+                }
+            }
+
+            // Procesar elementos adicionales
+            if (additionalElements != null)
+            {
+                foreach (var element in additionalElements)
+                {
+                    GameObject[] objs = GameObject.FindGameObjectsWithTag(element.tag);
+                    try
+                    {
+                        foreach (var obj in objs)
+                        {
+                            var boxInfo = GetBoundingBoxInfo(obj, element.classId, element.className, element.boxColor);
+                            if (boxInfo.HasValue)
+                            {
+                                boxes.Add(boxInfo.Value);
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        objs = null;  // Limpiar reference
+                    }
+                }
             }
         }
-
-        // Procesar cocodrilos (clase 1)
-        foreach (var croc in crocodiles)
+        finally
         {
-            var boxInfo = GetBoundingBoxInfo(croc, 1, "Cocodrilo", colorCrocodile);
-            if (boxInfo.HasValue)
-            {
-                boxes.Add(boxInfo.Value);
-                annotations.Add(FormatYOLOAnnotation(boxInfo.Value));
-            }
+            // Limpiar todos los arrays de búsqueda
+            potholes = null;
+            crocodiles = null;
+            rajaduras = null;
+            persons = null;
+            tagObjs = null;
         }
 
-        // Procesar rajaduras (clase 2)
-        foreach (var raj in rajaduras)
+        // ──── FILTRAR OCLUSIONES: Recortar baches que estén parcialmente cubiertos ────
+        boxes = FilterAndClipOccludedBoxes(boxes);
+
+        // ──── FILTRAR BOXES MUY PEQUEÑOS ────
+        boxes = FilterSmallBoxes(boxes, minAreaPercent: 0.001f);  // Mínimo 0.1% del área de la imagen
+
+        // Guardar anotaciones
+        foreach (var box in boxes)
         {
-            var boxInfo = GetBoundingBoxInfo(raj, 2, "Crack", colorRajadura);
-            if (boxInfo.HasValue)
-            {
-                boxes.Add(boxInfo.Value);
-                annotations.Add(FormatYOLOAnnotation(boxInfo.Value));
-            }
+            annotations.Add(FormatYOLOAnnotation(box));
         }
 
-        // Procesar Personas (clase 3)
-        foreach (var p in persons)
-        {
-            var boxInfo = GetBoundingBoxInfo(p, 3, "Person", colorPerson);
-            if (boxInfo.HasValue)
-            {
-                boxes.Add(boxInfo.Value);
-                annotations.Add(FormatYOLOAnnotation(boxInfo.Value));
-            }
-        }
-
-        // Procesar Tags (clase 4)
-        foreach (var t in tagObjs)
-        {
-            var boxInfo = GetBoundingBoxInfo(t, 4, "Car", colorTag);
-            if (boxInfo.HasValue)
-            {
-                boxes.Add(boxInfo.Value);
-                annotations.Add(FormatYOLOAnnotation(boxInfo.Value));
-            }
-        }
-
-        // Guardar archivo de anotaciones
         if (annotations.Count > 0)
         {
             string annotationText = string.Join("\n", annotations);
             FileHandler.SaveAnnotation(annotationText, filename + ".txt");
         }
+
+        annotations.Clear();
+        annotations = null;
 
         return boxes;
     }
@@ -459,8 +661,20 @@ public class PotholeCaptureManager : MonoBehaviour
                 bounds.Encapsulate(renderers[i].bounds);
             }
         }
+
+        // ─── SMART EDGE FILTERING: Detectar y excluir áreas planas/muertas en bordes ───
+        Bounds cleanedBounds = bounds; // Default: usar bounds original
+        if (className == "Bache" || className == "Cocodrilo" || className == "Crack")
+        {
+            // Usar thresholds DIFERENTES según tipo de daño
+            // Baches: conservador (flatSurfaceThreshold normal) - preserva daño legítimo
+            // Cocodrilos/Cracks: agresivo (0.82) - rechaza superficiales
+            float thresholdForThisType = (className == "Bache") ? flatSurfaceThreshold : 0.82f;
+            cleanedBounds = DetectAndRemoveDeadAreas(obj, bounds, className, thresholdForThisType);
+            if (cleanedBounds.size.magnitude < bounds.size.magnitude * 0.05f) return null; // Si queda MUY poco (<5%), descartar
+        }
         
-        // Obtener las 8 esquinas del bounding box en espacio mundial
+        // Obtener las 8 esquinas del bounding box en espacio mundial (USAR BOUNDS ORIGINAL PARA PROJECTION)
         Vector3[] corners = new Vector3[8];
         corners[0] = bounds.min;
         corners[1] = new Vector3(bounds.min.x, bounds.min.y, bounds.max.z);
@@ -502,9 +716,20 @@ public class PotholeCaptureManager : MonoBehaviour
         if (!hasVisibleVertex) return null;
         
         // --- OCCLUSION CHECK ---
-        // Verificar qué tan visible es el objeto considerando obstrucciones (ej: un auto tapando parte de un bache)
-        float visibilityFactor = GetVisibilityFactor(obj, bounds);
-        if (visibilityFactor < 0.2f) return null; // Si menos del 20% es visible, no etiquetar
+        // Verificar qué tan visible es el objeto considerando obstrucciones
+        // IMPORTANTE: Para baches, usar los bounds LIMPIOS (sin áreas planas)
+        Bounds boundsForOcclusion = (className == "Bache" || className == "Cocodrilo" || className == "Crack") ? cleanedBounds : bounds;
+        float visibilityFactor = GetVisibilityFactor(obj, boundsForOcclusion, className);
+        
+        // Umbral MÁS PERMISIVO: Solo rechazar si está MUY occluido
+        // Baches legítimos: rechazar solo si <15% visible
+        // Cocodrilos/Cracks: rechazar si <20% visible
+        float minVisibility = (className == "Crack" || className == "Cocodrilo") ? 0.20f : 0.15f;
+        if (visibilityFactor < minVisibility) 
+        {
+            Debug.Log($"<color=red>[Visibility REJECT] {className}: {visibilityFactor*100:F1}% visible < {minVisibility*100:F0}%</color>");
+            return null;
+        }
 
         // --- VISIBILITY CHECK ---
         float rawWidth = maxX - minX;
@@ -529,13 +754,16 @@ public class PotholeCaptureManager : MonoBehaviour
             float ratio = visibleArea / rawArea;
 
             // Descartar si se ve menos del % configurado
+            // NOTA: Para baches/daños, este threshold se aplica al área TOTAL
+            // El área de daño REAL se filtró en DetectAndRemoveDeadAreas
             if (ratio < minVisibilityPercentage) return null;
         }
 
         // Crear rectángulo en coordenadas de píxeles
-        // Crear rectángulo en coordenadas de píxeles
-        float finalWidth = visibleWidth * boundingBoxScale;
-        float finalHeight = visibleHeight * boundingBoxScale;
+        // Para autos y personas, usar escala completa; para daños, aplicar el scale configurado
+        float finalScale = (className == "Car" || className == "Person") ? 1.0f : boundingBoxScale;
+        float finalWidth = visibleWidth * finalScale;
+        float finalHeight = visibleHeight * finalScale;
 
         float centerX = clampedMinX + (visibleWidth * 0.5f);
         float centerY = clampedMinY + (visibleHeight * 0.5f);
@@ -557,6 +785,179 @@ public class PotholeCaptureManager : MonoBehaviour
             screenRect = screenRect,
             color = color
         };
+    }
+
+    /// <summary>
+    /// Detecta y elimina áreas muertas (planas/uniformes) en los bordes del mesh del bache.
+    /// Si un área en el borde es plana (sin variación de altura), se considera "basura" y se excluye.
+    /// </summary>
+    private Bounds DetectAndRemoveDeadAreas(GameObject obj, Bounds originalBounds, string className, float customThreshold = -1f)
+    {
+        if (!enableDeadAreaFiltering) return originalBounds;
+
+        // Usar threshold personalizado si se proporciona, de lo contrario usar el global
+        float thresholdToUse = (customThreshold > 0) ? customThreshold : flatSurfaceThreshold;
+
+        // Usar método avanzado si está habilitado
+        if (useAdvancedEdgeAnalysis)
+        {
+            return DetectAndRemoveDeadAreasAdvanced(obj, originalBounds, className, thresholdToUse);
+        }
+
+        MeshFilter[] meshFilters = obj.GetComponentsInChildren<MeshFilter>();
+        if (meshFilters.Length == 0) return originalBounds;
+
+        List<Vector3> significantVertices = new List<Vector3>();
+        
+        // Recolectar vértices del mesh
+        foreach (var mf in meshFilters)
+        {
+            if (mf.mesh == null) continue;
+            
+            Vector3[] vertices = mf.mesh.vertices;
+            Vector3[] normals = mf.mesh.normals;
+            
+            // Transformar a espacio mundial
+            Matrix4x4 localToWorld = mf.transform.localToWorldMatrix;
+            
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                Vector3 worldPos = localToWorld.MultiplyPoint3x4(vertices[i]);
+                Vector3 normal = localToWorld.MultiplyVector(normals[i]).normalized;
+                
+                // Filtrar: Solo incluir vértices que tengan una normal con componente Y significativa
+                // (es decir, vértices que no estén en superficies planas horizontales)
+                float yNormal = Mathf.Abs(normal.y);
+                
+                if (yNormal < thresholdToUse)  // Normal no es casi horizontal (usar threshold personalizado)
+                {
+                    significantVertices.Add(worldPos);
+                }
+            }
+        }
+
+        if (significantVertices.Count == 0) return originalBounds;
+
+        // Calcular bounds solo de vértices significativos (no planos)
+        Bounds cleanedBounds = new Bounds(significantVertices[0], Vector3.zero);
+        for (int i = 1; i < significantVertices.Count; i++)
+        {
+            cleanedBounds.Encapsulate(significantVertices[i]);
+        }
+
+        // Si el bounds se redujo significativamente, significa que había áreas planas grandes
+        float originalVolume = originalBounds.size.x * originalBounds.size.y * originalBounds.size.z;
+        float cleanedVolume = cleanedBounds.size.x * cleanedBounds.size.y * cleanedBounds.size.z;
+        
+        if (originalVolume > 0)
+        {
+            float reductionPercent = (originalVolume - cleanedVolume) / originalVolume;
+            
+            if (reductionPercent > minVolumeReduction)  // Si se redujo más del umbral configurado
+            {
+                Debug.Log($"<color=yellow>[DeadAreas] {className}: Reducción de {reductionPercent*100:F1}% - Áreas planas detectadas y removidas</color>");
+                return cleanedBounds;
+            }
+        }
+
+        return originalBounds;
+    }
+
+    /// <summary>
+    /// Alternativa avanzada: Analiza el mesh para detectar vértices de borde que están en superficies planas uniformes.
+    /// Usa análisis de varianza de altura en zonas de borde.
+    /// </summary>
+    private Bounds DetectAndRemoveDeadAreasAdvanced(GameObject obj, Bounds originalBounds, string className, float thresholdToUse)
+    {
+        MeshFilter[] meshFilters = obj.GetComponentsInChildren<MeshFilter>();
+        if (meshFilters.Length == 0) return originalBounds;
+
+        List<Vector3> allVertices = new List<Vector3>();
+        
+        foreach (var mf in meshFilters)
+        {
+            if (mf.mesh == null) continue;
+            
+            Vector3[] vertices = mf.mesh.vertices;
+            Matrix4x4 localToWorld = mf.transform.localToWorldMatrix;
+            
+            foreach (var v in vertices)
+            {
+                allVertices.Add(localToWorld.MultiplyPoint3x4(v));
+            }
+        }
+
+        if (allVertices.Count < 10) return originalBounds;
+
+        // Detectar vértices en bordes (por coordenada X y Z - horizontales)
+        float minX = Mathf.Infinity, maxX = -Mathf.Infinity;
+        float minZ = Mathf.Infinity, maxZ = -Mathf.Infinity;
+        
+        foreach (var v in allVertices)
+        {
+            minX = Mathf.Min(minX, v.x);
+            maxX = Mathf.Max(maxX, v.x);
+            minZ = Mathf.Min(minZ, v.z);
+            maxZ = Mathf.Max(maxZ, v.z);
+        }
+
+        float edgeThreshold = 0.2f;  // 20% desde el borde se considera "zona de borde"
+        float edgeDistX = (maxX - minX) * edgeThreshold;
+        float edgeDistZ = (maxZ - minZ) * edgeThreshold;
+
+        List<Vector3> coreVertices = new List<Vector3>();
+        List<Vector3> edgeVertices = new List<Vector3>();
+
+        foreach (var v in allVertices)
+        {
+            bool isXEdge = (v.x - minX < edgeDistX) || (maxX - v.x < edgeDistX);
+            bool isZEdge = (v.z - minZ < edgeDistZ) || (maxZ - v.z < edgeDistZ);
+
+            if (isXEdge || isZEdge)
+            {
+                edgeVertices.Add(v);
+            }
+            else
+            {
+                coreVertices.Add(v);
+            }
+        }
+
+        // Analizar varianza de altura en zona de bordes
+        if (edgeVertices.Count > 5)
+        {
+            float edgeHeightMean = 0;
+            foreach (var v in edgeVertices) edgeHeightMean += v.y;
+            edgeHeightMean /= edgeVertices.Count;
+
+            float edgeHeightVariance = 0;
+            foreach (var v in edgeVertices)
+            {
+                edgeHeightVariance += (v.y - edgeHeightMean) * (v.y - edgeHeightMean);
+            }
+            edgeHeightVariance /= edgeVertices.Count;
+            float edgeHeightStdDev = Mathf.Sqrt(edgeHeightVariance);
+
+            // Si la desviación estándar es muy baja, significa que es un área plana uniforme
+            float totalHeight = maxZ - minZ + maxX - minX;  // Aproximación
+            if (edgeHeightStdDev < totalHeight * 0.05f)  // Muy poco cambio de altura
+            {
+                Debug.Log($"<color=yellow>[DeadAreas Advanced] {className}: Bordes uniformes detectados (StdDev: {edgeHeightStdDev:F3})</color>");
+                
+                // Usar solo vértices del core
+                if (coreVertices.Count > 0)
+                {
+                    Bounds cleanedBounds = new Bounds(coreVertices[0], Vector3.zero);
+                    foreach (var v in coreVertices)
+                    {
+                        cleanedBounds.Encapsulate(v);
+                    }
+                    return cleanedBounds;
+                }
+            }
+        }
+
+        return originalBounds;
     }
 
     private string FormatYOLOAnnotation(BoundingBoxInfo boxInfo)
@@ -666,60 +1067,388 @@ public class PotholeCaptureManager : MonoBehaviour
 
     private IEnumerator AutoCaptureLoop()
     {
+        int captureCount = 0;
+        
         while (isAutoMode)
         {
-            RandomizeAndGenerate();
+            // Si está habilitada captura multi-altura, generar UNA VEZ y capturar en cada altura
+            if (enableMultiHeightCapture && captureHeights.Count > 0)
+            {
+                // GENERAR UNA SOLA VEZ
+                RandomizeAndGenerate();
 
-            // Esperar hasta que todos los generadores de elementos terminen
-            yield return new WaitUntil(() => !AreGeneratorsBusy());
+                // Esperar hasta que todos los generadores de elementos terminen
+                yield return new WaitUntil(() => !AreGeneratorsBusy());
+                yield return new WaitForSeconds(0.1f);
 
-            yield return new WaitForSeconds(0.1f);
-            CaptureScreenshot();
-            yield return new WaitForSeconds(autoInterval);
+                // CAPTURAR EN CADA ALTURA (MISMA VERSION)
+                foreach (float height in captureHeights)
+                {
+                    if (!isAutoMode) yield break;  // Salir si se desactiva el modo
+                    
+                    // Configurar la altura y crear subcarpeta
+                    SetupFolderForHeight(height);
+                    
+                    // Ajustar la altura de la cámara
+                    Vector3 camPos = targetCamera.transform.position;
+                    camPos.y = height;
+                    targetCamera.transform.position = camPos;
+                    
+                    yield return new WaitForSeconds(0.2f);  // Esperar a que se estabilice
+                    
+                    CaptureScreenshot();
+                    
+                    captureCount++;
+                    
+                    // Limpiar memoria DESPUÉS DE CADA CAPTURA para evitar acumulación
+                    if (captureCount % 2 == 0)
+                    {
+                        Debug.Log($"<color=yellow>[Memory Cleanup] Limpieza después de captura {captureCount}</color>");
+                        yield return null;
+                        Resources.UnloadUnusedAssets();
+                        System.GC.Collect(0, System.GCCollectionMode.Optimized);
+                    }
+                    
+                    yield return new WaitForSeconds(autoInterval);
+                }
+            }
+            else
+            {
+                // Modo tradicional (altura única)
+                RandomizeAndGenerate();
+
+                // Esperar hasta que todos los generadores de elementos terminen
+                yield return new WaitUntil(() => !AreGeneratorsBusy());
+
+                yield return new WaitForSeconds(0.1f);
+                CaptureScreenshot();
+                
+                captureCount++;
+                
+                // Limpiar memoria DESPUÉS DE CADA CAPTURA para evitar acumulación
+                if (captureCount % 2 == 0)
+                {
+                    Debug.Log($"<color=yellow>[Memory Cleanup] Limpieza después de captura {captureCount}</color>");
+                    yield return null;
+                    Resources.UnloadUnusedAssets();
+                    System.GC.Collect(0, System.GCCollectionMode.Optimized);
+                }
+                
+                yield return new WaitForSeconds(autoInterval);
+            }
         }
     }
 
-    private float GetVisibilityFactor(GameObject obj, Bounds bounds)
+    private float GetVisibilityFactor(GameObject obj, Bounds bounds, string className)
     {
         Vector3 camPos = targetCamera.transform.position;
         Vector3 center = bounds.center;
         Vector3 ext = bounds.extents;
 
-        // Definir puntos para muestrear visibilidad (Centro + 4 esquinas del área)
-        // Usamos un factor de 0.7 para no estar exactamente en el borde del collider
-        Vector3[] points = new Vector3[5];
-        points[0] = center;
-        points[1] = center + new Vector3(ext.x * 0.7f, 0, ext.z * 0.7f);
-        points[2] = center + new Vector3(-ext.x * 0.7f, 0, ext.z * 0.7f);
-        points[3] = center + new Vector3(ext.x * 0.7f, 0, -ext.z * 0.7f);
-        points[4] = center + new Vector3(-ext.x * 0.7f, 0, -ext.z * 0.7f);
-
-        int visibleCount = 0;
-        foreach (var p in points)
+        // Para baches y daños, usar GRID DENSO para mejor detección de oclusión
+        // Para autos y personas, usar menos puntos
+        int gridSize = (className == "Bache" || className == "Cocodrilo" || className == "Crack") ? 3 : 2;
+        
+        List<Vector3> points = new List<Vector3>(gridSize * gridSize);
+        
+        // Generar grid de puntos en el bounds
+        for (int x = 0; x < gridSize; x++)
         {
-            Vector3 dir = p - camPos;
-            float dist = dir.magnitude;
-
-            if (Physics.Raycast(camPos, dir, out RaycastHit hit, dist + 0.1f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+            for (int z = 0; z < gridSize; z++)
             {
-                // Visible si golpeamos el objeto o un hijo
-                if (hit.collider.gameObject == obj || hit.collider.transform.IsChildOf(obj.transform))
-                {
-                    visibleCount++;
-                }
-                // También es visible si el impacto está a la misma distancia (margen de error)
-                else if (hit.distance >= dist - 0.05f)
-                {
-                    visibleCount++;
-                }
-            }
-            else
-            {
-                // Si no hay colisión en la trayectoria, asumimos que está despejado
-                visibleCount++;
+                float xFactor = gridSize > 1 ? (float)x / (gridSize - 1) : 0.5f;
+                float zFactor = gridSize > 1 ? (float)z / (gridSize - 1) : 0.5f;
+                
+                float xPos = center.x + (xFactor * 2 - 1) * ext.x * 0.8f;
+                float zPos = center.z + (zFactor * 2 - 1) * ext.z * 0.8f;
+                
+                points.Add(new Vector3(xPos, center.y, zPos));
             }
         }
 
-        return (float)visibleCount / points.Length;
+        int visibleCount = 0;
+        
+        // CACHEAR los GameObjects buscados para no hacer múltiples FindGameObjectsWithTag
+        GameObject[] cars = null;
+        GameObject[] persons = null;
+        
+        try
+        {
+            cars = GameObject.FindGameObjectsWithTag("Car");
+            persons = GameObject.FindGameObjectsWithTag("Person");
+
+            foreach (var p in points)
+            {
+                Vector3 dir = p - camPos;
+                float dist = dir.magnitude;
+                bool isVisible = false;
+
+                if (Physics.Raycast(camPos, dir, out RaycastHit hit, dist + 0.1f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+                {
+                    // Visible si golpeamos el objeto o un hijo
+                    if (hit.collider.gameObject == obj || hit.collider.transform.IsChildOf(obj.transform))
+                    {
+                        isVisible = true;
+                    }
+                    // Si golpea vehículo: revisar si está REALMENTE más cerca (más de 10cm)
+                    else if (hit.collider.CompareTag("Car") || hit.collider.CompareTag("Person"))
+                    {
+                        // PERMISIVO: Solo rechazar si vehículo está CLARAMENTE más cerca (>10cm)
+                        if (hit.distance < dist - 0.10f)
+                        {
+                            isVisible = false;  // Vehículo ocluye CLARAMENTE
+                        }
+                        else
+                        {
+                            isVisible = true;  // Al mismo nivel o muy cercano = visible
+                        }
+                    }
+                    // Otros objetos: visible si está al mismo nivel
+                    else if (hit.distance >= dist - 0.10f)
+                    {
+                        isVisible = true;
+                    }
+                }
+                else
+                {
+                    // Sin obstáculos = visible
+                    isVisible = true;
+                }
+
+                if (isVisible) visibleCount++;
+            }
+        }
+        finally
+        {
+            // Limpiar referencias a arrays
+            cars = null;
+            persons = null;
+            points.Clear();
+            points = null;
+        }
+
+        float visibility = (float)visibleCount / gridSize / gridSize;
+        Debug.Log($"<color=cyan>[Visibility] {className}: {visibility*100:F1}% ({visibleCount}/{gridSize*gridSize} puntos)</color>");
+        return visibility;
+    }
+
+    /// <summary>
+    /// Detecta si un bache está completamente occluido por autos o personas.
+    /// </summary>
+    private bool IsOccludedByVehicleOrPerson(Bounds bacheBounds)
+    {
+        Vector3 camPos = targetCamera.transform.position;
+        Vector3 bacheCenter = bacheBounds.center;
+        
+        // Raycast hacia el centro del bache
+        Vector3 dir = bacheCenter - camPos;
+        float dist = dir.magnitude;
+
+        if (Physics.Raycast(camPos, dir, out RaycastHit hit, dist + 0.1f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+        {
+            // Verificar si el objeto que nos golpea es un auto o persona
+            GameObject hitObj = hit.collider.gameObject;
+            if (hitObj.CompareTag("Car") || hitObj.CompareTag("Person"))
+            {
+                // Está occluido por un auto o persona si el impacto es significativamente más cercano
+                if (hit.distance < dist - 0.1f)
+                {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+
+    /// <summary>
+    /// Filtra y recorta boxes de baches que estén parcialmente occluidos por autos/personas.
+    /// Solo recorta la parte que realmente está dentro del box del vehículo/persona.
+    /// </summary>
+    /// <summary>
+    /// Filtra baches basado en cobertura de vehículos.
+    /// Solo RECHAZA si está mayormente cubierto (>70%).
+    /// Mantiene baches parcialmente cubiertos si la cobertura es <70%.
+    /// NO recorta - mantiene el box completo.
+    /// </summary>
+    private List<BoundingBoxInfo> FilterAndClipOccludedBoxes(List<BoundingBoxInfo> boxes)
+    {
+        List<BoundingBoxInfo> result = new List<BoundingBoxInfo>();
+
+        // Obtener rectangles de autos y personas
+        List<Rect> vehicleRects = new List<Rect>();
+        foreach (var box in boxes)
+        {
+            if (box.className == "Car" || box.className == "Person")
+            {
+                vehicleRects.Add(box.screenRect);
+            }
+        }
+
+        // Procesar cada elemento
+        foreach (var box in boxes)
+        {
+            // Autos y personas siempre se incluyen
+            if (box.className == "Car" || box.className == "Person")
+            {
+                result.Add(box);
+                continue;
+            }
+
+            // Solo procesar baches, rajaduras y cocodrilos
+            if (box.className != "Bache" && box.className != "Crack" && box.className != "Cocodrilo")
+            {
+                result.Add(box);
+                continue;
+            }
+
+            Rect damageRect = box.screenRect;
+            float damageArea = damageRect.width * damageRect.height;
+
+            if (damageArea <= 0)
+            {
+                continue;
+            }
+
+            // ──── CALCULAR ÁREA CUBIERTA POR VEHÍCULOS ────
+            float totalCoveredArea = 0f;
+
+            foreach (var vehicleRect in vehicleRects)
+            {
+                // Calcular intersección
+                float x1 = Mathf.Max(damageRect.x, vehicleRect.x);
+                float y1 = Mathf.Max(damageRect.y, vehicleRect.y);
+                float x2 = Mathf.Min(damageRect.x + damageRect.width, vehicleRect.x + vehicleRect.width);
+                float y2 = Mathf.Min(damageRect.y + damageRect.height, vehicleRect.y + vehicleRect.height);
+
+                if (x2 > x1 && y2 > y1)
+                {
+                    float intersectionArea = (x2 - x1) * (y2 - y1);
+                    totalCoveredArea += intersectionArea;
+                }
+            }
+
+            // Calcular porcentaje de cobertura
+            float coveragePercent = (damageArea > 0) ? (totalCoveredArea / damageArea) : 0f;
+
+            // ──── CRITERIO DE FILTRADO ────
+            // RECHAZAR SOLO si está CASI COMPLETAMENTE cubierto por vehículos
+            // Baches: rechazar si >80% cubierto (casi completamente bajo auto)
+            // Cocodrilos/Cracks: rechazar si >70% cubierto
+            float rejectThreshold = (box.className == "Bache") ? 0.80f : 0.70f;
+            
+            if (coveragePercent > rejectThreshold)
+            {
+                Debug.Log($"<color=red>[Coverage] {box.className} rechazado: {coveragePercent*100:F1}% cubierto por vehículo (umbral: {rejectThreshold*100:F0}%)</color>");
+                continue;  // Rechazar
+            }
+
+            // Si cobertura > 0%, informar que está parcialmente cubierto pero se mantiene
+            if (coveragePercent > 0.001f)
+            {
+                Debug.Log($"<color=orange>[Coverage] {box.className} parcialmente cubierto: {coveragePercent*100:F1}% - MANTENIDO (umbral: {rejectThreshold*100:F0}%)</color>");
+            }
+
+            result.Add(box);
+        }
+
+        Debug.Log($"<color=yellow>[Occlusion Filter] Boxes procesados: {boxes.Count} -> {result.Count}</color>");
+        return result;
+    }
+
+    /// <summary>
+    /// Filtra boxes que son demasiado pequeños (ocupan muy poco area de la imagen).
+    /// </summary>
+    private List<BoundingBoxInfo> FilterSmallBoxes(List<BoundingBoxInfo> boxes, float minAreaPercent)
+    {
+        float imageArea = resolution.x * resolution.y;
+        float minArea = imageArea * minAreaPercent;
+
+        List<BoundingBoxInfo> result = new List<BoundingBoxInfo>(boxes.Count);
+
+        foreach (var box in boxes)
+        {
+            float boxArea = box.screenRect.width * box.screenRect.height;
+            
+            if (boxArea >= minArea)
+            {
+                result.Add(box);
+            }
+            else
+            {
+                Debug.Log($"<color=red>[FilterSmall] {box.className} descartado: area={boxArea:F0} < min={minArea:F0}</color>");
+            }
+        }
+
+        // Limpiar lista original
+        boxes.Clear();
+        return result;
+    }
+
+    /// <summary>
+    /// Aplica Non-Maximum Suppression para eliminar boxes superpuestos.
+    /// Mantiene los boxes más grandes y elimina los superpuestos más pequeños.
+    /// </summary>
+    private List<BoundingBoxInfo> ApplyNonMaximumSuppression(List<BoundingBoxInfo> boxes, float iouThreshold)
+    {
+        if (boxes.Count <= 1) return boxes;
+
+        // Ordenar por área (tamaño) en orden descendente - boxes grandes primero
+        List<BoundingBoxInfo> sortedBoxes = new List<BoundingBoxInfo>(boxes);
+        sortedBoxes.Sort((a, b) => 
+        {
+            float areaA = a.screenRect.width * a.screenRect.height;
+            float areaB = b.screenRect.width * b.screenRect.height;
+            return areaB.CompareTo(areaA);  // Orden descendente
+        });
+
+        List<BoundingBoxInfo> result = new List<BoundingBoxInfo>();
+        List<bool> suppress = new List<bool>(new bool[sortedBoxes.Count]);
+
+        for (int i = 0; i < sortedBoxes.Count; i++)
+        {
+            if (suppress[i]) continue;
+
+            result.Add(sortedBoxes[i]);
+
+            // Comparar con los demás boxes
+            for (int j = i + 1; j < sortedBoxes.Count; j++)
+            {
+                if (suppress[j]) continue;
+
+                float iou = CalculateIoU(sortedBoxes[i].screenRect, sortedBoxes[j].screenRect);
+                
+                if (iou > iouThreshold)
+                {
+                    suppress[j] = true;  // Marcar como suprimido si el IoU es alto
+                }
+            }
+        }
+
+        Debug.Log($"<color=yellow>[NMS] Boxes reducidos de {boxes.Count} a {result.Count}</color>");
+        return result;
+    }
+
+    /// <summary>
+    /// Calcula la Intersección sobre Unión (IoU) entre dos rectángulos.
+    /// </summary>
+    private float CalculateIoU(Rect rect1, Rect rect2)
+    {
+        // Calcular intersección
+        float x1 = Mathf.Max(rect1.x, rect2.x);
+        float y1 = Mathf.Max(rect1.y, rect2.y);
+        float x2 = Mathf.Min(rect1.x + rect1.width, rect2.x + rect2.width);
+        float y2 = Mathf.Min(rect1.y + rect1.height, rect2.y + rect2.height);
+
+        if (x2 < x1 || y2 < y1)
+            return 0f;  // No hay intersección
+
+        float intersection = (x2 - x1) * (y2 - y1);
+        float area1 = rect1.width * rect1.height;
+        float area2 = rect2.width * rect2.height;
+        float union = area1 + area2 - intersection;
+
+        return union > 0 ? intersection / union : 0f;
     }
 }
+

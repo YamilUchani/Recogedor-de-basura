@@ -10,9 +10,34 @@ public static class FileHandler
 #endif
     
     private static string currentSessionFolder = "";
+    private static bool useCustomFolder = false;
+    private static string customFolderPath = "";
+
+    /// <summary>
+    /// Establece una carpeta personalizada para guardar los archivos temporalmente.
+    /// Si no se llama, usa la ruta por defecto (persistentDataPath).
+    /// </summary>
+    public static void SetCustomFolder(string folderPath)
+    {
+        useCustomFolder = !string.IsNullOrEmpty(folderPath);
+        if (useCustomFolder)
+        {
+            customFolderPath = folderPath;
+            if (!Directory.Exists(customFolderPath))
+            {
+                Directory.CreateDirectory(customFolderPath);
+            }
+            Debug.Log($"<color=yellow>[FileHandler] Carpeta personalizada configurada: {customFolderPath}</color>");
+        }
+    }
 
     public static string GetCurrentFolderPath()
     {
+        if (useCustomFolder && !string.IsNullOrEmpty(customFolderPath))
+        {
+            return customFolderPath;
+        }
+
         if (string.IsNullOrEmpty(currentSessionFolder))
         {
             string timestamp = System.DateTime.Now.ToString("yyyyMMdd_HHmmss");
@@ -20,6 +45,14 @@ public static class FileHandler
             if (!Directory.Exists(currentSessionFolder)) Directory.CreateDirectory(currentSessionFolder);
         }
         return currentSessionFolder;
+    }
+
+    public static void ResetToDefaultFolder()
+    {
+        useCustomFolder = false;
+        customFolderPath = "";
+        currentSessionFolder = "";
+        Debug.Log("<color=yellow>[FileHandler] Ruta restaurada a predeterminada</color>");
     }
 
     public static void SaveImage(byte[] pngBytes, string filename)

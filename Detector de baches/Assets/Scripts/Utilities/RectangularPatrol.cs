@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -89,6 +90,15 @@ public class RectangularPatrol : MonoBehaviour
         StartCoroutine(WaitForSceneAndInit());
     }
 
+    private void OnEnable()
+    {
+        // Cuando el objeto se reactiva, buscar houses nuevamente
+        if (routeTargets != null && routeTargets.Length > 0)
+            return; // Ya inicializado
+        
+        StartCoroutine(InitializeHouses());
+    }
+
     private IEnumerator WaitForSceneAndInit()
     {
         SceneInitializer sceneInit = FindFirstObjectByType<SceneInitializer>();
@@ -101,7 +111,18 @@ public class RectangularPatrol : MonoBehaviour
             yield return null;
         }
 
-        GameObject[] houseObjects = GameObject.FindGameObjectsWithTag("Houses");
+        // Esperar 10 segundos adicionales antes de reconocer waypoints
+        yield return new WaitForSeconds(10f);
+
+        yield return StartCoroutine(InitializeHouses());
+    }
+
+    private IEnumerator InitializeHouses()
+    {
+
+        // Buscar casas incluyendo desactivadas
+        GameObject[] houseObjects = FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+            .Where(go => go.CompareTag("Houses")).ToArray();
         if (houseObjects.Length == 0)
         {
             Debug.LogError("[RectangularPatrol] No se encontraron GameObjects con tag 'Houses'. Asegúrate de que existen y tienen ese tag.");
@@ -131,6 +152,7 @@ public class RectangularPatrol : MonoBehaviour
         }
 
         CalculateCorners();
+        yield break;
     }
 
     void Update()

@@ -15,8 +15,10 @@ public class DroneHeightController : MonoBehaviour
 {
     // ─── Niveles de altura ───────────────────────────────────────────────────
     // En Unity, 1 unidad = 1 metro. baseOffset y targetHeight deben ser iguales.
-    private static readonly float[] Heights = { 6f, 12f, 18f };
-    private static readonly float[] RaySpacings = { 1.5f, 2.25f, 3f };
+    // Alturas realistas para inspección con drone: Low (6m), Medium (10m), High (15m)
+    private static readonly float[] Heights = { 6f, 10f, 15f };
+    // Espaciado fijo de rayos: 0.5m para todas las alturas (el barrido del drone cubre los bordes)
+    private static readonly float[] RaySpacings = { 0.5f, 0.5f, 0.5f };
 
     public enum DroneHeightLevel
     {

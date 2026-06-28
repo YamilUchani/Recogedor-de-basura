@@ -46,20 +46,25 @@ Shader "Custom/HeightShader" {
         struct Input {
             float3 objectPos;
             float3 localNormal;
+            float3 worldPos;
         };
  
         void vert (inout appdata_full v, out Input o) {
             UNITY_INITIALIZE_OUTPUT(Input, o);
             o.objectPos = v.vertex.xyz;
             o.localNormal = v.normal;
+            o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
         }
 
-        // Macro for Triplanar Sampling
-        #define TRIPLANAR_SAMPLE(tex, pos, normal, scale, color, outColor) \
-            float2 uvX = pos.zy * scale; \
-            float2 uvY = pos.xz * scale; \
-            float2 uvZ = pos.xy * scale; \
-            float sScale = scale * _StochasticScale; \
+        // Macro for Triplanar Sampling - Escala consistente basada en derivadas de fragmento
+        #define TRIPLANAR_SAMPLE(tex, pos, normal, scale, color, outColor, worldPos) \
+            float3 worldDX = ddx(worldPos); \
+            float3 worldDY = ddy(worldPos); \
+            float pixelScale = max(length(worldDX), length(worldDY)); \
+            float2 uvX = pos.zy * scale / max(pixelScale, 0.01); \
+            float2 uvY = pos.xz * scale / max(pixelScale, 0.01); \
+            float2 uvZ = pos.xy * scale / max(pixelScale, 0.01); \
+            float sScale = (scale * _StochasticScale) / max(pixelScale, 0.01); \
             float cosR = 0.866; \
             float sinR = 0.5; \
             float2x2 rot = float2x2(cosR, -sinR, sinR, cosR); \
@@ -87,10 +92,16 @@ Shader "Custom/HeightShader" {
 
             fixed4 tex0, tex1, tex2;
             
-            // Invoke macros manually to avoid function call limitations
-            { TRIPLANAR_SAMPLE(_Texture0, pos, normal, _Scale0, _Color0, tex0) }
-            { TRIPLANAR_SAMPLE(_Texture1, pos, normal, _Scale1, _Color1, tex1) }
-            { TRIPLANAR_SAMPLE(_Texture2, pos, normal, _Scale2, _Color2, tex2) }
+            // Invoke macros with proper scoping
+            {
+                TRIPLANAR_SAMPLE(_Texture0, pos, normal, _Scale0, _Color0, tex0, IN.worldPos);
+            }
+            {
+                TRIPLANAR_SAMPLE(_Texture1, pos, normal, _Scale1, _Color1, tex1, IN.worldPos);
+            }
+            {
+                TRIPLANAR_SAMPLE(_Texture2, pos, normal, _Scale2, _Color2, tex2, IN.worldPos);
+            }
             
             if (height < _Threshold1 - _TransitionRange) {
                 o.Albedo = tex0.rgb;

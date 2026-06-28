@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
 
@@ -12,7 +12,7 @@ namespace DigitalTwin
         [Tooltip("Viaje o entrenamiento actual")]
         public int currentEpisode = 0;
         
-        [Tooltip("¿El episodio de entrenamiento está en curso?")]
+        [Tooltip("El episodio de entrenamiento est en curso?")]
         public bool isEpisodeActive = false;
 
         [Tooltip("Paso de tiempo discreto (t)")]
@@ -25,30 +25,32 @@ namespace DigitalTwin
         [Header("3. Estado del UAV (x_t)")]
         public UAVState currentUAVState;
 
-        [Header("4. Agentes Dinámicos (A_t)")]
+        [Header("4. Agentes Dinmicos (A_t)")]
         public List<TrafficAgent> activeAgents = new List<TrafficAgent>();
 
         [Header("5. Visibilidad y Memoria (M_t)")]
-        [Tooltip("Umbral de activación (\tau_o)")]
+        [Tooltip("Umbral de activacin (\tau_o)")]
         public float visibilityThreshold = 0.7f; 
         public Dictionary<RoadSegment, SegmentStatus> inspectionMemory = new Dictionary<RoadSegment, SegmentStatus>();
         public List<RoadSegment> revisitQueue = new List<RoadSegment>();
 
+        [Header("Modo Prueba")]
+        [Tooltip("Si est activo, no se envan capturas al servidor Python y las detecciones se simulan con raycast.")]
+        public bool testModeNoPython = true;
+        [Tooltip("Ventana de baches simulados en modo prueba. 4 significa evaluar grupos de 4.")]
+        public int testModeConfirmEvery = 4;
+        [Tooltip("Cuantos baches se confirman dentro de cada ventana. 3 de 4 deja 1 fallido para probar Skip.")]
+        public int testModeConfirmCount = 3;
+
         [Header("Referencias a Sistemas Reales")]
-        [Tooltip("El controlador de movimiento físico real")]
+        [Tooltip("El controlador de movimiento fsico real")]
         private DroneNavMeshController droneController;
         private TrafficDensityController densityController;
         private float currentVisibilityScore = 1.0f; 
         [Tooltip("La interfaz encargada de los raycasts de visibilidad")]
         public MovementInterface movementInterface;
 
-        // Lista para recopilar los datos del viaje
-        private List<string> episodeLog = new List<string>();
-        
-        // --- Registro secundario para A_t (Tráfico) ---
-        private List<string> trafficLog = new List<string>();
-        
-        // --- Cálculo de Velocidad universal ---
+        // --- Clculo de Velocidad universal ---
         private Dictionary<int, Vector3> previousAgentPositions = new Dictionary<int, Vector3>();
 
         private void Awake()
@@ -67,63 +69,17 @@ namespace DigitalTwin
             // 2. Traffic/Env (A_t)
             UpdateAgentsState();
 
-            // 3. UAV State (x_t) - Mapea variables reales a la formalización
+            // 3. UAV State (x_t) - Mapea variables reales a la formalizacin
             UpdateUAVState();
 
             // 4 y 5. Visibilidad (o_{s,t}) y Memoria (M_t)
             UpdateVisibilityState();
 
-            // 6. Action (\Pi) - Leer la política de DroneController.cs
+            // 6. Action (\Pi) - Leer la poltica de DroneController.cs
             SyncRecoveryPolicy();
 
-            // 7. Recopilar datos para el archivo .txt
-            RecordLogStep();
         }
 
-        private void RecordLogStep()
-        {
-            // Formato CSV alineado matemáticamente con el paper:
-            // t: Tiempo discreto
-            // p_t_x, p_t_y: Posición plana en R^2
-            // h_t: Altitud
-            // v_t: Velocidad escalar
-            // e_t: Batería
-            // |A_t|: Cardinalidad del conjunto de agentes dinámicos
-            // |M_t|: Tamaño de la memoria de inspección (baches documentados)
-            // o_s_t: Score de visibilidad [0, 1]
-            // Pi: Política de recuperación actual
-            // D_t: Densidad de tráfico actual (Low=1, Medium=2, High=3)
-            // dt_wait: Delta t_wait (Tiempo de espera en estación para Hover)
-            // dt_x, dt_y: Componentes del vector delta_t para Micro
-            int densityValue = densityController != null ? (int)densityController.currentDensity : 1;
-            
-            float dt_wait = 0f;
-            float dt_x = 0f;
-            float dt_y = 0f;
-
-            if (droneController != null)
-            {
-                if (currentPolicy == RecoveryPolicy.Hover)
-                    dt_wait = droneController.currentHoverWaitTime;
-                else if (currentPolicy == RecoveryPolicy.Micro)
-                {
-                    dt_x = droneController.currentMicroDelta.x;
-                    dt_y = droneController.currentMicroDelta.y;
-                }
-            }
-            
-            string logLine = $"{timeStep},{currentUAVState.p.x.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)},{currentUAVState.p.y.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)},{currentUAVState.h.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)},{currentUAVState.v.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)},{currentUAVState.e.ToString("F4", System.Globalization.CultureInfo.InvariantCulture)},{activeAgents.Count},{inspectionMemory.Count},{currentVisibilityScore.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)},{currentPolicy},{densityValue},{dt_wait.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)},{dt_x.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)},{dt_y.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)}";
-            episodeLog.Add(logLine);
-
-            // Guardar detalles de A_t para este instante
-            for (int i = 0; i < activeAgents.Count; i++)
-            {
-                var a = activeAgents[i];
-                // Formato: t, id_relativo, y_x, y_z, nu (velocidad escalar), kappa (clase)
-                string tLine = $"{timeStep},{i},{a.position.x.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)},{a.position.z.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)},{a.velocity.magnitude.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)},{a.type}";
-                trafficLog.Add(tLine);
-            }
-        }
 
         private void UpdateUAVState()
         {
@@ -137,12 +93,12 @@ namespace DigitalTwin
             float groundHeight = Terrain.activeTerrain != null ? Terrain.activeTerrain.SampleHeight(pos) : 0f;
             currentUAVState.h = pos.y - groundHeight;
 
-            // La velocidad física en un dron controlado por NavMesh no está en el Rigidbody, está en el NavMeshAgent
+            // La velocidad fsica en un dron controlado por NavMesh no est en el Rigidbody, est en el NavMeshAgent
             UnityEngine.AI.NavMeshAgent nav = droneController.GetComponent<UnityEngine.AI.NavMeshAgent>();
             if (nav != null)
                 currentUAVState.v = nav.velocity.magnitude;
             
-            // Usamos GetComponent por si el droneController.energyController no se asignó en el Inspector
+            // Usamos GetComponent por si el droneController.energyController no se asign en el Inspector
             EnergyController eController = droneController.energyController != null ? droneController.energyController : droneController.GetComponent<EnergyController>();
             if (eController != null)
                 currentUAVState.e = eController.energia / 100f;
@@ -170,7 +126,7 @@ namespace DigitalTwin
                 int id = obj.GetInstanceID();
                 currentFrameIds.Add(id);
 
-                // Cálculo universal de velocidad (delta posición / delta tiempo)
+                // Clculo universal de velocidad (delta posicin / delta tiempo)
                 if (previousAgentPositions.TryGetValue(id, out Vector3 prevPos))
                 {
                     // Solo calculamos velocidad horizontal en plano (X, Z) que es lo relevante
@@ -201,11 +157,11 @@ namespace DigitalTwin
         {
             if (droneController == null) return;
             
-            // Fórmula o_{s,t} del paper: 1.0 = totalmente visible, 0.0 = totalmente ocluido
+            // Frmula o_{s,t} del paper: 1.0 = totalmente visible, 0.0 = totalmente ocluido
             // Usamos 5 raycasts hacia abajo (centro + 4 bordes)
             int totalRays = 5;
             int hitsCount = 0;
-            float spread = 1.0f; // Dispersión de los rayos en metros
+            float spread = 1.0f; // Dispersin de los rayos en metros
 
             Vector3[] rayOffsets = new Vector3[]
             {
@@ -219,7 +175,7 @@ namespace DigitalTwin
             foreach (Vector3 offset in rayOffsets)
             {
                 Vector3 origin = droneController.transform.position + offset;
-                // Si NO choca con Person o Car, el rayo llega al suelo y está visible
+                // Si NO choca con Person o Car, el rayo llega al suelo y est visible
                 if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit, 10f))
                 {
                     if (!hit.collider.CompareTag("Person") && !hit.collider.CompareTag("Car"))
@@ -258,7 +214,7 @@ namespace DigitalTwin
         public RecoveryPolicy currentPolicy = RecoveryPolicy.None;
 
         /// <summary>
-        /// Cuando es true, DroneController NO llama EndEpisode() automáticamente
+        /// Cuando es true, DroneController NO llama EndEpisode() automticamente
         /// al volver a base. El ExperimentAutomator lo llama manualmente al terminar
         /// todos los segmentos de la calle.
         /// </summary>
@@ -274,22 +230,11 @@ namespace DigitalTwin
             revisitQueue.Clear();
             previousAgentPositions.Clear();
             
-            // Resetear contadores de métricas
+            // Resetear contadores de mtricas
             if (movementInterface != null)
             {
                 movementInterface.ResetDetectedPotholes();  // Resetea TODO (ground truth + detected)
             }
-            
-            episodeLog.Clear();
-            // Encabezados usando la nomenclatura matemática estricta del paper:
-            // |A_t| = Cardinalidad de agentes, |M_t| = Tamaño de la memoria de inspección
-            // o_s_t = Visibility Score, D_t = Traffic Density
-            // dt_wait = Delta t_wait (Hover), dt_x y dt_y = componentes de delta_t (Micro)
-            episodeLog.Add("t,p_t_x,p_t_y,h_t,v_t,e_t,|A_t|,|M_t|,o_s_t,Pi,D_t,dt_wait,dt_x,dt_y");
-
-            trafficLog.Clear();
-            // Encabezados para el log de agentes: tupla (y_i^t, \nu_i^t, \kappa_i)
-            trafficLog.Add("t,agent_id,y_t_x,y_t_y,nu_t,kappa_i");
 
             Debug.Log($"[Digital Twin] Iniciando Viaje / Episodio de Entrenamiento #{currentEpisode}");
         }
@@ -302,27 +247,11 @@ namespace DigitalTwin
             if (movementInterface != null && movementInterface.isCapturing)
             {
                 movementInterface.AcDc();
-                Debug.Log("[Digital Twin] ✗ ACDC DESACTIVADO - finalizando captura");
+                Debug.Log("[Digital Twin]  ACDC DESACTIVADO - finalizando captura");
             }
             
-            // Guardar el log a un archivo .txt
-            string folderPath = Path.Combine(Application.dataPath, "DigitalTwin_Logs");
-            if (!Directory.Exists(folderPath))
-            {
-                Directory.CreateDirectory(folderPath);
-            }
-            
-            // Cambiado a .csv para que Excel o Python/Pandas lo lean como tabla nativa
-            string fileName = $"Episode_{currentEpisode}_{System.DateTime.Now:yyyyMMdd_HHmmss}.csv";
-            string filePath = Path.Combine(folderPath, fileName);
-            File.WriteAllLines(filePath, episodeLog);
-
-            // Guardar el archivo secundario de tráfico
-            string trafficFileName = $"Episode_{currentEpisode}_{System.DateTime.Now:yyyyMMdd_HHmmss}_TrafficData.csv";
-            string trafficFilePath = Path.Combine(folderPath, trafficFileName);
-            File.WriteAllLines(trafficFilePath, trafficLog);
-            
-            Debug.Log($"[Digital Twin] Viaje/Episodio finalizado. Logs guardados en: {folderPath}");
+            Debug.Log($"[Digital Twin] Viaje/Episodio finalizado.");
         }
     }
 }
+
