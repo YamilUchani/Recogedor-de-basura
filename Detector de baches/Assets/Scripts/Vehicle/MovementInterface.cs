@@ -39,6 +39,12 @@ public class MovementInterface : MonoBehaviour
     public TMP_Text buttonText;
     public TMP_Text velocityText;
     public TMP_Text angleText;
+    public TMP_Text strategyAltitudeText;
+    public TMP_Text trafficText;
+    public TMP_Text heightText;
+    public DroneHeightController heightController;
+    public TrafficDensityController trafficController;
+
     public bool isCapturing = false;  // Público para que DroneController pueda verificar si está grabando.
     public bool angulo_mando;
     private float baseAngle;
@@ -261,6 +267,12 @@ public class MovementInterface : MonoBehaviour
             // 3. Buscar en el droneController asignado
             if (navAgent == null) navAgent = droneController.GetComponent<NavMeshAgent>();
         }
+
+        if (heightController == null)
+            heightController = FindFirstObjectByType<DroneHeightController>();
+
+        if (trafficController == null)
+            trafficController = FindFirstObjectByType<TrafficDensityController>();
         
         // 4. Buscar en toda la escena (si hay un solo dron)
         if (navAgent == null) navAgent = FindFirstObjectByType<NavMeshAgent>();
@@ -359,6 +371,35 @@ public class MovementInterface : MonoBehaviour
 
         if (angleText != null)
             angleText.text = angleTextValue;
+
+        // --- STRATEGY / HEIGHT / TRAFFIC ---
+        string strategy = (droneController != null) ? droneController.navigationMode.ToString() : "N/A";
+        string height = "N/A";
+        if (heightController != null)
+            height = heightController.currentLevel.ToString();
+        else if (droneController != null)
+        {
+            float h = droneController.targetHeight;
+            if (h <= 6f) height = "Low";
+            else if (h <= 10f) height = "Medium";
+            else height = "High";
+        }
+        
+        string strategyTextValue = "Strategy : " + strategy;
+        string heightTextValue   = "Height    : " + height;
+        if (strategyAltitudeText != null)
+            strategyAltitudeText.text = (heightText != null)
+                ? strategyTextValue
+                : strategyTextValue + " / " + heightTextValue;
+
+        if (heightText != null)
+            heightText.text = heightTextValue;
+
+        string traffic = (trafficController != null) ? trafficController.currentDensity.ToString() : "N/A";
+        string trafficValue =      "Traffic    : " + traffic;
+        if (trafficText != null)
+            trafficText.text = trafficValue;
+
     }
     [SerializeField] private float offsetDistancia = 0.2f;
     private Vector3 lastMidPoint = Vector3.zero;

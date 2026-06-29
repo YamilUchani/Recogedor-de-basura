@@ -1417,13 +1417,11 @@ if (apagando)
 
     private void ApplyMotorRotation()
     {
-        float targetTiltX = movementInput.y * tiltAngle;
-        float targetTiltZ = -movementInput.x * tiltAngle;
         float speed = motorRotationSpeed;  // Usar la nica variable de velocidad
 
         for (int i = 0; i < motors.Length; i++)
         {
-            // Si motorRotationSpeed es 0, no rotar (solo mantener inclinacin)
+            // Si motorRotationSpeed es 0, mantener la rotacion actual.
             if (speed > 0f)
             {
                 float rotationDirection = alternateRotation ? (i % 2 == 0 ? 1 : -1) : 1;
@@ -1433,7 +1431,7 @@ if (apagando)
                 if (motorRotationAngles[i] < -360f) motorRotationAngles[i] += 360f;
             }
 
-            motors[i].localRotation = Quaternion.Euler(targetTiltX, motorRotationAngles[i], targetTiltZ);
+            motors[i].localRotation = Quaternion.Euler(0f, motorRotationAngles[i], 0f);
         }
     }
 
